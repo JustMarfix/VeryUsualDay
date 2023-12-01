@@ -24,15 +24,15 @@ namespace VeryUsualDay.Commands
             int id = int.Parse(arguments.Array[1]);
             if (Player.TryGet(id, out Player avel))
             {
-                if (VeryUsualDay.Instance.Avels.Contains(id))
+                if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(id))
                 {
                     avel.MaxHealth = 100f;
                     avel.CustomInfo = "Человек";
                     avel.DisableEffect(Exiled.API.Enums.EffectType.MovementBoost);
                     avel.Role.Set(PlayerRoles.RoleTypeId.Tutorial, reason: Exiled.API.Enums.SpawnReason.ForceClass);
                     avel.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
-                    VeryUsualDay.Instance.Avels.Remove(id);
-                    response = "Авель удалён!";
+                    VeryUsualDay.Instance.ScpPlayers.Remove(id);
+                    response = "SCP удалён!";
                     return true;
                 }
                 else
@@ -47,7 +47,7 @@ namespace VeryUsualDay.Commands
                         avel.ChangeEffectIntensity(Exiled.API.Enums.EffectType.MovementBoost, 25);
                         avel.CurrentItem = avel.AddItem(ItemType.Jailbird);
                         avel.Scale = new UnityEngine.Vector3(1.15f, 1.15f, 1.15f);
-                        VeryUsualDay.Instance.Avels.Add(id);
+                        VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp0762);
                     });
                     response = "Авель создан!";
                     return true;

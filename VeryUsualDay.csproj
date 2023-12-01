@@ -101,6 +101,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\classd.cs" />
     <Compile Include="Commands\DoorLocker.cs" />
     <Compile Include="Commands\Lunch.cs" />
     <Compile Include="Commands\patogen008.cs" />
@@ -108,9 +109,16 @@
     <Compile Include="Commands\recontain008.cs" />
     <Compile Include="Commands\redoors.cs" />
     <Compile Include="Commands\RoleDistribution.cs" />
+    <Compile Include="Commands\spawn035.cs" />
     <Compile Include="Commands\SetCode.cs" />
+    <Compile Include="Commands\spawn049.cs" />
     <Compile Include="Commands\spawn076_2.cs" />
+    <Compile Include="Commands\spawn999.cs" />
     <Compile Include="Commands\Spawnbuo.cs" />
+    <Compile Include="Commands\vudclassd.cs" />
+    <Compile Include="Commands\vudguard.cs" />
+    <Compile Include="Commands\vudjanitor.cs" />
+    <Compile Include="Commands\vudscience.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Handlers\Player.cs" />
     <Compile Include="Handlers\Server.cs" />

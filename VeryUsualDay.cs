@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Exiled.API.Enums;
 using UnityEngine;
 using System;
+using System.Linq;
 
 namespace VeryUsualDay
 {
@@ -21,15 +22,20 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay";
 
-        public override Version Version => new Version(1, 2, 0);
+        public override Version Version => new Version(2, 1, 1);
 
         public bool IsEnabledInRound { get; set; } = false;
         public bool Is008Leaked { get; set; } = false;
         public bool IsLunchtimeActive { get; set; } = false;
         public List<int> LockerPlayers { get; set; } = new List<int>() { };
-        public List<int> Avels { get; set; } = new List<int>() { };
         public List<int> Zombies { get; set; } = new List<int>() { };
+        public List<int> JoinedDboys { get; set; } = new List<int> { };
+        public List<int> DBoysQueue { get; set; } = new List<int> { };
         public int BUOCounter { get; set; } = 0;
+        public int SpawnedDboysCounter { get; set; } = 1;
+        public int SpawnedJanitorsCounter { get; set; } = 1;
+        public int SpawnedScientistCounter { get; set; } = 1;
+        public int SpawnedSecurityCounter { get; set; } = 1;
         public enum Codes
         {
             Green,
@@ -39,7 +45,19 @@ namespace VeryUsualDay
             Red
         }
 
+        public enum Scps
+        {
+            Scp035,
+            Scp049,
+            Scp0762,
+            Scp372,
+            Scp575,
+            Scp966,
+            Scp999
+        }
+
         public Codes CurrentCode { get; set; } = Codes.Green;
+        public Dictionary<int, Scps> ScpPlayers { get; set; } = new Dictionary<int, Scps>();
 
         private Handlers.Player player;
         private Handlers.Server server;
@@ -74,15 +92,70 @@ namespace VeryUsualDay
             base.OnDisabled();
         }
 
+        public IEnumerator<float> _joining()
+        {
+            for (;;)
+            {
+                if (CurrentCode == Codes.Green)
+                {
+                    int counter = 0;
+                    foreach (int i in DBoysQueue.ToList())
+                    {
+                        if (Player.TryGet(i, out Player dboy))
+                        {
+                            if (dboy.CustomInfo == "Человек" || dboy.CustomInfo is null)
+                            {
+                                if (JoinedDboys.Count >= 5)
+                                {
+                                    break;
+                                }
+                                if (counter == 3)
+                                {
+                                    break;
+                                }
+                                dboy.CustomName = $"Испытуемый - ##-{SpawnedDboysCounter}";
+                                JoinedDboys.Add(i);
+                                dboy.Role.Set(PlayerRoles.RoleTypeId.ClassD);
+                                Timing.CallDelayed(1f, () =>
+                                {
+                                    dboy.ClearInventory();
+                                    dboy.Handcuff();
+                                    dboy.Broadcast(10, "<b>Вы стали <color=#EE7600>Испытуемым</color>! Можете сотрудничать с <color=#120a8f>фондом</color> или принимать попытки <color=#ff2b2b>побега</color> при первой возможности. </b>");
+                                });
+                                counter += 1;
+                                SpawnedDboysCounter += 1;
+                            }
+                            DBoysQueue.Remove(i);
+                        }
+                    }
+                    switch (counter)
+                    {
+                        case 0:
+                            break;
+                        case 1:
+                            Cassie.Message("<b><color=#FF0090>O5</color> >>> <color=#008080>Комплекс</color></b>: один испытуемый прибыл в блок D. <size=0> . . . . . . . . . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
+                            break;
+                        case 2:
+                            Cassie.Message("<b><color=#FF0090>O5</color> >>> <color=#008080>Комплекс</color></b>: двое испытуемых прибыло в блок D<size=0> . . . . . . . . . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
+                            break;
+                        case 3:
+                            Cassie.Message("<b><color=#FF0090>O5</color> >>> <color=#008080>Комплекс</color></b>: трое испытуемых прибыло в блок D<size=0> . . . . . . . . . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
+                            break;
+                    }
+                }
+                yield return Timing.WaitForSeconds(300f);
+            }
+        }
+
         public IEnumerator<float> _avel()
         {
             for (;;)
             {
-                foreach (int i in Avels)
+                foreach (KeyValuePair<int, Scps> pair in ScpPlayers.Where(p => p.Value == Scps.Scp0762))
                 {
                     try
                     {
-                        if (Player.TryGet(i, out Player avel) && avel.Health < 5000)
+                        if (Player.TryGet(pair.Key, out Player avel) && avel.Health < 5000)
                         {
                             avel.Heal(50f);
                         }
@@ -90,7 +163,6 @@ namespace VeryUsualDay
                     catch (Exception e)
                     {
                         Log.Error(e);
-                        Log.Error(e.Message);
                     }
                 }
                 yield return Timing.WaitForSeconds(7f);
@@ -191,7 +263,7 @@ namespace VeryUsualDay
                 player.Role.Set(PlayerRoles.RoleTypeId.Tutorial, PlayerRoles.RoleSpawnFlags.None);
                 Timing.CallDelayed(2f, () =>
                 {
-                    player.Scale = new UnityEngine.Vector3(1.3f, 0.8f, 1f);
+                    player.Scale = new Vector3(1.3f, 0.8f, 1f);
                     foreach (ItemType item in Instance.Config.AgencyItems[json[4]])
                     {
                         player.AddItem(item);
@@ -203,7 +275,7 @@ namespace VeryUsualDay
                     player.MaxHealth = Instance.Config.AgencyHealth;
                     player.Health = Instance.Config.AgencyHealth;
                     player.IsGodModeEnabled = false;
-                    player.Teleport(new UnityEngine.Vector3(-16f, 1014.5f, -32f));
+                    player.Teleport(new Vector3(-16f, 1014.5f, -32f));
                 });
             }
         }

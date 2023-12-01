@@ -5,6 +5,7 @@ using Exiled.Events.EventArgs.Player;
 using MEC;
 using PlayerRoles;
 using System;
+using System.Linq;
 
 namespace VeryUsualDay.Handlers
 {
@@ -72,9 +73,12 @@ namespace VeryUsualDay.Handlers
         {
             if (VeryUsualDay.Instance.IsEnabledInRound)
             {
-                if (VeryUsualDay.Instance.Avels.Contains(ev.Player.Id))
+                if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
                 {
-                    ev.IsAllowed = false;
+                    if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp0762)
+                    {
+                        ev.IsAllowed = false;
+                    }
                 }
                 if (ev.Player.Role.Type == RoleTypeId.Scientist && VeryUsualDay.Instance.Config.ForbiddenForScientists.Contains(ev.Pickup.Type))
                 {
@@ -88,32 +92,37 @@ namespace VeryUsualDay.Handlers
         }
         public void OnDroppingItem(DroppingItemEventArgs ev)
         {
-            if (VeryUsualDay.Instance.Avels.Contains(ev.Player.Id))
+            if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
             {
-                ev.IsAllowed = false;
+                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp0762)
+                {
+                    ev.IsAllowed = false;
+                }
             }
         }
         public void OnHurting(HurtingEventArgs ev)
         {
             try
             {
-                if (VeryUsualDay.Instance.Avels.Contains(ev.Attacker.Id))
+                if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
                 {
-                    if (ev.Attacker.CurrentItem.As<Jailbird>().WearState == InventorySystem.Items.Jailbird.JailbirdWearState.AlmostBroken)
+                    if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp0762)
                     {
-                        ev.Attacker.CurrentItem.Destroy();
-                        Item jailbird = ev.Attacker.AddItem(ItemType.Jailbird);
-                        Timing.CallDelayed(0.1f, () =>
+                        if (ev.Attacker.CurrentItem.As<Jailbird>()?.WearState == InventorySystem.Items.Jailbird.JailbirdWearState.AlmostBroken)
                         {
-                            ev.Attacker.CurrentItem = jailbird;
-                        });
+                            ev.Attacker.CurrentItem?.Destroy();
+                            Item jailbird = ev.Attacker.AddItem(ItemType.Jailbird);
+                            Timing.CallDelayed(0.1f, () =>
+                            {
+                                ev.Attacker.CurrentItem = jailbird;
+                            });
+                        }
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Log.Error(ex);
-                Log.Error(ex.Message);
+
             }
         }
         public void OnDied(DiedEventArgs ev)
@@ -127,7 +136,7 @@ namespace VeryUsualDay.Handlers
                 {
                     VeryUsualDay.Instance.Zombies.Remove(ev.Player.Id);
                 }
-                else if (!VeryUsualDay.Instance.Avels.Contains(ev.Player.Id) && VeryUsualDay.Instance.Is008Leaked)
+                else if (!VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id) && VeryUsualDay.Instance.Is008Leaked)
                 {
                     Timing.CallDelayed(2f, () =>
                     {
@@ -142,9 +151,17 @@ namespace VeryUsualDay.Handlers
                         });
                     });
                 }
-                if (VeryUsualDay.Instance.Avels.Contains(ev.Player.Id))
+                if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
                 {
-                    VeryUsualDay.Instance.Avels.Remove(ev.Player.Id);
+                    VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
+                }
+                if (VeryUsualDay.Instance.DBoysQueue.Contains(ev.Player.Id))
+                {
+                    VeryUsualDay.Instance.DBoysQueue.Remove(ev.Player.Id);
+                }
+                if (VeryUsualDay.Instance.JoinedDboys.Contains(ev.Player.Id))
+                {
+                    VeryUsualDay.Instance.JoinedDboys.Remove(ev.Player.Id);
                 }
             }
         }
@@ -154,13 +171,21 @@ namespace VeryUsualDay.Handlers
             {
                 VeryUsualDay.Instance.LockerPlayers.Remove(ev.Player.Id);
             }
-            if (VeryUsualDay.Instance.Avels.Contains(ev.Player.Id))
+            if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
             {
-                VeryUsualDay.Instance.Avels.Remove(ev.Player.Id);
+                VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
             }
             if (VeryUsualDay.Instance.Zombies.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.Zombies.Remove(ev.Player.Id);
+            }
+            if (VeryUsualDay.Instance.DBoysQueue.Contains(ev.Player.Id))
+            {
+                VeryUsualDay.Instance.DBoysQueue.Remove(ev.Player.Id);
+            }
+            if (VeryUsualDay.Instance.JoinedDboys.Contains(ev.Player.Id))
+            {
+                VeryUsualDay.Instance.JoinedDboys.Remove(ev.Player.Id);
             }
         }
     }

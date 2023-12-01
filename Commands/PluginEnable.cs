@@ -22,17 +22,25 @@ namespace VeryUsualDay.Commands
                 VeryUsualDay.Instance.IsLunchtimeActive = false;
                 VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Green;
                 VeryUsualDay.Instance.BUOCounter = 0;
+                VeryUsualDay.Instance.SpawnedDboysCounter = 0;
+                VeryUsualDay.Instance.SpawnedJanitorsCounter = 0;
+                VeryUsualDay.Instance.SpawnedScientistCounter = 0;
+                VeryUsualDay.Instance.SpawnedSecurityCounter = 0;
                 VeryUsualDay.Instance.LockerPlayers.Clear();
-                VeryUsualDay.Instance.Avels.Clear();
+                VeryUsualDay.Instance.ScpPlayers.Clear();
                 VeryUsualDay.Instance.Zombies.Clear();
+                VeryUsualDay.Instance.JoinedDboys.Clear();
+                VeryUsualDay.Instance.DBoysQueue.Clear();
                 Timing.KillCoroutines("_avel");
                 Timing.KillCoroutines("_008_poisoning");
+                Timing.KillCoroutines("_joining");
                 response = "Режим Очень Обычного Дня выключен.";
             }
             else
             {
                 VeryUsualDay.Instance.IsEnabledInRound = true;
                 Timing.RunCoroutine(VeryUsualDay.Instance._avel(), "_avel");
+                Timing.RunCoroutine(VeryUsualDay.Instance._joining(), "_joining");
                 response = "Режим Очень Обычного Дня включён.";
             }
             return true;
