@@ -1,0 +1,167 @@
+﻿using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.API.Features.Items;
+using Exiled.Events.EventArgs.Player;
+using MEC;
+using PlayerRoles;
+using System;
+
+namespace VeryUsualDay.Handlers
+{
+    public class Player
+    {
+        public void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            Timing.CallDelayed(5f, () =>
+            {
+                if (VeryUsualDay.Instance.IsEnabledInRound && ev.NewRole == RoleTypeId.Spectator && ev.Reason != SpawnReason.ForceClass)
+                {
+                    if (VeryUsualDay.Instance.Is008Leaked)
+                    {
+                        if (ev.Player.Role.Type == RoleTypeId.Scp0492)
+                        {
+                            return;
+                        }
+                    }
+                    if (ev.Reason == SpawnReason.Died || ev.Reason == SpawnReason.Destroyed)
+                    {
+                        string bc = "<b>Вы были перемещены в <color=purple>Обучение</color>, т.к. ивент находится в процессе.</b>";
+                        ev.Player.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
+                        ev.Player.Broadcast(10, bc);
+                    }
+                    else
+                    {
+                        string bc = "<color=#98FB98><b>Вы</b></color> на закрытом рп ивенте <color=#666699>\"Слишком обычный день\"</color>. Можете ожидать своей роли и появления на территории комплекса. Возможен лимит участвующих.";
+                        ev.Player.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
+                        ev.Player.Broadcast(10, bc);
+                    }
+                }
+            });
+        }
+        public void OnInteractingDoor(InteractingDoorEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.IsEnabledInRound && VeryUsualDay.Instance.LockerPlayers.Contains(ev.Player.Id))
+            {
+                if (ev.Door.IsGate)
+                {
+                    if (ev.Door.IsOpen)
+                    {
+                        ev.Door.IsOpen = true;
+                        ev.Door.Lock(float.PositiveInfinity, DoorLockType.AdminCommand);
+                    }
+                    else
+                    {
+                        ev.Door.Unlock();
+                    }
+                }
+                else
+                {
+                    if (ev.Door.IsFullyClosed)
+                    {
+                        ev.Door.Unlock();
+                    }
+                    else
+                    {
+                        ev.Door.IsOpen = true;
+                        ev.Door.Lock(float.PositiveInfinity, DoorLockType.AdminCommand);
+                    }
+                }
+            }
+        }
+        public void OnPickingUpItem(PickingUpItemEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.IsEnabledInRound)
+            {
+                if (VeryUsualDay.Instance.Avels.Contains(ev.Player.Id))
+                {
+                    ev.IsAllowed = false;
+                }
+                if (ev.Player.Role.Type == RoleTypeId.Scientist && VeryUsualDay.Instance.Config.ForbiddenForScientists.Contains(ev.Pickup.Type))
+                {
+                    ev.IsAllowed = false;
+                }
+                if (ev.Player.Role.Type == RoleTypeId.ClassD && ev.Player.CustomName.ToLower().Contains("уборщик") && VeryUsualDay.Instance.Config.ForbiddenForJanitors.Contains(ev.Pickup.Type))
+                {
+                    ev.IsAllowed = false;
+                }
+            }
+        }
+        public void OnDroppingItem(DroppingItemEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.Avels.Contains(ev.Player.Id))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+        public void OnHurting(HurtingEventArgs ev)
+        {
+            try
+            {
+                if (VeryUsualDay.Instance.Avels.Contains(ev.Attacker.Id))
+                {
+                    if (ev.Attacker.CurrentItem.As<Jailbird>().WearState == InventorySystem.Items.Jailbird.JailbirdWearState.AlmostBroken)
+                    {
+                        ev.Attacker.CurrentItem.Destroy();
+                        Item jailbird = ev.Attacker.AddItem(ItemType.Jailbird);
+                        Timing.CallDelayed(0.1f, () =>
+                        {
+                            ev.Attacker.CurrentItem = jailbird;
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                Log.Error(ex.Message);
+            }
+        }
+        public void OnDied(DiedEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.IsEnabledInRound)
+            {
+                ev.Player.CustomInfo = "Человек";
+                ev.Player.MaxHealth = 100f;
+                ev.Player.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
+                if (VeryUsualDay.Instance.Zombies.Contains(ev.Player.Id))
+                {
+                    VeryUsualDay.Instance.Zombies.Remove(ev.Player.Id);
+                }
+                else if (!VeryUsualDay.Instance.Avels.Contains(ev.Player.Id) && VeryUsualDay.Instance.Is008Leaked)
+                {
+                    Timing.CallDelayed(2f, () =>
+                    {
+                        ev.Player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
+                        Timing.CallDelayed(2f, () =>
+                        {
+                            ev.Player.MaxHealth = 1850f;
+                            ev.Player.Health = 1850f;
+                            ev.Player.EnableEffect(EffectType.Stained);
+                            ev.Player.CustomInfo = "<b><color=#960018>SCP-008-2</color></b>";
+                            VeryUsualDay.Instance.Zombies.Add(ev.Player.Id);
+                        });
+                    });
+                }
+                if (VeryUsualDay.Instance.Avels.Contains(ev.Player.Id))
+                {
+                    VeryUsualDay.Instance.Avels.Remove(ev.Player.Id);
+                }
+            }
+        }
+        public void OnLeft(LeftEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.LockerPlayers.Contains(ev.Player.Id))
+            {
+                VeryUsualDay.Instance.LockerPlayers.Remove(ev.Player.Id);
+            }
+            if (VeryUsualDay.Instance.Avels.Contains(ev.Player.Id))
+            {
+                VeryUsualDay.Instance.Avels.Remove(ev.Player.Id);
+            }
+            if (VeryUsualDay.Instance.Zombies.Contains(ev.Player.Id))
+            {
+                VeryUsualDay.Instance.Zombies.Remove(ev.Player.Id);
+            }
+        }
+    }
+}
