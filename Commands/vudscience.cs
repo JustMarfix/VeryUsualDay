@@ -28,8 +28,8 @@ namespace VeryUsualDay.Commands
                 Timing.CallDelayed(2f, () =>
                 {
                     scientist.ClearInventory();
-                    scientist.MaxHealth = 115f;
-                    scientist.Health = 115f;
+                    scientist.MaxHealth = 100f;
+                    scientist.Health = 100f;
                     scientist.AddItem(ItemType.KeycardScientist);
                     scientist.AddItem(ItemType.Painkillers);
                     scientist.AddItem(ItemType.Flashlight);

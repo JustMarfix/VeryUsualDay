@@ -113,6 +113,7 @@
     <Compile Include="Commands\SetCode.cs" />
     <Compile Include="Commands\spawn049.cs" />
     <Compile Include="Commands\spawn076_2.cs" />
+    <Compile Include="Commands\spawn966.cs" />
     <Compile Include="Commands\spawn999.cs" />
     <Compile Include="Commands\Spawnbuo.cs" />
     <Compile Include="Commands\vudclassd.cs" />

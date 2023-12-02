@@ -22,7 +22,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay";
 
-        public override Version Version => new Version(2, 1, 1);
+        public override Version Version => new Version(2, 1, 3);
 
         public bool IsEnabledInRound { get; set; } = false;
         public bool Is008Leaked { get; set; } = false;
@@ -103,7 +103,7 @@ namespace VeryUsualDay
                     {
                         if (Player.TryGet(i, out Player dboy))
                         {
-                            if (dboy.CustomInfo == "Человек" || dboy.CustomInfo is null)
+                            if ((dboy.CustomInfo == "Человек" || dboy.CustomInfo is null) && dboy.Role.Type == PlayerRoles.RoleTypeId.Tutorial)
                             {
                                 if (JoinedDboys.Count >= 5)
                                 {
