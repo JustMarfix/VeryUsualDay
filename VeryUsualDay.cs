@@ -22,7 +22,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay";
 
-        public override Version Version => new Version(2, 1, 3);
+        public override Version Version => new Version(2, 1, 4);
 
         public bool IsEnabledInRound { get; set; } = false;
         public bool Is008Leaked { get; set; } = false;

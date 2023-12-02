@@ -35,7 +35,7 @@ namespace VeryUsualDay.Commands
                     dboy.Broadcast(10, "<b>Вы стали <color=#EE7600>Испытуемым</color>! Можете сотрудничать с <color=#120a8f>фондом</color> или принимать попытки <color=#ff2b2b>побега</color> при первой возможности. </b>");
                     VeryUsualDay.Instance.SpawnedDboysCounter += 1;
                 });
-                Cassie.Message("<b>Вы стали <color=#EE7600>Испытуемым</color>! Можете сотрудничать с <color=#120a8f>фондом</color> или принимать попытки <color=#ff2b2b>побега</color> при первой возможности. </b>", isNoisy: false, isSubtitles: true);
+                Cassie.Message("<b><color=#FF0090>O5</color> >>> <color=#008080>Комплекс</color></b>: один испытуемый прибыл в блок D. <size=0> . . . . . . . . . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
                 response = "Испытуемый заспавнен успешно!";
                 return true;
             }
