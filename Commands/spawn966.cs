@@ -36,7 +36,7 @@ namespace VeryUsualDay.Commands
                 }
                 else
                 {
-                    scp966.Role.Set(PlayerRoles.RoleTypeId.Tutorial, reason: Exiled.API.Enums.SpawnReason.ForceClass, spawnFlags: PlayerRoles.RoleSpawnFlags.AssignInventory);
+                    scp966.Role.Set(PlayerRoles.RoleTypeId.Scp0492, reason: Exiled.API.Enums.SpawnReason.ForceClass, spawnFlags: PlayerRoles.RoleSpawnFlags.AssignInventory);
                     Timing.CallDelayed(2f, () =>
                     {
                         scp966.CustomInfo = "<b><color=#960018>SCP-966</color></b>";
