@@ -101,6 +101,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\allowspawn.cs" />
     <Compile Include="Commands\classd.cs" />
     <Compile Include="Commands\DoorLocker.cs" />
     <Compile Include="Commands\Lunch.cs" />

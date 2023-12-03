@@ -22,11 +22,12 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay";
 
-        public override Version Version => new Version(2, 1, 5);
+        public override Version Version => new Version(2, 2, 0);
 
         public bool IsEnabledInRound { get; set; } = false;
         public bool Is008Leaked { get; set; } = false;
         public bool IsLunchtimeActive { get; set; } = false;
+        public bool IsDboysSpawnAllowed { get; set; } = false;
         public List<int> LockerPlayers { get; set; } = new List<int>() { };
         public List<int> Zombies { get; set; } = new List<int>() { };
         public List<int> JoinedDboys { get; set; } = new List<int> { };

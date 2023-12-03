@@ -8,13 +8,14 @@ namespace VeryUsualDay.Handlers
         {
             VeryUsualDay.Instance.IsEnabledInRound = false;
             VeryUsualDay.Instance.Is008Leaked = false;
+            VeryUsualDay.Instance.IsLunchtimeActive = false;
+            VeryUsualDay.Instance.IsDboysSpawnAllowed = false;
             VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Green;
             VeryUsualDay.Instance.BUOCounter = 0;
             VeryUsualDay.Instance.SpawnedDboysCounter = 0;
             VeryUsualDay.Instance.SpawnedJanitorsCounter = 0;
             VeryUsualDay.Instance.SpawnedScientistCounter = 0;
             VeryUsualDay.Instance.SpawnedSecurityCounter = 0;
-            VeryUsualDay.Instance.IsLunchtimeActive = false;
             VeryUsualDay.Instance.LockerPlayers.Clear();
             VeryUsualDay.Instance.ScpPlayers.Clear();
             VeryUsualDay.Instance.Zombies.Clear();

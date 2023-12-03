@@ -20,6 +20,11 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
+            if (!VeryUsualDay.Instance.IsDboysSpawnAllowed)
+            {
+                response = "Самостоятельный спавн за D-класс закрыт до начала ивента и во время мини-ивентов.";
+                return false;
+            }
             Player playerSender = Player.Get(sender);
             if (VeryUsualDay.Instance.DBoysQueue.Contains(playerSender.Id) || !(playerSender.CustomInfo == "Человек" || playerSender.CustomInfo is null) || playerSender.Role.Type != PlayerRoles.RoleTypeId.Tutorial)
             {
