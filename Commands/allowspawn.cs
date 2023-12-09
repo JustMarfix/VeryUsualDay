@@ -22,7 +22,7 @@ namespace VeryUsualDay.Commands
             if (VeryUsualDay.Instance.IsDboysSpawnAllowed)
             {
                 response = "Самоспавн за ClassD теперь запрещён!";
-                VeryUsualDay.Instance.IsEnabledInRound = false;
+                VeryUsualDay.Instance.IsDboysSpawnAllowed = false;
             }
             else
             {
