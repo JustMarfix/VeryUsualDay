@@ -28,6 +28,8 @@ namespace VeryUsualDay.Commands
                 {
                     scp035.MaxHealth = 100f;
                     scp035.CustomInfo = "Человек";
+                    scp035.DisableEffect(Exiled.API.Enums.EffectType.BodyshotReduction);
+                    scp035.DisableEffect(Exiled.API.Enums.EffectType.DamageReduction);
                     scp035.Role.Set(PlayerRoles.RoleTypeId.Tutorial, reason: Exiled.API.Enums.SpawnReason.ForceClass);
                     scp035.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
                     VeryUsualDay.Instance.ScpPlayers.Remove(id);
@@ -42,9 +44,13 @@ namespace VeryUsualDay.Commands
                         scp035.CustomInfo = "<b><color=#960018>SCP-035</color></b>";
                         scp035.AddItem(ItemType.GunRevolver);
                         scp035.AddAmmo(Exiled.API.Enums.AmmoType.Ammo44Cal, 32);
-                        scp035.MaxHealth = 4000f;
-                        scp035.Health = 4000f;
+                        scp035.MaxHealth = 7750f;
+                        scp035.Health = 7750f;
                         scp035.Scale = new UnityEngine.Vector3(0.87f, 0.87f, 1f);
+                        scp035.EnableEffect(Exiled.API.Enums.EffectType.BodyshotReduction);
+                        scp035.ChangeEffectIntensity(Exiled.API.Enums.EffectType.BodyshotReduction, 35);
+                        scp035.EnableEffect(Exiled.API.Enums.EffectType.DamageReduction);
+                        scp035.ChangeEffectIntensity(Exiled.API.Enums.EffectType.DamageReduction, 35);
                         scp035.IsGodModeEnabled = false;
                         VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp035);
                     });

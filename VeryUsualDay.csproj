@@ -103,6 +103,7 @@
   <ItemGroup>
     <Compile Include="Commands\allowspawn.cs" />
     <Compile Include="Commands\classd.cs" />
+    <Compile Include="Commands\lock173gate.cs" />
     <Compile Include="Commands\DoorLocker.cs" />
     <Compile Include="Commands\Lunch.cs" />
     <Compile Include="Commands\patogen008.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Commands\SetCode.cs" />
     <Compile Include="Commands\spawn049.cs" />
     <Compile Include="Commands\spawn076_2.cs" />
+    <Compile Include="Commands\spawn372.cs" />
     <Compile Include="Commands\spawn966.cs" />
     <Compile Include="Commands\spawn999.cs" />
     <Compile Include="Commands\Spawnbuo.cs" />
