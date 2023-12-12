@@ -34,6 +34,7 @@ namespace VeryUsualDay.Commands
                     guard.AddItem(ItemType.KeycardScientist);
                     guard.AddItem(ItemType.Painkillers);
                     guard.CustomName = $"Охранник - ##-{VeryUsualDay.Instance.SpawnedSecurityCounter}";
+                    guard.CustomInfo = "Человек";
                     guard.Broadcast(10, "<b>Вы вступили в <color=#727472>Службу Безопасности</color>! Патрулируйте <color=#120a8f>комплекс</color>, сохраняйте безопасную обстановку в <color=#ffa000>подземной части</color>.");
                     VeryUsualDay.Instance.SpawnedSecurityCounter += 1;
                 });

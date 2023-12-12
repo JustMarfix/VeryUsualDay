@@ -32,6 +32,7 @@ namespace VeryUsualDay.Commands
                     dboy.MaxHealth = 115f;
                     dboy.Health = 115f;
                     dboy.CustomName = $"Испытуемый - ##-{VeryUsualDay.Instance.SpawnedDboysCounter}";
+                    dboy.CustomInfo = "Человек";
                     dboy.Broadcast(10, "<b>Вы стали <color=#EE7600>Испытуемым</color>! Можете сотрудничать с <color=#120a8f>фондом</color> или принимать попытки <color=#ff2b2b>побега</color> при первой возможности. </b>");
                     VeryUsualDay.Instance.SpawnedDboysCounter += 1;
                 });

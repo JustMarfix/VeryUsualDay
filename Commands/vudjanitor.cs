@@ -33,6 +33,7 @@ namespace VeryUsualDay.Commands
                     janitor.AddItem(ItemType.KeycardJanitor);
                     janitor.AddItem(ItemType.Flashlight);
                     janitor.CustomName = $"Уборщик - ##-{VeryUsualDay.Instance.SpawnedJanitorsCounter}";
+                    janitor.CustomInfo = "Человек";
                     janitor.Broadcast(10, "<b>Вы вступили в отдел <color=#FF9966>Уборщиков</color>! Работайте в <color=#ffa8af>столовой комплекса</color> и следите за порядком в <color=#98FB98>коридорах</color>.");
                     VeryUsualDay.Instance.SpawnedJanitorsCounter += 1;
                 });

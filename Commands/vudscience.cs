@@ -34,6 +34,7 @@ namespace VeryUsualDay.Commands
                     scientist.AddItem(ItemType.Painkillers);
                     scientist.AddItem(ItemType.Flashlight);
                     scientist.CustomName = $"Сотрудник - ##-{VeryUsualDay.Instance.SpawnedScientistCounter}";
+                    scientist.CustomInfo = "Человек";
                     scientist.Broadcast(10, "<b>Вы вступили в <color=#ffd800>Научный</color> отдел! Исследуйте и сдерживайте <color=red>аномалии</color>, помогайте работе <color=#120a8f>фонда</color>.");
                     VeryUsualDay.Instance.SpawnedScientistCounter += 1;
                 });
