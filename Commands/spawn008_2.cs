@@ -1,0 +1,63 @@
+﻿using CommandSystem;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using MEC;
+using System;
+
+namespace VeryUsualDay.Commands
+{
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    public class spawn008_2 : ICommand
+    {
+        public string Command { get; set; } = "spawn008-2";
+
+        public string[] Aliases { get; set; } = { };
+
+        public string Description { get; set; } = "Работает при СОД. Спавнит SCP-008-2.";
+
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        {
+            if (!VeryUsualDay.Instance.IsEnabledInRound)
+            {
+                response = "Режим СОД не включён!";
+                return false;
+            }
+            int id = int.Parse(arguments.Array[1]);
+            if (Player.TryGet(id, out Player scp0082))
+            {
+                if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(id))
+                {
+                    scp0082.MaxHealth = 100f;
+                    scp0082.CustomInfo = "Человек";
+                    scp0082.DisableEffect(EffectType.Stained);
+                    scp0082.Role.Set(PlayerRoles.RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
+                    scp0082.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
+                    VeryUsualDay.Instance.ScpPlayers.Remove(id);
+                    response = "SCP удалён!";
+                    return true;
+                }
+                else
+                {
+                    scp0082.Role.Set(PlayerRoles.RoleTypeId.Scp0492, reason: SpawnReason.ForceClass, spawnFlags: PlayerRoles.RoleSpawnFlags.AssignInventory);
+                    Timing.CallDelayed(2f, () =>
+                    {
+                        scp0082.CustomInfo = "<b><color=#960018>SCP-008-2</color></b>";
+                        scp0082.MaxHealth = 1850f;
+                        scp0082.Health = 1850f;
+                        scp0082.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
+                        scp0082.EnableEffect(EffectType.Stained);
+                        scp0082.IsGodModeEnabled = false;
+                        VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp0082);
+                    });
+                    response = "SCP-008-2 создан!";
+                    return true;
+                }
+            }
+            else
+            {
+                response = "Не удалось найти игрока с таким ID!";
+                return false;
+            }
+        }
+    }
+}

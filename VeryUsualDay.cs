@@ -22,7 +22,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay";
 
-        public override Version Version => new Version(2, 3, 1);
+        public override Version Version => new Version(2, 4, 0);
 
         public bool IsEnabledInRound { get; set; } = false;
         public bool Is008Leaked { get; set; } = false;
@@ -48,7 +48,9 @@ namespace VeryUsualDay
 
         public enum Scps
         {
+            Scp0082,
             Scp035,
+            Scp0352,
             Scp049,
             Scp0762,
             Scp372,
