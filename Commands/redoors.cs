@@ -23,7 +23,7 @@ namespace VeryUsualDay.Commands
             }
             foreach (Door door in Door.List)
             {
-                if (!door.IsElevator)
+                if (!door.IsElevator && door.Type != Exiled.API.Enums.DoorType.SurfaceGate)
                 {
                     door.IsOpen = false;
                 }
