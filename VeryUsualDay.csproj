@@ -102,7 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\allowspawn.cs" />
+    <Compile Include="Commands\checkcode.cs" />
     <Compile Include="Commands\classd.cs" />
+    <Compile Include="Commands\gocomplex.cs" />
     <Compile Include="Commands\lock173gate.cs" />
     <Compile Include="Commands\DoorLocker.cs" />
     <Compile Include="Commands\Lunch.cs" />
