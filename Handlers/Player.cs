@@ -92,7 +92,7 @@ namespace VeryUsualDay.Handlers
                 {
                     ev.IsAllowed = false;
                 }
-                if ((VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green || VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald) && ev.Player.Role.Type == RoleTypeId.ClassD && !ev.Player.CustomName.ToLower().Contains("уборщик") && ev.Pickup.Type.IsWeapon())
+                if ((VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green || VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald) && ev.Player.Role.Type == RoleTypeId.ClassD && !ev.Player.CustomName.ToLower().Contains("уборщик") && ev.Pickup.Type.IsWeapon() && !VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
                 {
                     VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Blue;
                     Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#005EBC>Синий Код</color>. Зафиксированы малые нарушения. Персоналу следует принимать меры предосторожности. <size=0> pitch_0.1 .G1 .G2 . pitch_1.0 . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);

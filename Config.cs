@@ -523,16 +523,12 @@ namespace VeryUsualDay
         {
             ItemType.GunA7,
             ItemType.GunAK,
-            ItemType.GunCOM18,
             ItemType.GunCom45,
             ItemType.GunCrossvec,
             ItemType.GunE11SR,
             ItemType.GunFRMG0,
             ItemType.GunFSP9,
             ItemType.GunLogicer,
-            ItemType.GunShotgun,
-            ItemType.SCP207,
-            ItemType.SCP500,
             ItemType.Painkillers,
             ItemType.Medkit
         };
