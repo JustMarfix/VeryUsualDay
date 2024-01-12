@@ -282,8 +282,8 @@ namespace VeryUsualDay
                 {
                     ItemType.ArmorCombat,
                     ItemType.GunE11SR,
-                    ItemType.KeycardMTFOperative,
-                    ItemType.Medkit,
+                    ItemType.Medkit,                    ItemType.KeycardMTFOperative,
+
                     ItemType.Radio,
                     ItemType.Adrenaline,
                     ItemType.Painkillers
@@ -517,6 +517,24 @@ namespace VeryUsualDay
             RoleTypeId.NtfSpecialist,
             RoleTypeId.NtfSergeant,
             RoleTypeId.NtfCaptain
+        };
+
+        public List<ItemType> Scp035ForbiddenItems { get; set; } = new List<ItemType>()
+        {
+            ItemType.GunA7,
+            ItemType.GunAK,
+            ItemType.GunCOM18,
+            ItemType.GunCom45,
+            ItemType.GunCrossvec,
+            ItemType.GunE11SR,
+            ItemType.GunFRMG0,
+            ItemType.GunFSP9,
+            ItemType.GunLogicer,
+            ItemType.GunShotgun,
+            ItemType.SCP207,
+            ItemType.SCP500,
+            ItemType.Painkillers,
+            ItemType.Medkit
         };
     }
 }

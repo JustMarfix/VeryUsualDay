@@ -1,11 +1,11 @@
 ﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
+using InventorySystem;
 using MEC;
 using PlayerRoles;
-using System;
-using System.Linq;
 
 namespace VeryUsualDay.Handlers
 {
@@ -79,6 +79,10 @@ namespace VeryUsualDay.Handlers
                     {
                         ev.IsAllowed = false;
                     }
+                    if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 && VeryUsualDay.Instance.Config.Scp035ForbiddenItems.Contains(ev.Pickup.Type))
+                    {
+                        ev.IsAllowed = false;
+                    }
                 }
                 if (ev.Player.Role.Type == RoleTypeId.Scientist && VeryUsualDay.Instance.Config.ForbiddenForScientists.Contains(ev.Pickup.Type))
                 {
@@ -88,6 +92,11 @@ namespace VeryUsualDay.Handlers
                 {
                     ev.IsAllowed = false;
                 }
+                if ((VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green || VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald) && ev.Player.Role.Type == RoleTypeId.ClassD && !ev.Player.CustomName.ToLower().Contains("уборщик") && ev.Pickup.Type.IsWeapon())
+                {
+                    VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Blue;
+                    Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#005EBC>Синий Код</color>. Зафиксированы малые нарушения. Персоналу следует принимать меры предосторожности. <size=0> pitch_0.1 .G1 .G2 . pitch_1.0 . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
+                }
             }
         }
         public void OnDroppingItem(DroppingItemEventArgs ev)
@@ -95,6 +104,10 @@ namespace VeryUsualDay.Handlers
             if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
             {
                 if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp0762)
+                {
+                    ev.IsAllowed = false;
+                }
+                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 && ev.Item.Type == ItemType.GunRevolver)
                 {
                     ev.IsAllowed = false;
                 }
@@ -163,6 +176,10 @@ namespace VeryUsualDay.Handlers
                 {
                     VeryUsualDay.Instance.JoinedDboys.Remove(ev.Player.Id);
                 }
+                if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green || VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald)
+                {
+                    Ragdoll.GetLast(ev.Player).Destroy();
+                }
             }
         }
         public void OnLeft(LeftEventArgs ev)
@@ -186,6 +203,17 @@ namespace VeryUsualDay.Handlers
             if (VeryUsualDay.Instance.JoinedDboys.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.JoinedDboys.Remove(ev.Player.Id);
+            }
+        }
+
+        public void OnShooting(ShootingEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
+            {
+                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 && ev.Firearm.Type == ItemType.GunRevolver)
+                {
+                    ev.Firearm.Ammo += 1;
+                }
             }
         }
     }

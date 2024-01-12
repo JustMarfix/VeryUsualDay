@@ -22,7 +22,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay";
 
-        public override Version Version => new Version(2, 5, 2);
+        public override Version Version => new Version(2, 6, 0);
 
         public bool IsEnabledInRound { get; set; } = false;
         public bool Is008Leaked { get; set; } = false;
@@ -76,6 +76,7 @@ namespace VeryUsualDay
             PlayerHandler.Hurting += player.OnHurting;
             PlayerHandler.Died += player.OnDied;
             PlayerHandler.Left += player.OnLeft;
+            PlayerHandler.Shooting += player.OnShooting;
             ServerHandler.WaitingForPlayers += server.OnWaitingForPlayers;
             base.OnEnabled();
         }
@@ -89,6 +90,7 @@ namespace VeryUsualDay
             PlayerHandler.Hurting -= player.OnHurting;
             PlayerHandler.Died -= player.OnDied;
             PlayerHandler.Left -= player.OnLeft;
+            PlayerHandler.Shooting -= player.OnShooting;
             ServerHandler.WaitingForPlayers -= server.OnWaitingForPlayers;
             player = null;
             server = null;
