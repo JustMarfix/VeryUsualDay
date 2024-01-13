@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using MEC;
 using System;
+using System.Linq;
 
 namespace VeryUsualDay.Commands
 {
@@ -31,11 +32,19 @@ namespace VeryUsualDay.Commands
                 case "green":
                     VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Green;
                     Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#32CD32>Зелёный Код</color>. Сотрудникам работать в штатном режиме. <size=0> pitch_0.1 .G2 . pitch_1.0 . . . . . . . . . . . . . .", isSubtitles: true, isNoisy: false);
+                    foreach (Ragdoll ragdoll in Ragdoll.List.ToList())
+                    {
+                        ragdoll.Destroy();
+                    }
                     response = "Установлен код \"Зелёный\"!";
                     return true;
                 case "emerald":
                     VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Emerald;
                     Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#50C878>Изумрудный Код</color>. Замечены сбои в системе. Возможны поломки или нарушения в зонах содержания. Службе Безопасности быть на готове. <size=0> pitch_0.35 .G3 .G3 .G1 .G2 . pitch_1.0 . . . . . . . . . . . . . .\r\n", isSubtitles: true, isNoisy: false);
+                    foreach (Ragdoll ragdoll in Ragdoll.List.ToList())
+                    {
+                        ragdoll.Destroy();
+                    }
                     response = "Установлен код \"Изумрудный\"!";
                     return true;
                 case "blue":
