@@ -77,6 +77,7 @@ namespace VeryUsualDay
             PlayerHandler.Died += player.OnDied;
             PlayerHandler.Left += player.OnLeft;
             PlayerHandler.Shooting += player.OnShooting;
+            PlayerHandler.UsingItem += player.OnUsingItem;
             ServerHandler.WaitingForPlayers += server.OnWaitingForPlayers;
             base.OnEnabled();
         }

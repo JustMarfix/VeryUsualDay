@@ -3,7 +3,6 @@ using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
-using InventorySystem;
 using MEC;
 using PlayerRoles;
 
@@ -178,7 +177,10 @@ namespace VeryUsualDay.Handlers
                 }
                 if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green || VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald)
                 {
-                    Ragdoll.GetLast(ev.Player).Destroy();
+                    Timing.CallDelayed(5f, () =>
+                    {
+                        Ragdoll.GetLast(ev.Player).Destroy();
+                    });
                 }
             }
         }
@@ -213,6 +215,19 @@ namespace VeryUsualDay.Handlers
                 if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 && ev.Firearm.Type == ItemType.GunRevolver)
                 {
                     ev.Firearm.Ammo += 1;
+                }
+            }
+        }
+
+        public void OnUsingItem(UsingItemEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
+            {
+                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 && ev.Usable.Type == ItemType.SCP500 || ev.Usable.Type == ItemType.SCP207 || ev.Usable.Type == ItemType.AntiSCP207)
+                {
+                    ev.IsAllowed = false;
+                    ev.Item?.Destroy();
+                    return;
                 }
             }
         }
