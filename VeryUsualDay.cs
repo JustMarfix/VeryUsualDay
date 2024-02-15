@@ -63,6 +63,7 @@ namespace VeryUsualDay
             Scp0762,
             Scp372,
             Scp575,
+            Scp682,
             Scp966,
             Scp999
         }
