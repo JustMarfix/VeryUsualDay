@@ -31,20 +31,22 @@ namespace VeryUsualDay.Commands
             int people_counter = 1;
             foreach (string id in arguments.Array.Skip(1))
             {
-                Player player = Player.Get(int.Parse(id));
-                player.Role.Set(PlayerRoles.RoleTypeId.ChaosMarauder, PlayerRoles.RoleSpawnFlags.AssignInventory);
-                Timing.CallDelayed(2f, () =>
+                if (Player.TryGet(int.Parse(id), out Player player))
                 {
-                    player.MaxHealth = 300f;
-                    player.Health = 300f;
-                    player.ResetInventory(VeryUsualDay.Instance.Config.BUOInventory);
-                    player.AddAmmo(Exiled.API.Enums.AmmoType.Ammo44Cal, 16);
-                    player.AddAmmo(Exiled.API.Enums.AmmoType.Ammo12Gauge, 28);
-                    player.CustomName = $"БУО #{VeryUsualDay.Instance.BUOCounter} - ##-{people_counter}";
-                    player.CustomInfo = "[Боец БУО]";
-                    player.Broadcast(15, "<color=#708090><b>Вы стали бойцом <color=#138808>Боевого Ударного Отряда<color=#708090>. Спасите <color=#ffd800>сотрудников фонда<color=#708090>, устраните <color=red>угрозу<color=#708090> в комплексе и <color=#120a8f>выполните миссию<color=#708090>!");
-                    people_counter += 1;
-                });
+                    player.Role.Set(PlayerRoles.RoleTypeId.ChaosMarauder, PlayerRoles.RoleSpawnFlags.AssignInventory);
+                    Timing.CallDelayed(2f, () =>
+                    {
+                        player.MaxHealth = 300f;
+                        player.Health = 300f;
+                        player.ResetInventory(VeryUsualDay.Instance.Config.BUOInventory);
+                        player.AddAmmo(Exiled.API.Enums.AmmoType.Ammo44Cal, 16);
+                        player.AddAmmo(Exiled.API.Enums.AmmoType.Ammo12Gauge, 28);
+                        player.CustomName = $"БУО #{VeryUsualDay.Instance.BUOCounter} - ##-{people_counter}";
+                        player.CustomInfo = "[Боец БУО]";
+                        player.Broadcast(15, "<color=#708090><b>Вы стали бойцом <color=#138808>Боевого Ударного Отряда<color=#708090>. Спасите <color=#ffd800>сотрудников фонда<color=#708090>, устраните <color=red>угрозу<color=#708090> в комплексе и <color=#120a8f>выполните миссию<color=#708090>!");
+                        people_counter += 1;
+                    });
+                }
             }
             response = "Бойцы БУО заспавнены!";
             return true;
