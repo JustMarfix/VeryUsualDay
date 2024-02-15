@@ -37,7 +37,7 @@ namespace VeryUsualDay.Commands
                         scientist.ClearInventory();
                         scientist.MaxHealth = 100f;
                         scientist.Health = 100f;
-                        scientist.AddItem(ItemType.KeycardScientist);
+                        scientist.AddItem(ItemType.KeycardJanitor);
                         scientist.AddItem(ItemType.Painkillers);
                         scientist.AddItem(ItemType.Flashlight);
                         scientist.CustomName = $"Сотрудник - ##-{VeryUsualDay.Instance.SpawnedScientistCounter}";

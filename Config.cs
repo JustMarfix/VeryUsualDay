@@ -22,7 +22,7 @@ namespace VeryUsualDay
                 new List<ItemType>()
                 {
                     ItemType.GunCOM15,
-                    ItemType.KeycardScientist,
+                    ItemType.KeycardJanitor,
                     ItemType.Flashlight
                 }
             },
@@ -150,7 +150,7 @@ namespace VeryUsualDay
                 "Стажёр",
                 new List<ItemType>()
                 {
-                    ItemType.KeycardScientist,
+                    ItemType.KeycardJanitor,
                     ItemType.Flashlight
                 }
             },
@@ -282,8 +282,8 @@ namespace VeryUsualDay
                 {
                     ItemType.ArmorCombat,
                     ItemType.GunE11SR,
-                    ItemType.Medkit,                    ItemType.KeycardMTFOperative,
-
+                    ItemType.Medkit,
+                    ItemType.KeycardMTFOperative,
                     ItemType.Radio,
                     ItemType.Adrenaline,
                     ItemType.Painkillers

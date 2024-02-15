@@ -38,7 +38,7 @@ namespace VeryUsualDay.Commands
                         guard.Health = 100f;
                         guard.ClearInventory();
                         guard.AddItem(ItemType.GunCOM15);
-                        guard.AddItem(ItemType.KeycardScientist);
+                        guard.AddItem(ItemType.KeycardJanitor);
                         guard.AddItem(ItemType.Painkillers);
                         guard.CustomName = $"Охранник - ##-{VeryUsualDay.Instance.SpawnedSecurityCounter}";
                         guard.CustomInfo = "Человек";
