@@ -19,26 +19,7 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green)
-            {
-                response = "Код - Зелёный";
-            }
-            else if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald)
-            {
-                response = "Код - Изумрудный";
-            }
-            else if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Blue)
-            {
-                response = "Код - Синий";
-            }
-            else if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Yellow)
-            {
-                response = "Код - Жёлтый";
-            }
-            else
-            {
-                response = "Код - Красный";
-            }
+            response = $"Код - {VeryUsualDay.Instance.CurrentCode.Description()}";
             return true;
         }
     }

@@ -11,6 +11,7 @@ using Exiled.API.Enums;
 using UnityEngine;
 using System;
 using System.Linq;
+using System.ComponentModel;
 
 namespace VeryUsualDay
 {
@@ -22,14 +23,14 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay";
 
-        public override Version Version => new Version(2, 6, 0);
+        public override Version Version => new Version(2, 8, 0);
 
         public bool IsEnabledInRound { get; set; } = false;
         public bool Is008Leaked { get; set; } = false;
         public bool IsLunchtimeActive { get; set; } = false;
         public bool IsDboysSpawnAllowed { get; set; } = false;
-        public List<int> LockerPlayers { get; set; } = new List<int>() { };
-        public List<int> Zombies { get; set; } = new List<int>() { };
+        public List<int> LockerPlayers { get; set; } = new List<int> { };
+        public List<int> Zombies { get; set; } = new List<int> { };
         public List<int> JoinedDboys { get; set; } = new List<int> { };
         public List<int> DBoysQueue { get; set; } = new List<int> { };
         public int BUOCounter { get; set; } = 0;
@@ -39,10 +40,17 @@ namespace VeryUsualDay
         public int SpawnedSecurityCounter { get; set; } = 1;
         public enum Codes
         {
+            [Description("Зелёный")]
             Green,
+            [Description("Изумрудный")]
             Emerald,
+            [Description("Синий")]
             Blue,
+            [Description("Оранжевый")]
+            Orange,
+            [Description("Жёлтый")]
             Yellow,
+            [Description("Красный")]
             Red
         }
 
@@ -294,6 +302,20 @@ namespace VeryUsualDay
                     SetUserRole(player);
                 }
             }
+        }
+    }
+    public static class ReflectionHelpers
+    {
+        public static string GetCustomDescription(object objEnum)
+        {
+            var fi = objEnum.GetType().GetField(objEnum.ToString());
+            var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            return (attributes.Length > 0) ? attributes[0].Description : objEnum.ToString();
+        }
+
+        public static string Description(this Enum value)
+        {
+            return GetCustomDescription(value);
         }
     }
 }

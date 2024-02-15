@@ -24,7 +24,7 @@ namespace VeryUsualDay.Commands
             }
             if (arguments.Array.Length != 2)
             {
-                response = "Формат команды: setcode <название>. Допустимые названия: green, emerald, blue, yellow, red.";
+                response = "Формат команды: setcode <название>. Допустимые названия: green, emerald, blue, orange, yellow, red.";
                 return false;
             }
             switch (arguments.Array[1])
@@ -51,6 +51,11 @@ namespace VeryUsualDay.Commands
                     VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Blue;
                     Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#005EBC>Синий Код</color>. Зафиксированы малые нарушения. Персоналу следует принимать меры предосторожности. <size=0> pitch_0.1 .G1 .G2 . pitch_1.0 . . . . . . . . . . . . . .", isSubtitles: true, isNoisy: false);
                     response = "Установлен код \"Синий\"!";
+                    return true;
+                case "orange":
+                    VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Orange;
+                    Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#EE7600>Оранжевый Код</color>. В комплексе зафиксированы нарушения, превышающие слабый уровень опасности. Всем боевым единицам приступить к ликвидации угрозы или принять меры для восстановления безопасной обстановки. <b><color=#002DB3>ЭВС</color></b> Разрешено войти в подземную часть. <size=0> pitch_0.15 .G6 pitch_0.08 .G1 .G3 . pitch_1.0 . . . . . . . . . . . . . .", isSubtitles: true, isNoisy: false);
+                    response = "Установлен код \"Оранжевый\"!";
                     return true;
                 case "yellow":
                     VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Yellow;
