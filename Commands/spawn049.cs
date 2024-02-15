@@ -40,8 +40,8 @@ namespace VeryUsualDay.Commands
                     Timing.CallDelayed(2f, () =>
                     {
                         scp049.CustomInfo = "<b><color=#960018>SCP-049</color></b>";
-                        scp049.MaxHealth = 15000f;
-                        scp049.Health = 15000f;
+                        scp049.MaxHealth = 13000f;
+                        scp049.Health = 13000f;
                         scp049.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
                         scp049.IsGodModeEnabled = false;
                         VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp049);
