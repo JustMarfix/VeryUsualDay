@@ -51,6 +51,10 @@ namespace VeryUsualDay.Commands
                         scp682.EnableEffect(Exiled.API.Enums.EffectType.Invigorated);
                         scp682.EnableEffect(Exiled.API.Enums.EffectType.RainbowTaste);
                         scp682.EnableEffect(Exiled.API.Enums.EffectType.Disabled);
+                        scp682.EnableEffect(Exiled.API.Enums.EffectType.DamageReduction);
+                        scp682.EnableEffect(Exiled.API.Enums.EffectType.BodyshotReduction);
+                        scp682.ChangeEffectIntensity(Exiled.API.Enums.EffectType.DamageReduction, 30);
+                        scp682.ChangeEffectIntensity(Exiled.API.Enums.EffectType.BodyshotReduction, 30);
                         VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp682);
                     });
                     response = "SCP-682 создан!";
