@@ -28,6 +28,9 @@ namespace VeryUsualDay.Commands
                 {
                     scp682.MaxHealth = 100f;
                     scp682.CustomInfo = "Человек";
+                    scp682.DisableEffect(Exiled.API.Enums.EffectType.Invigorated);
+                    scp682.DisableEffect(Exiled.API.Enums.EffectType.RainbowTaste);
+                    scp682.DisableEffect(Exiled.API.Enums.EffectType.Disabled);
                     scp682.Role.Set(PlayerRoles.RoleTypeId.Tutorial, reason: Exiled.API.Enums.SpawnReason.ForceClass);
                     scp682.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
                     VeryUsualDay.Instance.ScpPlayers.Remove(id);
@@ -45,6 +48,9 @@ namespace VeryUsualDay.Commands
                         scp682.HumeShield = 2000f;
                         scp682.Scale = new UnityEngine.Vector3(1.2f, 1.25f, 1.2f);
                         scp682.IsGodModeEnabled = false;
+                        scp682.EnableEffect(Exiled.API.Enums.EffectType.Invigorated);
+                        scp682.EnableEffect(Exiled.API.Enums.EffectType.RainbowTaste);
+                        scp682.EnableEffect(Exiled.API.Enums.EffectType.Disabled);
                         VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp682);
                     });
                     response = "SCP-682 создан!";
