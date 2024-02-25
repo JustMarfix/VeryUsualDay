@@ -17,7 +17,7 @@ namespace VeryUsualDay
 {
     public class VeryUsualDay : Plugin<Config>
     {
-        public static VeryUsualDay Instance { get; set; } = new VeryUsualDay();
+        public static VeryUsualDay Instance { get; private set; }
         public VeryUsualDay() { }
 
         public override string Author => "JustMarfix";
@@ -76,6 +76,7 @@ namespace VeryUsualDay
 
         public override void OnEnabled()
         {
+            Instance = this;
             player = new Handlers.Player();
             server = new Handlers.Server();
             PlayerHandler.ChangingRole += player.OnChangingRole;
@@ -104,6 +105,7 @@ namespace VeryUsualDay
             ServerHandler.WaitingForPlayers -= server.OnWaitingForPlayers;
             player = null;
             server = null;
+            Instance = null;
             base.OnDisabled();
         }
 
