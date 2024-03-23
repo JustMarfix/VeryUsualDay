@@ -1,7 +1,11 @@
-﻿using CommandSystem;
+﻿using System;
+using System.Linq;
+using CommandSystem;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
-using System;
+using PlayerRoles;
+using UnityEngine;
 
 namespace VeryUsualDay.Commands
 {
@@ -21,49 +25,45 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            int id = int.Parse(arguments.Array[1]);
+            int id = int.Parse(arguments.ToArray()[1]);
             if (Player.TryGet(id, out Player scp035))
             {
                 if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(id))
                 {
                     scp035.MaxHealth = 100f;
                     scp035.CustomInfo = "Человек";
-                    scp035.DisableEffect(Exiled.API.Enums.EffectType.BodyshotReduction);
-                    scp035.DisableEffect(Exiled.API.Enums.EffectType.DamageReduction);
-                    scp035.Role.Set(PlayerRoles.RoleTypeId.Tutorial, reason: Exiled.API.Enums.SpawnReason.ForceClass);
-                    scp035.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
+                    scp035.DisableEffect(EffectType.BodyshotReduction);
+                    scp035.DisableEffect(EffectType.DamageReduction);
+                    scp035.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
+                    scp035.Scale = new Vector3(1f, 1f, 1f);
                     VeryUsualDay.Instance.ScpPlayers.Remove(id);
                     response = "SCP удалён!";
                     return true;
                 }
-                else
+
+                scp035.Role.Set(RoleTypeId.ClassD, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.AssignInventory);
+                Timing.CallDelayed(2f, () =>
                 {
-                    scp035.Role.Set(PlayerRoles.RoleTypeId.ClassD, reason: Exiled.API.Enums.SpawnReason.ForceClass, spawnFlags: PlayerRoles.RoleSpawnFlags.AssignInventory);
-                    Timing.CallDelayed(2f, () =>
-                    {
-                        scp035.CustomInfo = "<b><color=#960018>SCP-035</color></b>";
-                        scp035.AddItem(ItemType.GunRevolver);
-                        scp035.AddAmmo(Exiled.API.Enums.AmmoType.Ammo44Cal, 32);
-                        scp035.MaxHealth = 7500f;
-                        scp035.Health = 7500f;
-                        scp035.Scale = new UnityEngine.Vector3(0.87f, 0.87f, 1f);
-                        scp035.EnableEffect(Exiled.API.Enums.EffectType.BodyshotReduction);
-                        scp035.ChangeEffectIntensity(Exiled.API.Enums.EffectType.BodyshotReduction, 15);
-                        scp035.EnableEffect(Exiled.API.Enums.EffectType.DamageReduction);
-                        scp035.ChangeEffectIntensity(Exiled.API.Enums.EffectType.DamageReduction, 15);
-                        scp035.EnableEffect(Exiled.API.Enums.EffectType.Poisoned);
-                        scp035.IsGodModeEnabled = true;
-                        VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp035);
-                    });
-                    response = "SCP-035 создан!";
-                    return true;
-                }
+                    scp035.CustomInfo = "<b><color=#960018>SCP-035</color></b>";
+                    scp035.AddItem(ItemType.GunRevolver);
+                    scp035.AddAmmo(AmmoType.Ammo44Cal, 32);
+                    scp035.MaxHealth = 7500f;
+                    scp035.Health = 7500f;
+                    scp035.Scale = new Vector3(0.87f, 0.87f, 1f);
+                    scp035.EnableEffect(EffectType.BodyshotReduction);
+                    scp035.ChangeEffectIntensity(EffectType.BodyshotReduction, 15);
+                    scp035.EnableEffect(EffectType.DamageReduction);
+                    scp035.ChangeEffectIntensity(EffectType.DamageReduction, 15);
+                    scp035.EnableEffect(EffectType.Poisoned);
+                    scp035.IsGodModeEnabled = true;
+                    VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp035);
+                });
+                response = "SCP-035 создан!";
+                return true;
             }
-            else
-            {
-                response = "Не удалось найти игрока с таким ID!";
-                return false;
-            }
+
+            response = "Не удалось найти игрока с таким ID!";
+            return false;
         }
     }
 }

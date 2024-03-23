@@ -1,7 +1,8 @@
-﻿using CommandSystem;
+﻿using System;
+using CommandSystem;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Doors;
-using System;
 
 namespace VeryUsualDay.Commands
 {
@@ -23,7 +24,7 @@ namespace VeryUsualDay.Commands
             }
             foreach (Door door in Door.List)
             {
-                if (!door.IsElevator && door.Type != Exiled.API.Enums.DoorType.SurfaceGate)
+                if (!door.IsElevator && door.Type != DoorType.SurfaceGate)
                 {
                     door.IsOpen = false;
                 }

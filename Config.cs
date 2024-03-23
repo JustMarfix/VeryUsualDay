@@ -1,8 +1,8 @@
-﻿using Exiled.API.Enums;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using Exiled.API.Enums;
 using Exiled.API.Interfaces;
 using PlayerRoles;
-using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace VeryUsualDay
 {
@@ -15,11 +15,11 @@ namespace VeryUsualDay
         public bool Debug { get; set; } = false;
 
         [Description("Список вещей для СБ (Dictionary<string, List<ItemType>>)")]
-        public Dictionary<string, List<ItemType>> SecurityItems { get; set; } = new Dictionary<string, List<ItemType>>()
+        public Dictionary<string, List<ItemType>> SecurityItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
             {
                 "Стажёр",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.GunCOM15,
                     ItemType.KeycardJanitor,
@@ -28,7 +28,7 @@ namespace VeryUsualDay
             },
             {
                 "Рядовой",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardGuard,
                     ItemType.ArmorLight,
@@ -40,7 +40,7 @@ namespace VeryUsualDay
             },
             {
                 "Сержант",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardMTFPrivate,
                     ItemType.ArmorLight,
@@ -52,7 +52,7 @@ namespace VeryUsualDay
             },
             {
                 "Лейтенант",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardMTFOperative,
                     ItemType.ArmorCombat,
@@ -65,7 +65,7 @@ namespace VeryUsualDay
             },
             {
                 "Глава",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.GunE11SR,
                     ItemType.ArmorHeavy,
@@ -79,39 +79,39 @@ namespace VeryUsualDay
             }
         };
         [Description("Список патронов для СБ (выдаётся 60 шт.) (Dictionary<string, List<AmmoType>>)")]
-        public Dictionary<string, List<AmmoType>> SecurityAmmo { get; set; } = new Dictionary<string, List<AmmoType>>()
+        public Dictionary<string, List<AmmoType>> SecurityAmmo { get; set; } = new Dictionary<string, List<AmmoType>>
         {
             {
                 "Стажёр",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Nato9
                 }
             },
             {
                 "Рядовой",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Nato9
                 }
             },
             {
                 "Сержант",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Nato9
                 }
             },
             {
                 "Лейтенант",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Nato556
                 }
             },
             {
                 "Глава",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Ammo12Gauge,
                     AmmoType.Nato556
@@ -119,7 +119,7 @@ namespace VeryUsualDay
             }
         };
         [Description("Максимальное здоровье СБ (Dictionary<string, float>)")]
-        public Dictionary<string, float> SecurityHealth { get; set; } = new Dictionary<string, float>()
+        public Dictionary<string, float> SecurityHealth { get; set; } = new Dictionary<string, float>
         {
             {
                 "Стажёр",
@@ -144,11 +144,11 @@ namespace VeryUsualDay
         };
 
         [Description("Список вещей для Научных Сотрудников (Dictionary<string, List<ItemType>>)")]
-        public Dictionary<string, List<ItemType>> ScientificItems { get; set; } = new Dictionary<string, List<ItemType>>()
+        public Dictionary<string, List<ItemType>> ScientificItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
             {
                 "Стажёр",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardJanitor,
                     ItemType.Flashlight
@@ -156,7 +156,7 @@ namespace VeryUsualDay
             },
             {
                 "Исследователь",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardScientist,
                     ItemType.KeycardZoneManager,
@@ -167,7 +167,7 @@ namespace VeryUsualDay
             },
             {
                 "Медик",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardScientist,
                     ItemType.KeycardZoneManager,
@@ -177,7 +177,7 @@ namespace VeryUsualDay
             },
             {
                 "Инженер",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardContainmentEngineer,
                     ItemType.Radio,
@@ -189,7 +189,7 @@ namespace VeryUsualDay
             },
             {
                 "Психолог",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardScientist,
                     ItemType.KeycardZoneManager,
@@ -200,7 +200,7 @@ namespace VeryUsualDay
             },
             {
                 "Научный руководитель",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardResearchCoordinator,
                     ItemType.Radio,
@@ -211,7 +211,7 @@ namespace VeryUsualDay
             },
             {
                 "Глава",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardFacilityManager,
                     ItemType.Radio,
@@ -223,11 +223,11 @@ namespace VeryUsualDay
             }
         };
         [Description("Список вещей для Уборщиков (Dictionary<string, List<ItemType>>)")]
-        public Dictionary<string, List<ItemType>> JanitorsItems { get; set; } = new Dictionary<string, List<ItemType>>()
+        public Dictionary<string, List<ItemType>> JanitorsItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
             {
                 "Уборщик",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardJanitor,
                     ItemType.Flashlight,
@@ -238,7 +238,7 @@ namespace VeryUsualDay
             },
             {
                 "Старший уборщик",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.KeycardJanitor,
                     ItemType.KeycardZoneManager,
@@ -250,7 +250,7 @@ namespace VeryUsualDay
             }
         };
         [Description("Список ролей для ЭВС (Dictionary<string, RoleTypeId>)")]
-        public Dictionary<string, RoleTypeId> EMFRoles { get; set; } = new Dictionary<string, RoleTypeId>()
+        public Dictionary<string, RoleTypeId> EMFRoles { get; set; } = new Dictionary<string, RoleTypeId>
         {
             {
                 "Боец",
@@ -274,11 +274,11 @@ namespace VeryUsualDay
             }
         };
         [Description("Список вещей для ЭВС (Dictionary<string, List<ItemType>>)")]
-        public Dictionary<string, List<ItemType>> EMFItems { get; set; } = new Dictionary<string, List<ItemType>>()
+        public Dictionary<string, List<ItemType>> EMFItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
             {
                 "Боец",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.ArmorCombat,
                     ItemType.GunE11SR,
@@ -291,7 +291,7 @@ namespace VeryUsualDay
             },
             {
                 "Джаггернаут",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.ArmorHeavy,
                     ItemType.GunLogicer,
@@ -304,7 +304,7 @@ namespace VeryUsualDay
             },
             {
                 "Лейтенант",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.ArmorHeavy,
                     ItemType.GunCrossvec,
@@ -317,7 +317,7 @@ namespace VeryUsualDay
             },
             {
                 "Экзобоец",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.ArmorHeavy,
                     ItemType.GunCom45,
@@ -330,7 +330,7 @@ namespace VeryUsualDay
             },
             {
                 "Глава",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.GunFRMG0,
                     ItemType.GunShotgun,
@@ -344,7 +344,7 @@ namespace VeryUsualDay
             }
         };
         [Description("Максимальное здоровье ЭВС (Dictionary<string, float>)")]
-        public Dictionary<string, float> EMFHealth { get; set; } = new Dictionary<string, float>()
+        public Dictionary<string, float> EMFHealth { get; set; } = new Dictionary<string, float>
         {
             {
                 "Боец",
@@ -368,18 +368,18 @@ namespace VeryUsualDay
             }
         };
         [Description("Список патронов для ЭВС (выдаётся 60 шт.) (Dictionary<string, List<AmmoType>>)")]
-        public Dictionary<string, List<AmmoType>> EMFAmmo { get; set; } = new Dictionary<string, List<AmmoType>>()
+        public Dictionary<string, List<AmmoType>> EMFAmmo { get; set; } = new Dictionary<string, List<AmmoType>>
         {
             {
                 "Боец",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Nato556
                 }
             },
             {
                 "Джаггернаут",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Nato762,
                     AmmoType.Nato762
@@ -387,7 +387,7 @@ namespace VeryUsualDay
             },
             {
                 "Лейтенант",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Nato556,
                     AmmoType.Nato9
@@ -395,7 +395,7 @@ namespace VeryUsualDay
             },
             {
                 "Экзобоец",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Nato9,
                     AmmoType.Nato9,
@@ -405,7 +405,7 @@ namespace VeryUsualDay
             },
             {
                 "Глава",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Ammo12Gauge,
                     AmmoType.Nato556,
@@ -415,11 +415,11 @@ namespace VeryUsualDay
             }
         };
         [Description("Список вещей для Агентов (Dictionary<string, List<ItemType>>)")]
-        public Dictionary<string, List<ItemType>> AgencyItems { get; set; } = new Dictionary<string, List<ItemType>>()
+        public Dictionary<string, List<ItemType>> AgencyItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
             {
                 "Младший агент",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.ArmorCombat,
                     ItemType.GunFSP9,
@@ -432,7 +432,7 @@ namespace VeryUsualDay
             },
             {
                 "Старший агент",
-                new List<ItemType>()
+                new List<ItemType>
                 {
                     ItemType.ArmorHeavy,
                     ItemType.GunCrossvec,
@@ -448,11 +448,11 @@ namespace VeryUsualDay
         public float AgencyHealth { get; set; } = 350f;
 
         [Description("Список патронов для Агентов (выдаётся 60 шт.) (Dictionary<string, List<AmmoType>>)")]
-        public Dictionary<string, List<AmmoType>> AgencyAmmo { get; set; } = new Dictionary<string, List<AmmoType>>()
+        public Dictionary<string, List<AmmoType>> AgencyAmmo { get; set; } = new Dictionary<string, List<AmmoType>>
         {
             {
                 "Младший агент",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Nato9,
                     AmmoType.Nato9
@@ -460,7 +460,7 @@ namespace VeryUsualDay
             },
             {
                 "Старший агент",
-                new List<AmmoType>()
+                new List<AmmoType>
                 {
                     AmmoType.Nato9,
                     AmmoType.Ammo44Cal
@@ -469,7 +469,7 @@ namespace VeryUsualDay
         };
 
         [Description("Список вещей, которые не могут поднимать Научные Сотрудники (List<ItemType>)")]
-        public List<ItemType> ForbiddenForScientists { get; set; } = new List<ItemType>()
+        public List<ItemType> ForbiddenForScientists { get; set; } = new List<ItemType>
         {
             ItemType.GunCrossvec,
             ItemType.GunFRMG0,
@@ -483,7 +483,7 @@ namespace VeryUsualDay
         };
 
         [Description("Список вещей, которые не могут поднимать Уборщики (List<ItemType>)")]
-        public List<ItemType> ForbiddenForJanitors { get; set; } = new List<ItemType>()
+        public List<ItemType> ForbiddenForJanitors { get; set; } = new List<ItemType>
         {
             ItemType.GunCrossvec,
             ItemType.GunFRMG0,
@@ -496,7 +496,7 @@ namespace VeryUsualDay
         };
 
         [Description("Инвентарь бойца БУО (List<ItemType>)")]
-        public List<ItemType> BUOInventory { get; set; } = new List<ItemType>()
+        public List<ItemType> BUOInventory { get; set; } = new List<ItemType>
         {
             ItemType.KeycardMTFPrivate,
             ItemType.GunShotgun,
@@ -507,7 +507,7 @@ namespace VeryUsualDay
         };
 
         [Description("Список ролей, на которые не распростроняется инфекиция SCP-008 (List<RoleTypeId>)")]
-        public List<RoleTypeId> DoNotPoisonRoles { get; set; } = new List<RoleTypeId>()
+        public List<RoleTypeId> DoNotPoisonRoles { get; set; } = new List<RoleTypeId>
         {
             RoleTypeId.ChaosConscript,
             RoleTypeId.ChaosRifleman,
@@ -519,7 +519,7 @@ namespace VeryUsualDay
             RoleTypeId.NtfCaptain
         };
 
-        public List<ItemType> Scp035ForbiddenItems { get; set; } = new List<ItemType>()
+        public List<ItemType> Scp035ForbiddenItems { get; set; } = new List<ItemType>
         {
             ItemType.GunA7,
             ItemType.GunAK,

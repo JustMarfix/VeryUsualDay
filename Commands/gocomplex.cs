@@ -1,9 +1,9 @@
-﻿using CommandSystem;
+﻿using System;
+using System.Linq;
+using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Doors;
-using System;
-using System.Linq;
 using UnityEngine;
 
 namespace VeryUsualDay.Commands
@@ -24,7 +24,7 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён";
                 return false;
             }
-            if (arguments.Array.Length < 2)
+            if (arguments.Count < 2)
             {
                 response = "Формат команды: gocomplex <id через пробел>.";
                 return false;

@@ -1,8 +1,10 @@
-﻿using CommandSystem;
+﻿using System;
+using CommandSystem;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Doors;
 using MEC;
-using System;
+using PlayerRoles;
 
 namespace VeryUsualDay.Commands
 {
@@ -23,22 +25,22 @@ namespace VeryUsualDay.Commands
                 return false;
             }
             Player playerSender = Player.Get(sender);
-            if (playerSender.CurrentRoom.Type != Exiled.API.Enums.RoomType.Hcz106)
+            if (playerSender.CurrentRoom.Type != RoomType.Hcz106)
             {
                 response = "Вы не находитесь в К.С. SCP-008.";
                 return false;
             }
-            if (Door.Get(Exiled.API.Enums.DoorType.Scp106Primary).IsLocked)
+            if (Door.Get(DoorType.Scp106Primary).IsLocked)
             {
                 response = "Для ВОУС необходимо, чтобы дверь в К.С. SCP-008 была разблокирована.";
                 return false;
             }
-            if (playerSender.Role.Team != PlayerRoles.Team.FoundationForces && playerSender.Role.Team != PlayerRoles.Team.ChaosInsurgency)
+            if (playerSender.Role.Team != Team.FoundationForces && playerSender.Role.Team != Team.ChaosInsurgency)
             {
                 response = "Восстановить ОУС SCP-008 может только человек с ролью Охраны/МОГ/ПХ (рп-отыгровка: вам не хватило силы/знаний)";
                 return false;
             }
-            if (Math.Abs(Room.Get(Exiled.API.Enums.RoomType.Hcz106).Position.z - playerSender.Position.z) < 19 && Math.Abs(Room.Get(Exiled.API.Enums.RoomType.Hcz106).Position.x - playerSender.Position.x) < 18)
+            if (Math.Abs(Room.Get(RoomType.Hcz106).Position.z - playerSender.Position.z) < 19 && Math.Abs(Room.Get(RoomType.Hcz106).Position.x - playerSender.Position.x) < 18)
             {
                 response = "Вы не находитесь в К.С. SCP-008.";
                 return false;

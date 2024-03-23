@@ -1,6 +1,7 @@
-﻿using CommandSystem;
+﻿using System;
+using CommandSystem;
 using Exiled.API.Features;
-using System;
+using PlayerRoles;
 
 namespace VeryUsualDay.Commands
 {
@@ -26,7 +27,7 @@ namespace VeryUsualDay.Commands
                 return false;
             }
             Player playerSender = Player.Get(sender);
-            if (VeryUsualDay.Instance.DBoysQueue.Contains(playerSender.Id) || !(playerSender.CustomInfo == "Человек" || playerSender.CustomInfo is null) || playerSender.Role.Type != PlayerRoles.RoleTypeId.Tutorial)
+            if (VeryUsualDay.Instance.DBoysQueue.Contains(playerSender.Id) || !(playerSender.CustomInfo == "Человек" || playerSender.CustomInfo is null) || playerSender.Role.Type != RoleTypeId.Tutorial)
             {
                 response = "Вы уже стоите в очереди, либо уже играете за кого-то.";
                 return false;

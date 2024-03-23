@@ -3,8 +3,10 @@ using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
+using InventorySystem.Items.Jailbird;
 using MEC;
 using PlayerRoles;
+using UnityEngine;
 
 namespace VeryUsualDay.Handlers
 {
@@ -37,36 +39,6 @@ namespace VeryUsualDay.Handlers
                     }
                 }
             });
-        }
-        public void OnInteractingDoor(InteractingDoorEventArgs ev)
-        {
-            if (VeryUsualDay.Instance.IsEnabledInRound && VeryUsualDay.Instance.LockerPlayers.Contains(ev.Player.Id))
-            {
-                if (ev.Door.IsGate)
-                {
-                    if (ev.Door.IsOpen)
-                    {
-                        ev.Door.IsOpen = true;
-                        ev.Door.Lock(float.PositiveInfinity, DoorLockType.AdminCommand);
-                    }
-                    else
-                    {
-                        ev.Door.Unlock();
-                    }
-                }
-                else
-                {
-                    if (ev.Door.IsFullyClosed)
-                    {
-                        ev.Door.Unlock();
-                    }
-                    else
-                    {
-                        ev.Door.IsOpen = true;
-                        ev.Door.Lock(float.PositiveInfinity, DoorLockType.AdminCommand);
-                    }
-                }
-            }
         }
         public void OnPickingUpItem(PickingUpItemEventArgs ev)
         {
@@ -116,11 +88,11 @@ namespace VeryUsualDay.Handlers
         {
             try
             {
-                if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
+                if (VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player))
                 {
-                    if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp0762)
+                    if (player == VeryUsualDay.Scps.Scp0762)
                     {
-                        if (ev.Attacker.CurrentItem.As<Jailbird>()?.WearState == InventorySystem.Items.Jailbird.JailbirdWearState.AlmostBroken)
+                        if (ev.Attacker.CurrentItem.As<Jailbird>()?.WearState == JailbirdWearState.AlmostBroken)
                         {
                             ev.Attacker.CurrentItem?.Destroy();
                             Item jailbird = ev.Attacker.AddItem(ItemType.Jailbird);
@@ -134,7 +106,7 @@ namespace VeryUsualDay.Handlers
             }
             catch
             {
-
+                // ignored
             }
         }
         public void OnDied(DiedEventArgs ev)
@@ -143,7 +115,7 @@ namespace VeryUsualDay.Handlers
             {
                 ev.Player.CustomInfo = "Человек";
                 ev.Player.MaxHealth = 100f;
-                ev.Player.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
+                ev.Player.Scale = new Vector3(1f, 1f, 1f);
                 if (VeryUsualDay.Instance.Zombies.Contains(ev.Player.Id))
                 {
                     VeryUsualDay.Instance.Zombies.Remove(ev.Player.Id);
@@ -186,10 +158,6 @@ namespace VeryUsualDay.Handlers
         }
         public void OnLeft(LeftEventArgs ev)
         {
-            if (VeryUsualDay.Instance.LockerPlayers.Contains(ev.Player.Id))
-            {
-                VeryUsualDay.Instance.LockerPlayers.Remove(ev.Player.Id);
-            }
             if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
             {
                 VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
@@ -210,9 +178,9 @@ namespace VeryUsualDay.Handlers
 
         public void OnShooting(ShootingEventArgs ev)
         {
-            if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
+            if (VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player))
             {
-                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 && ev.Firearm.Type == ItemType.GunRevolver)
+                if (player == VeryUsualDay.Scps.Scp035 && ev.Firearm.Type == ItemType.GunRevolver)
                 {
                     ev.Firearm.Ammo += 1;
                 }
@@ -221,13 +189,12 @@ namespace VeryUsualDay.Handlers
 
         public void OnUsingItem(UsingItemEventArgs ev)
         {
-            if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
+            if (VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player))
             {
-                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 && ev.Usable.Type == ItemType.SCP500 || ev.Usable.Type == ItemType.SCP207 || ev.Usable.Type == ItemType.AntiSCP207)
+                if (player == VeryUsualDay.Scps.Scp035 && ev.Usable.Type == ItemType.SCP500 || ev.Usable.Type == ItemType.SCP207 || ev.Usable.Type == ItemType.AntiSCP207)
                 {
                     ev.IsAllowed = false;
                     ev.Item?.Destroy();
-                    return;
                 }
             }
         }

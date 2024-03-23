@@ -1,5 +1,5 @@
-﻿using CommandSystem;
-using System;
+﻿using System;
+using CommandSystem;
 
 namespace VeryUsualDay.Commands
 {

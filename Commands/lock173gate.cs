@@ -1,7 +1,7 @@
-﻿using CommandSystem;
+﻿using System;
+using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features.Doors;
-using System;
 
 namespace VeryUsualDay.Commands
 {

@@ -1,7 +1,11 @@
-﻿using CommandSystem;
+﻿using System;
+using System.Linq;
+using CommandSystem;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
-using System;
+using PlayerRoles;
+using UnityEngine;
 
 namespace VeryUsualDay.Commands
 {
@@ -21,40 +25,36 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            int id = int.Parse(arguments.Array[1]);
+            int id = int.Parse(arguments.ToArray()[1]);
             if (Player.TryGet(id, out Player scp049))
             {
                 if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(id))
                 {
                     scp049.MaxHealth = 100f;
                     scp049.CustomInfo = "Человек";
-                    scp049.Role.Set(PlayerRoles.RoleTypeId.Tutorial, reason: Exiled.API.Enums.SpawnReason.ForceClass);
-                    scp049.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
+                    scp049.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
+                    scp049.Scale = new Vector3(1f, 1f, 1f);
                     VeryUsualDay.Instance.ScpPlayers.Remove(id);
                     response = "SCP удалён!";
                     return true;
                 }
-                else
+
+                scp049.Role.Set(RoleTypeId.Scp049, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.AssignInventory);
+                Timing.CallDelayed(2f, () =>
                 {
-                    scp049.Role.Set(PlayerRoles.RoleTypeId.Scp049, reason: Exiled.API.Enums.SpawnReason.ForceClass, spawnFlags: PlayerRoles.RoleSpawnFlags.AssignInventory);
-                    Timing.CallDelayed(2f, () =>
-                    {
-                        scp049.CustomInfo = "<b><color=#960018>SCP-049</color></b>";
-                        scp049.MaxHealth = 13000f;
-                        scp049.Health = 13000f;
-                        scp049.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
-                        scp049.IsGodModeEnabled = false;
-                        VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp049);
-                    });
-                    response = "SCP-049 создан!";
-                    return true;
-                }
+                    scp049.CustomInfo = "<b><color=#960018>SCP-049</color></b>";
+                    scp049.MaxHealth = 13000f;
+                    scp049.Health = 13000f;
+                    scp049.Scale = new Vector3(1f, 1f, 1f);
+                    scp049.IsGodModeEnabled = false;
+                    VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp049);
+                });
+                response = "SCP-049 создан!";
+                return true;
             }
-            else
-            {
-                response = "Не удалось найти игрока с таким ID!";
-                return false;
-            }
+
+            response = "Не удалось найти игрока с таким ID!";
+            return false;
         }
     }
 }

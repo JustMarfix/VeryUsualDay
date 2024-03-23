@@ -107,7 +107,6 @@
     <Compile Include="Commands\classd.cs" />
     <Compile Include="Commands\gocomplex.cs" />
     <Compile Include="Commands\lock173gate.cs" />
-    <Compile Include="Commands\DoorLocker.cs" />
     <Compile Include="Commands\Lunch.cs" />
     <Compile Include="Commands\patogen008.cs" />
     <Compile Include="Commands\PluginEnable.cs" />

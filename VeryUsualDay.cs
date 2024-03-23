@@ -1,39 +1,39 @@
-﻿using PlayerHandler = Exiled.Events.Handlers.Player;
-using ServerHandler = Exiled.Events.Handlers.Server;
-
-using Exiled.API.Features;
+﻿using System;
 using System.Collections.Generic;
-using MEC;
+using System.ComponentModel;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Exiled.API.Enums;
+using Exiled.API.Features;
+using MEC;
+using Newtonsoft.Json;
+using PlayerRoles;
 using UnityEngine;
-using System;
-using System.Linq;
-using System.ComponentModel;
+using Player = VeryUsualDay.Handlers.Player;
+using PlayerHandler = Exiled.Events.Handlers.Player;
+using Server = VeryUsualDay.Handlers.Server;
+using ServerHandler = Exiled.Events.Handlers.Server;
 
 namespace VeryUsualDay
 {
     public class VeryUsualDay : Plugin<Config>
     {
         public static VeryUsualDay Instance { get; private set; }
-        public VeryUsualDay() { }
 
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay";
 
         public override Version Version => new Version(2, 8, 1);
 
-        public bool IsEnabledInRound { get; set; } = false;
-        public bool Is008Leaked { get; set; } = false;
-        public bool IsLunchtimeActive { get; set; } = false;
-        public bool IsDboysSpawnAllowed { get; set; } = false;
-        public List<int> LockerPlayers { get; set; } = new List<int> { };
-        public List<int> Zombies { get; set; } = new List<int> { };
-        public List<int> JoinedDboys { get; set; } = new List<int> { };
-        public List<int> DBoysQueue { get; set; } = new List<int> { };
-        public int BUOCounter { get; set; } = 0;
+        public bool IsEnabledInRound { get; set; }
+        public bool Is008Leaked { get; set; }
+        public bool IsLunchtimeActive { get; set; }
+        public bool IsDboysSpawnAllowed { get; set; }
+        public List<int> Zombies { get; set; } = new List<int>();
+        public List<int> JoinedDboys { get; set; } = new List<int>();
+        public List<int> DBoysQueue { get; set; } = new List<int>();
+        public int BuoCounter { get; set; }
         public int SpawnedDboysCounter { get; set; } = 1;
         public int SpawnedJanitorsCounter { get; set; } = 1;
         public int SpawnedScientistCounter { get; set; } = 1;
@@ -71,40 +71,38 @@ namespace VeryUsualDay
         public Codes CurrentCode { get; set; } = Codes.Green;
         public Dictionary<int, Scps> ScpPlayers { get; set; } = new Dictionary<int, Scps>();
 
-        private Handlers.Player player;
-        private Handlers.Server server;
+        private Player _player;
+        private Server _server;
 
         public override void OnEnabled()
         {
             Instance = this;
-            player = new Handlers.Player();
-            server = new Handlers.Server();
-            PlayerHandler.ChangingRole += player.OnChangingRole;
-            PlayerHandler.InteractingDoor += player.OnInteractingDoor;
-            PlayerHandler.PickingUpItem += player.OnPickingUpItem;
-            PlayerHandler.DroppingItem += player.OnDroppingItem;
-            PlayerHandler.Hurting += player.OnHurting;
-            PlayerHandler.Died += player.OnDied;
-            PlayerHandler.Left += player.OnLeft;
-            PlayerHandler.Shooting += player.OnShooting;
-            PlayerHandler.UsingItem += player.OnUsingItem;
-            ServerHandler.WaitingForPlayers += server.OnWaitingForPlayers;
+            _player = new Player();
+            _server = new Server();
+            PlayerHandler.ChangingRole += _player.OnChangingRole;
+            PlayerHandler.PickingUpItem += _player.OnPickingUpItem;
+            PlayerHandler.DroppingItem += _player.OnDroppingItem;
+            PlayerHandler.Hurting += _player.OnHurting;
+            PlayerHandler.Died += _player.OnDied;
+            PlayerHandler.Left += _player.OnLeft;
+            PlayerHandler.Shooting += _player.OnShooting;
+            PlayerHandler.UsingItem += _player.OnUsingItem;
+            ServerHandler.WaitingForPlayers += _server.OnWaitingForPlayers;
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
-            PlayerHandler.ChangingRole -= player.OnChangingRole;
-            PlayerHandler.InteractingDoor -= player.OnInteractingDoor;
-            PlayerHandler.PickingUpItem -= player.OnPickingUpItem;
-            PlayerHandler.DroppingItem -= player.OnDroppingItem;
-            PlayerHandler.Hurting -= player.OnHurting;
-            PlayerHandler.Died -= player.OnDied;
-            PlayerHandler.Left -= player.OnLeft;
-            PlayerHandler.Shooting -= player.OnShooting;
-            ServerHandler.WaitingForPlayers -= server.OnWaitingForPlayers;
-            player = null;
-            server = null;
+            PlayerHandler.ChangingRole -= _player.OnChangingRole;
+            PlayerHandler.PickingUpItem -= _player.OnPickingUpItem;
+            PlayerHandler.DroppingItem -= _player.OnDroppingItem;
+            PlayerHandler.Hurting -= _player.OnHurting;
+            PlayerHandler.Died -= _player.OnDied;
+            PlayerHandler.Left -= _player.OnLeft;
+            PlayerHandler.Shooting -= _player.OnShooting;
+            ServerHandler.WaitingForPlayers -= _server.OnWaitingForPlayers;
+            _player = null;
+            _server = null;
             Instance = null;
             base.OnDisabled();
         }
@@ -118,9 +116,9 @@ namespace VeryUsualDay
                     int counter = 0;
                     foreach (int i in DBoysQueue.ToList())
                     {
-                        if (Player.TryGet(i, out Player dboy))
+                        if (Exiled.API.Features.Player.TryGet(i, out Exiled.API.Features.Player dboy))
                         {
-                            if ((dboy.CustomInfo == "Человек" || dboy.CustomInfo is null) && dboy.Role.Type == PlayerRoles.RoleTypeId.Tutorial)
+                            if ((dboy.CustomInfo == "Человек" || dboy.CustomInfo is null) && dboy.Role.Type == RoleTypeId.Tutorial)
                             {
                                 if (JoinedDboys.Count >= 5)
                                 {
@@ -132,7 +130,7 @@ namespace VeryUsualDay
                                 }
                                 dboy.CustomName = $"Испытуемый - ##-{SpawnedDboysCounter}";
                                 JoinedDboys.Add(i);
-                                dboy.Role.Set(PlayerRoles.RoleTypeId.ClassD);
+                                dboy.Role.Set(RoleTypeId.ClassD);
                                 Timing.CallDelayed(1f, () =>
                                 {
                                     dboy.ClearInventory();
@@ -172,7 +170,7 @@ namespace VeryUsualDay
                 {
                     try
                     {
-                        if (Player.TryGet(pair.Key, out Player avel) && avel.Health < 5000)
+                        if (Exiled.API.Features.Player.TryGet(pair.Key, out Exiled.API.Features.Player avel) && avel.Health < 5000)
                         {
                             avel.Heal(50f);
                         }
@@ -190,7 +188,7 @@ namespace VeryUsualDay
         {
             for (;;)
             {
-                foreach (Player target in Player.Get(player => player.Zone == ZoneType.HeavyContainment && !Instance.Config.DoNotPoisonRoles.Contains(player.Role.Type) && player.Role.Team != PlayerRoles.Team.SCPs && (player.CustomInfo is null || !player.CustomInfo.ToLower().Contains("scp"))))
+                foreach (Exiled.API.Features.Player target in Exiled.API.Features.Player.Get(player => player.Zone == ZoneType.HeavyContainment && !Instance.Config.DoNotPoisonRoles.Contains(player.Role.Type) && player.Role.Team != Team.SCPs && (player.CustomInfo is null || !player.CustomInfo.ToLower().Contains("scp"))))
                 {
                     target.EnableEffect(EffectType.Poisoned);
                 }
@@ -205,10 +203,10 @@ namespace VeryUsualDay
             return content;
         }
 
-        public async void SetUserRole(Player player)
+        private async void SetUserRole(Exiled.API.Features.Player player)
         {
-            string json_string = await HttpGetUser(player.UserId.ToString());
-            List<string> json = JsonConvert.DeserializeObject<List<string>>(json_string);
+            string jsonString = await HttpGetUser(player.UserId);
+            List<string> json = JsonConvert.DeserializeObject<List<string>>(jsonString);
             if (json.Count == 0)
             {
                 return;
@@ -217,7 +215,7 @@ namespace VeryUsualDay
             player.CustomName = json[2];
             if (json[3] == "СБ")
             {
-                player.Role.Set(PlayerRoles.RoleTypeId.FacilityGuard, PlayerRoles.RoleSpawnFlags.None);
+                player.Role.Set(RoleTypeId.FacilityGuard, RoleSpawnFlags.None);
                 Timing.CallDelayed(2f, () =>
                 {
                     foreach (ItemType item in Instance.Config.SecurityItems[json[4]])
@@ -230,12 +228,12 @@ namespace VeryUsualDay
                     }
                     player.MaxHealth = Instance.Config.SecurityHealth[json[4]];
                     player.Health = Instance.Config.SecurityHealth[json[4]];
-                    player.Teleport(new UnityEngine.Vector3(-16f, 1014.5f, -32f));
+                    player.Teleport(new Vector3(-16f, 1014.5f, -32f));
                 });
             }
             else if (json[3] == "НС")
             {
-                player.Role.Set(PlayerRoles.RoleTypeId.Scientist, PlayerRoles.RoleSpawnFlags.None);
+                player.Role.Set(RoleTypeId.Scientist, RoleSpawnFlags.None);
                 Timing.CallDelayed(2f, () =>
                 {
                     foreach (ItemType item in Instance.Config.ScientificItems[json[4]])
@@ -247,19 +245,19 @@ namespace VeryUsualDay
             }
             else if (json[3] == "Уборщики")
             {
-                player.Role.Set(PlayerRoles.RoleTypeId.ClassD, PlayerRoles.RoleSpawnFlags.None);
+                player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
                 Timing.CallDelayed(2f, () =>
                 {
                     foreach (ItemType item in Instance.Config.JanitorsItems[json[4]])
                     {
                         player.AddItem(item);
                     }
-                    player.Teleport(new UnityEngine.Vector3(44.4f, 1014.5f, -51.6f));
+                    player.Teleport(new Vector3(44.4f, 1014.5f, -51.6f));
                 });
             }
             else if (json[3] == "ЭВС")
             {
-                player.Role.Set(Instance.Config.EMFRoles[json[4]], PlayerRoles.RoleSpawnFlags.None);
+                player.Role.Set(Instance.Config.EMFRoles[json[4]], RoleSpawnFlags.None);
                 Timing.CallDelayed(2f, () =>
                 {
                     foreach (ItemType item in Instance.Config.EMFItems[json[4]])
@@ -277,7 +275,7 @@ namespace VeryUsualDay
             }
             else if (json[3] == "Агентство")
             {
-                player.Role.Set(PlayerRoles.RoleTypeId.Tutorial, PlayerRoles.RoleSpawnFlags.None);
+                player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.None);
                 Timing.CallDelayed(2f, () =>
                 {
                     player.Scale = new Vector3(1.3f, 0.8f, 1f);
@@ -298,7 +296,7 @@ namespace VeryUsualDay
         }
         public void RoleDistribution()
         {
-            foreach (Player player in Player.Get(PlayerRoles.RoleTypeId.Tutorial))
+            foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.Get(RoleTypeId.Tutorial))
             {
                 if (player.CustomInfo == "Человек" || player.CustomInfo is null)
                 {
@@ -309,7 +307,7 @@ namespace VeryUsualDay
     }
     public static class ReflectionHelpers
     {
-        public static string GetCustomDescription(object objEnum)
+        private static string GetCustomDescription(object objEnum)
         {
             var fi = objEnum.GetType().GetField(objEnum.ToString());
             var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);

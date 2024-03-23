@@ -1,8 +1,10 @@
-﻿using CommandSystem;
+﻿using System;
+using System.Linq;
+using CommandSystem;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
-using System;
-using System.Linq;
+using PlayerRoles;
 
 namespace VeryUsualDay.Commands
 {
@@ -22,17 +24,17 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            if (arguments.Array.Length < 2)
+            if (arguments.Count < 2)
             {
                 response = "Формат команды: vudclassd <id через пробел>.";
                 return false;
             }
             int cnt = 0;
-            foreach (string id in arguments.Array.Skip(1))
+            foreach (string id in arguments.ToArray().Skip(1))
             {
                 if (Player.TryGet(id, out Player dboy))
                 {
-                    dboy.Role.Set(PlayerRoles.RoleTypeId.ClassD, reason: Exiled.API.Enums.SpawnReason.ForceClass, spawnFlags: PlayerRoles.RoleSpawnFlags.All);
+                    dboy.Role.Set(RoleTypeId.ClassD, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.All);
                     Timing.CallDelayed(1f, () =>
                     {
                         dboy.ClearInventory();

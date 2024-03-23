@@ -1,8 +1,7 @@
-﻿using CommandSystem;
-using Exiled.API.Features;
-using MEC;
-using System;
+﻿using System;
 using System.Linq;
+using CommandSystem;
+using Exiled.API.Features;
 
 namespace VeryUsualDay.Commands
 {
@@ -22,12 +21,12 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            if (arguments.Array.Length != 2)
+            if (arguments.Count != 2)
             {
                 response = "Формат команды: setcode <название>. Допустимые названия: green, emerald, blue, orange, yellow, red.";
                 return false;
             }
-            switch (arguments.Array[1])
+            switch (arguments.ToArray()[1])
             {
                 case "green":
                     VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Green;
@@ -70,7 +69,7 @@ namespace VeryUsualDay.Commands
                 default:
                     response = "Формат команды: setcode <название>. Допустимые названия: green, emerald, blue, yellow, red.";
                     return false;
-            };
+            }
         }
     }
 }

@@ -1,7 +1,11 @@
-﻿using CommandSystem;
+﻿using System;
+using System.Linq;
+using CommandSystem;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
-using System;
+using PlayerRoles;
+using UnityEngine;
 
 namespace VeryUsualDay.Commands
 {
@@ -21,42 +25,38 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            int id = int.Parse(arguments.Array[1]);
+            int id = int.Parse(arguments.ToArray()[1]);
             if (Player.TryGet(id, out Player scp372))
             {
                 if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(id))
                 {
                     scp372.MaxHealth = 100f;
                     scp372.CustomInfo = "Человек";
-                    scp372.DisableEffect(Exiled.API.Enums.EffectType.MovementBoost);
-                    scp372.Role.Set(PlayerRoles.RoleTypeId.Tutorial, reason: Exiled.API.Enums.SpawnReason.ForceClass);
-                    scp372.Scale = new UnityEngine.Vector3(1f, 1f, 1f);
+                    scp372.DisableEffect(EffectType.MovementBoost);
+                    scp372.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
+                    scp372.Scale = new Vector3(1f, 1f, 1f);
                     VeryUsualDay.Instance.ScpPlayers.Remove(id);
                     response = "SCP удалён!";
                     return true;
                 }
-                else
+
+                scp372.Role.Set(RoleTypeId.Scp939, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.AssignInventory);
+                Timing.CallDelayed(2f, () =>
                 {
-                    scp372.Role.Set(PlayerRoles.RoleTypeId.Scp939, reason: Exiled.API.Enums.SpawnReason.ForceClass, spawnFlags: PlayerRoles.RoleSpawnFlags.AssignInventory);
-                    Timing.CallDelayed(2f, () =>
-                    {
-                        scp372.CustomInfo = "<b><color=#960018>SCP-372</color></b>";
-                        scp372.MaxHealth = 650f;
-                        scp372.Health = 650f;
-                        scp372.Scale = new UnityEngine.Vector3(0.1f, 0.8f, 1f);
-                        scp372.EnableEffect(Exiled.API.Enums.EffectType.MovementBoost);
-                        scp372.ChangeEffectIntensity(Exiled.API.Enums.EffectType.MovementBoost, 255);
-                        VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp372);
-                    });
-                    response = "SCP-372 создан!";
-                    return true;
-                }
+                    scp372.CustomInfo = "<b><color=#960018>SCP-372</color></b>";
+                    scp372.MaxHealth = 650f;
+                    scp372.Health = 650f;
+                    scp372.Scale = new Vector3(0.1f, 0.8f, 1f);
+                    scp372.EnableEffect(EffectType.MovementBoost);
+                    scp372.ChangeEffectIntensity(EffectType.MovementBoost, 255);
+                    VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp372);
+                });
+                response = "SCP-372 создан!";
+                return true;
             }
-            else
-            {
-                response = "Не удалось найти игрока с таким ID!";
-                return false;
-            }
+
+            response = "Не удалось найти игрока с таким ID!";
+            return false;
         }
     }
 }
