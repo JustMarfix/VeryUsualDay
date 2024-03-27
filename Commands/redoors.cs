@@ -9,11 +9,9 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class redoors : ICommand
     {
-        public string Command { get; set; } = "redoors";
-
-        public string[] Aliases { get; set; } = { };
-
-        public string Description { get; set; } = "Позволяет рестартнуть систему дверей (СОД).";
+        public string Command => "redoors";
+        public string[] Aliases => new string[] { };
+        public string Description => "Позволяет рестартнуть систему дверей (СОД).";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -22,7 +20,7 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            foreach (Door door in Door.List)
+            foreach (var door in Door.List)
             {
                 if (!door.IsElevator && door.Type != DoorType.SurfaceGate)
                 {

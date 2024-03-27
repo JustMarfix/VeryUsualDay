@@ -11,11 +11,9 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     public class recontain008 : ICommand
     {
-        public string Command { get; set; } = "recontain008";
-
-        public string[] Aliases { get; set; } = { };
-
-        public string Description { get; set; } = "Восстанавливает ОУС SCP-008. Использовать только в К.С. SCP-008.";
+        public string Command => "recontain008";
+        public string[] Aliases => new string[] { };
+        public string Description => "Восстанавливает ОУС SCP-008. Использовать только в К.С. SCP-008.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,7 +22,7 @@ namespace VeryUsualDay.Commands
                 response = "ОУС SCP-008 не нарушены!";
                 return false;
             }
-            Player playerSender = Player.Get(sender);
+            var playerSender = Player.Get(sender);
             if (playerSender.CurrentRoom.Type != RoomType.Hcz106)
             {
                 response = "Вы не находитесь в К.С. SCP-008.";

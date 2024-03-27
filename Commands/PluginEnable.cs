@@ -7,11 +7,9 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class PluginEnable : ICommand
     {
-        public string Command { get; set; } = "veryusualday";
-
-        public string[] Aliases { get; set; } = { "vudmode" };
-
-        public string Description { get; set; } = "Не использовать, если не проводите Слишком Обычный День!";
+        public string Command => "veryusualday";
+        public string[] Aliases => new [] { "vudmode" };
+        public string Description => "Не использовать, если не проводите Слишком Обычный День!";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

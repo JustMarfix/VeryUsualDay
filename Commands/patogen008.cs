@@ -10,11 +10,9 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class patogen008 : ICommand
     {
-        public string Command { get; set; } = "patogen008";
-
-        public string[] Aliases { get; set; } = { };
-
-        public string Description { get; set; } = "Вызывает НОУС SCP-008. Не использовать без СОД!";
+        public string Command => "patogen008";
+        public string[] Aliases => new string[] { };
+        public string Description => "Вызывает НОУС SCP-008. Не использовать без СОД!";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

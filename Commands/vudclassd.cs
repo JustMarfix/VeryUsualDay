@@ -11,11 +11,9 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class vudclassd : ICommand
     {
-        public string Command { get; set; } = "vudclassd";
-
-        public string[] Aliases { get; set; } = { };
-
-        public string Description { get; set; } = "Спавнит испытуемого на СОД.";
+        public string Command => "vudclassd";
+        public string[] Aliases => new string[] { };
+        public string Description => "Спавнит испытуемого на СОД.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,15 +22,15 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            if (arguments.Count < 2)
+            if (arguments.Count < 1)
             {
                 response = "Формат команды: vudclassd <id через пробел>.";
                 return false;
             }
-            int cnt = 0;
-            foreach (string id in arguments.ToArray().Skip(1))
+            var cnt = 0;
+            foreach (var id in arguments.ToArray())
             {
-                if (Player.TryGet(id, out Player dboy))
+                if (Player.TryGet(id, out var dboy))
                 {
                     dboy.Role.Set(RoleTypeId.ClassD, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.All);
                     Timing.CallDelayed(1f, () =>

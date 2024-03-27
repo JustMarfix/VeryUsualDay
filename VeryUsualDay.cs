@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -24,7 +25,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay";
 
-        public override Version Version => new Version(2, 8, 1);
+        public override Version Version => new Version(3, 0, 0);
 
         public bool IsEnabledInRound { get; set; }
         public bool Is008Leaked { get; set; }
@@ -33,11 +34,14 @@ namespace VeryUsualDay
         public List<int> Zombies { get; set; } = new List<int>();
         public List<int> JoinedDboys { get; set; } = new List<int>();
         public List<int> DBoysQueue { get; set; } = new List<int>();
-        public int BuoCounter { get; set; }
+        public int BuoCounter { get; set; } = 1;
         public int SpawnedDboysCounter { get; set; } = 1;
         public int SpawnedJanitorsCounter { get; set; } = 1;
         public int SpawnedScientistCounter { get; set; } = 1;
         public int SpawnedSecurityCounter { get; set; } = 1;
+        private readonly Vector3 _armedPersonnelTowerCoords = new Vector3(-16f, 1014.5f, -32f);
+        private readonly Vector3 _civilianPersonnelTowerCoords = new Vector3(44.4f, 1014.5f, -51.6f);
+        
         public enum Codes
         {
             [Description("Зелёный")]
@@ -71,38 +75,31 @@ namespace VeryUsualDay
         public Codes CurrentCode { get; set; } = Codes.Green;
         public Dictionary<int, Scps> ScpPlayers { get; set; } = new Dictionary<int, Scps>();
 
-        private Player _player;
-        private Server _server;
-
         public override void OnEnabled()
         {
             Instance = this;
-            _player = new Player();
-            _server = new Server();
-            PlayerHandler.ChangingRole += _player.OnChangingRole;
-            PlayerHandler.PickingUpItem += _player.OnPickingUpItem;
-            PlayerHandler.DroppingItem += _player.OnDroppingItem;
-            PlayerHandler.Hurting += _player.OnHurting;
-            PlayerHandler.Died += _player.OnDied;
-            PlayerHandler.Left += _player.OnLeft;
-            PlayerHandler.Shooting += _player.OnShooting;
-            PlayerHandler.UsingItem += _player.OnUsingItem;
-            ServerHandler.WaitingForPlayers += _server.OnWaitingForPlayers;
+            PlayerHandler.ChangingRole += Player.OnChangingRole;
+            PlayerHandler.PickingUpItem += Player.OnPickingUpItem;
+            PlayerHandler.DroppingItem += Player.OnDroppingItem;
+            PlayerHandler.Hurting += Player.OnHurting;
+            PlayerHandler.Died += Player.OnDied;
+            PlayerHandler.Left += Player.OnLeft;
+            PlayerHandler.Shooting += Player.OnShooting;
+            PlayerHandler.UsingItem += Player.OnUsingItem;
+            ServerHandler.WaitingForPlayers += Server.OnWaitingForPlayers;
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
-            PlayerHandler.ChangingRole -= _player.OnChangingRole;
-            PlayerHandler.PickingUpItem -= _player.OnPickingUpItem;
-            PlayerHandler.DroppingItem -= _player.OnDroppingItem;
-            PlayerHandler.Hurting -= _player.OnHurting;
-            PlayerHandler.Died -= _player.OnDied;
-            PlayerHandler.Left -= _player.OnLeft;
-            PlayerHandler.Shooting -= _player.OnShooting;
-            ServerHandler.WaitingForPlayers -= _server.OnWaitingForPlayers;
-            _player = null;
-            _server = null;
+            PlayerHandler.ChangingRole -= Player.OnChangingRole;
+            PlayerHandler.PickingUpItem -= Player.OnPickingUpItem;
+            PlayerHandler.DroppingItem -= Player.OnDroppingItem;
+            PlayerHandler.Hurting -= Player.OnHurting;
+            PlayerHandler.Died -= Player.OnDied;
+            PlayerHandler.Left -= Player.OnLeft;
+            PlayerHandler.Shooting -= Player.OnShooting;
+            ServerHandler.WaitingForPlayers -= Server.OnWaitingForPlayers;
             Instance = null;
             base.OnDisabled();
         }
@@ -113,35 +110,33 @@ namespace VeryUsualDay
             {
                 if (CurrentCode == Codes.Green)
                 {
-                    int counter = 0;
-                    foreach (int i in DBoysQueue.ToList())
+                    var counter = 0;
+                    foreach (var i in DBoysQueue.ToList())
                     {
-                        if (Exiled.API.Features.Player.TryGet(i, out Exiled.API.Features.Player dboy))
+                        if (!Exiled.API.Features.Player.TryGet(i, out var dboy)) continue;
+                        if ((dboy.CustomInfo == "Человек" || dboy.CustomInfo is null) && dboy.Role.Type == RoleTypeId.Tutorial)
                         {
-                            if ((dboy.CustomInfo == "Человек" || dboy.CustomInfo is null) && dboy.Role.Type == RoleTypeId.Tutorial)
+                            if (JoinedDboys.Count >= 5)
                             {
-                                if (JoinedDboys.Count >= 5)
-                                {
-                                    break;
-                                }
-                                if (counter == 3)
-                                {
-                                    break;
-                                }
-                                dboy.CustomName = $"Испытуемый - ##-{SpawnedDboysCounter}";
-                                JoinedDboys.Add(i);
-                                dboy.Role.Set(RoleTypeId.ClassD);
-                                Timing.CallDelayed(1f, () =>
-                                {
-                                    dboy.ClearInventory();
-                                    dboy.Handcuff();
-                                    dboy.Broadcast(10, "<b>Вы стали <color=#EE7600>Испытуемым</color>! Можете сотрудничать с <color=#120a8f>фондом</color> или принимать попытки <color=#ff2b2b>побега</color> при первой возможности. </b>");
-                                });
-                                counter += 1;
-                                SpawnedDboysCounter += 1;
+                                break;
                             }
-                            DBoysQueue.Remove(i);
+                            if (counter == 3)
+                            {
+                                break;
+                            }
+                            dboy.CustomName = $"Испытуемый - ##-{SpawnedDboysCounter}";
+                            JoinedDboys.Add(i);
+                            dboy.Role.Set(RoleTypeId.ClassD);
+                            Timing.CallDelayed(1f, () =>
+                            {
+                                dboy.ClearInventory();
+                                dboy.Handcuff();
+                                dboy.Broadcast(10, "<b>Вы стали <color=#EE7600>Испытуемым</color>! Можете сотрудничать с <color=#120a8f>фондом</color> или принимать попытки <color=#ff2b2b>побега</color> при первой возможности. </b>");
+                            });
+                            counter += 1;
+                            SpawnedDboysCounter += 1;
                         }
+                        DBoysQueue.Remove(i);
                     }
                     switch (counter)
                     {
@@ -166,11 +161,11 @@ namespace VeryUsualDay
         {
             for (;;)
             {
-                foreach (KeyValuePair<int, Scps> pair in ScpPlayers.Where(p => p.Value == Scps.Scp0762))
+                foreach (var pair in ScpPlayers.Where(p => p.Value == Scps.Scp0762))
                 {
                     try
                     {
-                        if (Exiled.API.Features.Player.TryGet(pair.Key, out Exiled.API.Features.Player avel) && avel.Health < 5000)
+                        if (Exiled.API.Features.Player.TryGet(pair.Key, out var avel) && avel.Health < 5000)
                         {
                             avel.Heal(50f);
                         }
@@ -188,7 +183,7 @@ namespace VeryUsualDay
         {
             for (;;)
             {
-                foreach (Exiled.API.Features.Player target in Exiled.API.Features.Player.Get(player => player.Zone == ZoneType.HeavyContainment && !Instance.Config.DoNotPoisonRoles.Contains(player.Role.Type) && player.Role.Team != Team.SCPs && (player.CustomInfo is null || !player.CustomInfo.ToLower().Contains("scp"))))
+                foreach (var target in Exiled.API.Features.Player.Get(player => player.Zone == ZoneType.HeavyContainment && !Instance.Config.DoNotPoisonRoles.Contains(player.Role.Type) && player.Role.Team != Team.SCPs && (player.CustomInfo is null || !player.CustomInfo.ToLower().Contains("scp"))))
                 {
                     target.EnableEffect(EffectType.Poisoned);
                 }
@@ -196,7 +191,7 @@ namespace VeryUsualDay
             }
         }
 
-        static async Task<string> HttpGetUser(string steamid)
+        private static async Task<string> HttpGetUser(string steamid)
         {
             var client = new HttpClient();
             var content = await client.GetStringAsync($"http://justmeow.ru:9000/get_user/{steamid}");
@@ -205,98 +200,121 @@ namespace VeryUsualDay
 
         private async void SetUserRole(Exiled.API.Features.Player player)
         {
-            string jsonString = await HttpGetUser(player.UserId);
-            List<string> json = JsonConvert.DeserializeObject<List<string>>(jsonString);
+            var jsonString = await HttpGetUser(player.UserId);
+            var json = JsonConvert.DeserializeObject<List<string>>(jsonString);
             if (json.Count == 0)
             {
                 return;
             }
-            player.CustomInfo = $"\"{json[1]}\"";
+
+            var splitted = json[1].Split(' ');
+            player.CustomInfo = new StringBuilder().Append($"\"{splitted[0]}\" ").Append(string.Join(" ", splitted.Skip(1))).ToString();
             player.CustomName = json[2];
-            if (json[3] == "СБ")
+            switch (json[3])
             {
-                player.Role.Set(RoleTypeId.FacilityGuard, RoleSpawnFlags.None);
-                Timing.CallDelayed(2f, () =>
-                {
-                    foreach (ItemType item in Instance.Config.SecurityItems[json[4]])
+                case "СБ":
+                    player.Role.Set(RoleTypeId.FacilityGuard, RoleSpawnFlags.None);
+                    Timing.CallDelayed(2f, () =>
                     {
-                        player.AddItem(item);
-                    }
-                    foreach (AmmoType ammo in Instance.Config.SecurityAmmo[json[4]])
+                        foreach (var item in Instance.Config.SecurityItems[json[4]])
+                        {
+                            player.AddItem(item);
+                        }
+                        foreach (var ammo in Instance.Config.SecurityAmmo[json[4]])
+                        {
+                            player.AddAmmo(ammo, 60);
+                        }
+                        player.MaxHealth = Instance.Config.SecurityHealth[json[4]];
+                        player.Health = Instance.Config.SecurityHealth[json[4]];
+                        player.Teleport(_armedPersonnelTowerCoords);
+                    });
+                    break;
+                case "НС":
+                    player.Role.Set(RoleTypeId.Scientist, RoleSpawnFlags.None);
+                    Timing.CallDelayed(2f, () =>
                     {
-                        player.AddAmmo(ammo, 60);
-                    }
-                    player.MaxHealth = Instance.Config.SecurityHealth[json[4]];
-                    player.Health = Instance.Config.SecurityHealth[json[4]];
-                    player.Teleport(new Vector3(-16f, 1014.5f, -32f));
-                });
-            }
-            else if (json[3] == "НС")
-            {
-                player.Role.Set(RoleTypeId.Scientist, RoleSpawnFlags.None);
-                Timing.CallDelayed(2f, () =>
-                {
-                    foreach (ItemType item in Instance.Config.ScientificItems[json[4]])
+                        foreach (var item in Instance.Config.ScientificItems[json[4]])
+                        {
+                            player.AddItem(item);
+                        }
+                        player.Teleport(_civilianPersonnelTowerCoords);
+                    });
+                    break;
+                case "Уборщики":
+                    player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
+                    Timing.CallDelayed(2f, () =>
                     {
-                        player.AddItem(item);
-                    }
-                    player.Teleport(new Vector3(44.4f, 1014.5f, -51.6f));
-                });
-            }
-            else if (json[3] == "Уборщики")
-            {
-                player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
-                Timing.CallDelayed(2f, () =>
-                {
-                    foreach (ItemType item in Instance.Config.JanitorsItems[json[4]])
+                        foreach (var item in Instance.Config.JanitorsItems[json[4]])
+                        {
+                            player.AddItem(item);
+                        }
+                        player.Teleport(_civilianPersonnelTowerCoords);
+                    });
+                    break;
+                case "ЭВС":
+                    player.Role.Set(Instance.Config.EmfRoles[json[4]], RoleSpawnFlags.None);
+                    Timing.CallDelayed(2f, () =>
                     {
-                        player.AddItem(item);
-                    }
-                    player.Teleport(new Vector3(44.4f, 1014.5f, -51.6f));
-                });
-            }
-            else if (json[3] == "ЭВС")
-            {
-                player.Role.Set(Instance.Config.EMFRoles[json[4]], RoleSpawnFlags.None);
-                Timing.CallDelayed(2f, () =>
-                {
-                    foreach (ItemType item in Instance.Config.EMFItems[json[4]])
+                        foreach (var item in Instance.Config.EmfItems[json[4]])
+                        {
+                            player.AddItem(item);
+                        }
+                        foreach (var ammo in Instance.Config.EmfAmmo[json[4]])
+                        {
+                            player.AddAmmo(ammo, 60);
+                        }
+                        player.MaxHealth = Instance.Config.EmfHealth[json[4]];
+                        player.Health = Instance.Config.EmfHealth[json[4]];
+                        player.Teleport(_armedPersonnelTowerCoords);
+                    });
+                    break;
+                case "Агентство":
+                    player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.None);
+                    Timing.CallDelayed(2f, () =>
                     {
-                        player.AddItem(item);
-                    }
-                    foreach (AmmoType ammo in Instance.Config.EMFAmmo[json[4]])
+                        player.Scale = new Vector3(1.3f, 0.8f, 1f);
+                        foreach (var item in Instance.Config.AgencyItems[json[4]])
+                        {
+                            player.AddItem(item);
+                        }
+                        foreach (var ammo in Instance.Config.AgencyAmmo[json[4]])
+                        {
+                            player.AddAmmo(ammo, 60);
+                        }
+                        player.MaxHealth = Instance.Config.AgencyHealth;
+                        player.Health = Instance.Config.AgencyHealth;
+                        player.IsGodModeEnabled = false;
+                        player.Teleport(_armedPersonnelTowerCoords);
+                    });
+                    break;
+                case "Административный персонал":
+                    player.Role.Set(RoleTypeId.Scientist, RoleSpawnFlags.None);
+                    Timing.CallDelayed(2f, () =>
                     {
-                        player.AddAmmo(ammo, 60);
-                    }
-                    player.MaxHealth = Instance.Config.EMFHealth[json[4]];
-                    player.Health = Instance.Config.EMFHealth[json[4]];
-                    player.Teleport(new Vector3(-16f, 1014.5f, -32f));
-                });
-            }
-            else if (json[3] == "Агентство")
-            {
-                player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.None);
-                Timing.CallDelayed(2f, () =>
-                {
-                    player.Scale = new Vector3(1.3f, 0.8f, 1f);
-                    foreach (ItemType item in Instance.Config.AgencyItems[json[4]])
+                        foreach (var item in Instance.Config.AdministrativeItems[json[4]])
+                        {
+                            player.AddItem(item);
+                        }
+                        player.MaxHealth = Instance.Config.AdministrativeHealth[json[4]];
+                        player.Health = Instance.Config.AdministrativeHealth[json[4]];
+                        player.Teleport(_civilianPersonnelTowerCoords);
+                    });
+                    break;
+                case "Испытуемые":
+                    player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
+                    Timing.CallDelayed(2f, () =>
                     {
-                        player.AddItem(item);
-                    }
-                    foreach (AmmoType ammo in Instance.Config.AgencyAmmo[json[4]])
-                    {
-                        player.AddAmmo(ammo, 60);
-                    }
-                    player.MaxHealth = Instance.Config.AgencyHealth;
-                    player.Health = Instance.Config.AgencyHealth;
-                    player.IsGodModeEnabled = false;
-                    player.Teleport(new Vector3(-16f, 1014.5f, -32f));
-                });
+                        player.ClearInventory();
+                        player.Handcuff();
+                        player.MaxHealth = 130f;
+                        player.Health = 130f;
+                    });
+                    break;
             }
         }
         public void RoleDistribution()
         {
-            foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.Get(RoleTypeId.Tutorial))
+            foreach (var player in Exiled.API.Features.Player.Get(RoleTypeId.Tutorial))
             {
                 if (player.CustomInfo == "Человек" || player.CustomInfo is null)
                 {

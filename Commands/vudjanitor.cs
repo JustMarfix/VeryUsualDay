@@ -11,11 +11,11 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class vudjanitor : ICommand
     {
-        public string Command { get; set; } = "vudjanitor";
+        public string Command => "vudjanitor";
 
-        public string[] Aliases { get; set; } = { };
+        public string[] Aliases => new string[] { };
 
-        public string Description { get; set; } = "Спавнит стажёра-уборщика на СОД.";
+        public string Description => "Спавнит стажёра-уборщика на СОД.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,14 +24,14 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            if (arguments.Count < 2)
+            if (arguments.Count < 1)
             {
                 response = "Формат команды: vudjanitor <id через пробел>.";
                 return false;
             }
-            foreach (string id in arguments.ToArray().Skip(1).ToList())
+            foreach (var id in arguments.ToArray().Skip(1).ToList())
             {
-                if (Player.TryGet(id, out Player janitor))
+                if (Player.TryGet(id, out var janitor))
                 {
                     janitor.Role.Set(RoleTypeId.ClassD, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.AssignInventory);
                     Timing.CallDelayed(2f, () =>

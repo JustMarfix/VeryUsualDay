@@ -11,11 +11,9 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class vudguard : ICommand
     {
-        public string Command { get; set; } = "vudguard";
-
-        public string[] Aliases { get; set; } = { };
-
-        public string Description { get; set; } = "Спавнит СБ-стажёра на СОД.";
+        public string Command => "vudguard";
+        public string[] Aliases => new string[] { };
+        public string Description => "Спавнит СБ-стажёра на СОД.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,14 +22,14 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            if (arguments.Count < 2)
+            if (arguments.Count < 1)
             {
                 response = "Формат команды: vudguard <id через пробел>.";
                 return false;
             }
-            foreach (string id in arguments.ToArray().Skip(1).ToList())
+            foreach (var id in arguments.ToArray())
             {
-                if (Player.TryGet(id, out Player guard))
+                if (Player.TryGet(id, out var guard))
                 {
                     guard.Role.Set(RoleTypeId.FacilityGuard, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.AssignInventory);
                     Timing.CallDelayed(2f, () =>

@@ -8,11 +8,9 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class SetCode : ICommand
     {
-        public string Command { get; set; } = "setcode";
-
-        public string[] Aliases { get; set; } = { "code" };
-
-        public string Description { get; set; } = "Установить код в комплексе. Используется для СОД.";
+        public string Command => "setcode";
+        public string[] Aliases => new [] { "code" };
+        public string Description => "Установить код в комплексе. Используется для СОД.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -21,17 +19,17 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            if (arguments.Count != 2)
+            if (arguments.Count != 1)
             {
                 response = "Формат команды: setcode <название>. Допустимые названия: green, emerald, blue, orange, yellow, red.";
                 return false;
             }
-            switch (arguments.ToArray()[1])
+            switch (arguments.ToArray()[0])
             {
                 case "green":
                     VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Green;
                     Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#32CD32>Зелёный Код</color>. Сотрудникам работать в штатном режиме. <size=0> pitch_0.1 .G2 . pitch_1.0 . . . . . . . . . . . . . .", isSubtitles: true, isNoisy: false);
-                    foreach (Ragdoll ragdoll in Ragdoll.List.ToList())
+                    foreach (var ragdoll in Ragdoll.List.ToList())
                     {
                         ragdoll.Destroy();
                     }
@@ -40,7 +38,7 @@ namespace VeryUsualDay.Commands
                 case "emerald":
                     VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Emerald;
                     Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#50C878>Изумрудный Код</color>. Замечены сбои в системе. Возможны поломки или нарушения в зонах содержания. Службе Безопасности быть на готове. <size=0> pitch_0.35 .G3 .G3 .G1 .G2 . pitch_1.0 . . . . . . . . . . . . . .\r\n", isSubtitles: true, isNoisy: false);
-                    foreach (Ragdoll ragdoll in Ragdoll.List.ToList())
+                    foreach (var ragdoll in Ragdoll.List.ToList())
                     {
                         ragdoll.Destroy();
                     }

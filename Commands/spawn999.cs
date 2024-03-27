@@ -12,11 +12,9 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class spawn999 : ICommand
     {
-        public string Command { get; set; } = "spawn999";
-
-        public string[] Aliases { get; set; } = { };
-
-        public string Description { get; set; } = "Работает при СОД. Спавнит SCP-999.";
+        public string Command => "spawn999";
+        public string[] Aliases => new string[] { };
+        public string Description => "Работает при СОД. Спавнит SCP-999.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -25,8 +23,8 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён!";
                 return false;
             }
-            int id = int.Parse(arguments.ToArray()[1]);
-            if (Player.TryGet(id, out Player scp999))
+            var id = int.Parse(arguments.ToArray()[0]);
+            if (Player.TryGet(id, out var scp999))
             {
                 if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(id))
                 {

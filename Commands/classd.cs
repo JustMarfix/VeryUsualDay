@@ -8,11 +8,9 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     public class classd : ICommand
     {
-        public string Command { get; set; } = "classd";
-
-        public string[] Aliases { get; set; } = { };
-
-        public string Description { get; set; } = "Позволяет встать в очередь на спавн за Испытуемого. Работает только на Слишком Обычном Дне.";
+        public string Command => "classd";
+        public string[] Aliases => new string[] { };
+        public string Description => "Позволяет встать в очередь на спавн за Испытуемого. Работает только на Слишком Обычном Дне.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,7 +24,7 @@ namespace VeryUsualDay.Commands
                 response = "Самостоятельный спавн за D-класс закрыт до начала ивента и во время мини-ивентов.";
                 return false;
             }
-            Player playerSender = Player.Get(sender);
+            var playerSender = Player.Get(sender);
             if (VeryUsualDay.Instance.DBoysQueue.Contains(playerSender.Id) || !(playerSender.CustomInfo == "Человек" || playerSender.CustomInfo is null) || playerSender.Role.Type != RoleTypeId.Tutorial)
             {
                 response = "Вы уже стоите в очереди, либо уже играете за кого-то.";

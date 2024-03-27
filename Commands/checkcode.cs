@@ -6,11 +6,9 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class checkcode : ICommand
     {
-        public string Command { get; set; } = "checkcode";
-
-        public string[] Aliases { get; set; } = { };
-
-        public string Description { get; set; } = "Для СОД. Вывести действующий код.";
+        public string Command => "checkcode";
+        public string[] Aliases => new string[] { };
+        public string Description => "Для СОД. Вывести действующий код.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

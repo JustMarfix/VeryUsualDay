@@ -2,9 +2,9 @@
 
 namespace VeryUsualDay.Handlers
 {
-    public class Server
+    public static class Server
     {
-        public void OnWaitingForPlayers()
+        public static void OnWaitingForPlayers()
         {
             VeryUsualDay.Instance.IsEnabledInRound = false;
             VeryUsualDay.Instance.Is008Leaked = false;

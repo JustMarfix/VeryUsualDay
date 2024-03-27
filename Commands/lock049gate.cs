@@ -6,15 +6,15 @@ using Exiled.API.Features.Doors;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class lock173gate : ICommand
+    public class lock049gate : ICommand
     {
-        public string Command => "lock173gate";
+        public string Command => "lock049gate";
         public string[] Aliases => new string[] { };
-        public string Description => "Заблокировать/разблокировать новый гейт SCP-173.";
-
+        public string Description => "Заблокировать/разблокировать гейт К.С. 049.";
+        
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var door = Door.Get(DoorType.Scp173NewGate);
+            var door = Door.Get(DoorType.Scp049Gate);
             if (door.IsLocked)
             {
                 door.Unlock();

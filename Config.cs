@@ -250,7 +250,7 @@ namespace VeryUsualDay
             }
         };
         [Description("Список ролей для ЭВС (Dictionary<string, RoleTypeId>)")]
-        public Dictionary<string, RoleTypeId> EMFRoles { get; set; } = new Dictionary<string, RoleTypeId>
+        public Dictionary<string, RoleTypeId> EmfRoles { get; set; } = new Dictionary<string, RoleTypeId>
         {
             {
                 "Боец",
@@ -274,7 +274,7 @@ namespace VeryUsualDay
             }
         };
         [Description("Список вещей для ЭВС (Dictionary<string, List<ItemType>>)")]
-        public Dictionary<string, List<ItemType>> EMFItems { get; set; } = new Dictionary<string, List<ItemType>>
+        public Dictionary<string, List<ItemType>> EmfItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
             {
                 "Боец",
@@ -344,7 +344,7 @@ namespace VeryUsualDay
             }
         };
         [Description("Максимальное здоровье ЭВС (Dictionary<string, float>)")]
-        public Dictionary<string, float> EMFHealth { get; set; } = new Dictionary<string, float>
+        public Dictionary<string, float> EmfHealth { get; set; } = new Dictionary<string, float>
         {
             {
                 "Боец",
@@ -368,7 +368,7 @@ namespace VeryUsualDay
             }
         };
         [Description("Список патронов для ЭВС (выдаётся 60 шт.) (Dictionary<string, List<AmmoType>>)")]
-        public Dictionary<string, List<AmmoType>> EMFAmmo { get; set; } = new Dictionary<string, List<AmmoType>>
+        public Dictionary<string, List<AmmoType>> EmfAmmo { get; set; } = new Dictionary<string, List<AmmoType>>
         {
             {
                 "Боец",
@@ -468,6 +468,46 @@ namespace VeryUsualDay
             }
         };
 
+        [Description("Список вещей для административного персонала (Dictionary<string, List<ItemType>>)")]
+        public Dictionary<string, List<ItemType>> AdministrativeItems { get; set; } = new Dictionary<string, List<ItemType>>
+        {
+            {
+                "Менеджер зоны",
+                new List<ItemType>
+                {
+                    ItemType.KeycardO5,
+                    ItemType.Radio,
+                    ItemType.Painkillers,
+                    ItemType.GunCOM15,
+                    ItemType.ArmorLight
+                }
+            },
+            {
+                "Директор зоны",
+                new List<ItemType>
+                {
+                    ItemType.KeycardO5,
+                    ItemType.Radio,
+                    ItemType.Painkillers,
+                    ItemType.GunCOM18,
+                    ItemType.ArmorHeavy
+                }
+            }
+        };
+
+        [Description("Максимальное здоровье административного персонала (Dictionary<string, float>)")]
+        public Dictionary<string, float> AdministrativeHealth { get; set; } = new Dictionary<string, float>
+        {
+            {
+                "Менеджер зоны",
+                200f
+            },
+            {
+                "Директор зоны",
+                250f
+            }
+        };
+        
         [Description("Список вещей, которые не могут поднимать Научные Сотрудники (List<ItemType>)")]
         public List<ItemType> ForbiddenForScientists { get; set; } = new List<ItemType>
         {
@@ -496,7 +536,7 @@ namespace VeryUsualDay
         };
 
         [Description("Инвентарь бойца БУО (List<ItemType>)")]
-        public List<ItemType> BUOInventory { get; set; } = new List<ItemType>
+        public List<ItemType> BuoInventory { get; set; } = new List<ItemType>
         {
             ItemType.KeycardMTFPrivate,
             ItemType.GunShotgun,
@@ -519,6 +559,7 @@ namespace VeryUsualDay
             RoleTypeId.NtfCaptain
         };
 
+        [Description("Список вещей, которые нельзя брать SCP-035 (List<ItemType>)")]
         public List<ItemType> Scp035ForbiddenItems { get; set; } = new List<ItemType>
         {
             ItemType.GunA7,
@@ -531,6 +572,25 @@ namespace VeryUsualDay
             ItemType.GunLogicer,
             ItemType.Painkillers,
             ItemType.Medkit
+        };
+
+        [Description("Список вещей, у которых есть иммунитет к чистке командой vudclear (List<ItemType>)")]
+        public List<ItemType> ClearImmunityItems { get; set; } = new List<ItemType>
+        {
+            ItemType.Medkit,
+            ItemType.MicroHID,
+            ItemType.GunE11SR,
+            ItemType.GunCOM15,
+            ItemType.Radio,
+            ItemType.Ammo9x19,
+            ItemType.Ammo12gauge,
+            ItemType.Ammo44cal,
+            ItemType.Ammo556x45,
+            ItemType.Ammo762x39,
+            ItemType.SCP500,
+            ItemType.SCP1853,
+            ItemType.SCP244a,
+            ItemType.SCP244b
         };
     }
 }

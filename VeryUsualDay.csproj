@@ -106,6 +106,7 @@
     <Compile Include="Commands\checkcode_player.cs" />
     <Compile Include="Commands\classd.cs" />
     <Compile Include="Commands\gocomplex.cs" />
+    <Compile Include="Commands\lock049gate.cs" />
     <Compile Include="Commands\lock173gate.cs" />
     <Compile Include="Commands\Lunch.cs" />
     <Compile Include="Commands\patogen008.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Commands\spawn999.cs" />
     <Compile Include="Commands\Spawnbuo.cs" />
     <Compile Include="Commands\vudclassd.cs" />
+    <Compile Include="Commands\vudclear.cs" />
     <Compile Include="Commands\vudguard.cs" />
     <Compile Include="Commands\vudjanitor.cs" />
     <Compile Include="Commands\vudscience.cs" />

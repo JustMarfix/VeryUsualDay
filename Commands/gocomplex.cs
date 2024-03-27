@@ -4,18 +4,15 @@ using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Doors;
-using UnityEngine;
 
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class gocomplex : ICommand
     {
-        public string Command { get; set; } = "gocomplex";
-
-        public string[] Aliases { get; set; } = { "gocm" };
-
-        public string Description { get; set; } = "Для СОД. Отправляет людей на поверхность и кидает CASSIE.";
+        public string Command => "gocomplex";
+        public string[] Aliases => new [] { "gocm" };
+        public string Description => "Для СОД. Отправляет людей на поверхность и кидает CASSIE.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,15 +21,19 @@ namespace VeryUsualDay.Commands
                 response = "Режим СОД не включён";
                 return false;
             }
-            if (arguments.Count < 2)
+            if (arguments.Count < 1)
             {
                 response = "Формат команды: gocomplex <id через пробел>.";
                 return false;
             }
-            foreach (string id in arguments.Array.Skip(1))
+            foreach (var id in arguments.ToArray())
             {
-                Player player = Player.Get(int.Parse(id));
-                Vector3 pos = Door.Get(DoorType.SurfaceGate).Position;
+                if (!Player.TryGet(int.Parse(id), out var player))
+                {
+                    response = $"Человека с ID {id} нету на сервере.";
+                    return false;
+                }
+                var pos = Door.Get(DoorType.SurfaceGate).Position;
                 pos.x -= 2f;
                 pos.y += 1f;
                 player.Teleport(pos);
