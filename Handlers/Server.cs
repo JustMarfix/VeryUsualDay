@@ -20,7 +20,7 @@ namespace VeryUsualDay.Handlers
             VeryUsualDay.Instance.Zombies.Clear();
             VeryUsualDay.Instance.JoinedDboys.Clear();
             VeryUsualDay.Instance.DBoysQueue.Clear();
-            Timing.KillCoroutines("_avel");
+            // Timing.KillCoroutines("_avel");
             Timing.KillCoroutines("_008_poisoning");
             Timing.KillCoroutines("_joining");
         }

@@ -29,7 +29,7 @@ namespace VeryUsualDay.Commands
                 VeryUsualDay.Instance.Zombies.Clear();
                 VeryUsualDay.Instance.JoinedDboys.Clear();
                 VeryUsualDay.Instance.DBoysQueue.Clear();
-                Timing.KillCoroutines("_avel");
+                // Timing.KillCoroutines("_avel");
                 Timing.KillCoroutines("_008_poisoning");
                 Timing.KillCoroutines("_joining");
                 response = "Режим Очень Обычного Дня выключен.";
@@ -37,7 +37,7 @@ namespace VeryUsualDay.Commands
             else
             {
                 VeryUsualDay.Instance.IsEnabledInRound = true;
-                Timing.RunCoroutine(VeryUsualDay.Instance._avel(), "_avel");
+                // Timing.RunCoroutine(VeryUsualDay.Instance._avel(), "_avel");
                 Timing.RunCoroutine(VeryUsualDay.Instance._joining(), "_joining");
                 response = "Режим Очень Обычного Дня включён.";
             }

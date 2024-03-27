@@ -157,6 +157,7 @@ namespace VeryUsualDay
             }
         }
 
+        /*
         public IEnumerator<float> _avel()
         {
             for (;;)
@@ -177,7 +178,7 @@ namespace VeryUsualDay
                 }
                 yield return Timing.WaitForSeconds(7f);
             }
-        }
+        }*/
 
         public IEnumerator<float> _008_poisoning()
         {
