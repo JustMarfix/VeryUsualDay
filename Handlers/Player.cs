@@ -130,6 +130,7 @@ namespace VeryUsualDay.Handlers
             }
             if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
             {
+                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp0082) ev.Player.UnMute();
                 VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
             }
             if (VeryUsualDay.Instance.DBoysQueue.Contains(ev.Player.Id))
