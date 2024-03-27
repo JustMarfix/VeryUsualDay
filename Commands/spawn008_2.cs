@@ -33,6 +33,7 @@ namespace VeryUsualDay.Commands
                     scp0082.DisableEffect(EffectType.Stained);
                     scp0082.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
                     scp0082.Scale = new Vector3(1f, 1f, 1f);
+                    scp0082.UnMute();
                     VeryUsualDay.Instance.ScpPlayers.Remove(id);
                     response = "SCP удалён!";
                     return true;
