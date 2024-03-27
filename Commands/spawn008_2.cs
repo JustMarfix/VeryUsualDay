@@ -49,6 +49,7 @@ namespace VeryUsualDay.Commands
                     scp0082.EnableEffect(EffectType.Stained);
                     scp0082.IsGodModeEnabled = false;
                     scp0082.Broadcast(10, "<b>Вы стали <color=#DC143C>SCP-008-2</color>!\n<color=#960018>Атакуйте людей</color> до конца жизни!</b>");
+                    scp0082.Mute();
                     VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp0082);
                 });
                 response = "SCP-008-2 создан!";
