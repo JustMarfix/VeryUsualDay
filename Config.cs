@@ -523,7 +523,7 @@ namespace VeryUsualDay
         };
 
         [Description("Список вещей, которые не могут поднимать Уборщики (List<ItemType>)")]
-        public List<ItemType> ForbiddenForJanitors { get; set; } = new List<ItemType>
+        public List<ItemType> ForbiddenForWorkers { get; set; } = new List<ItemType>
         {
             ItemType.GunCrossvec,
             ItemType.GunFRMG0,
