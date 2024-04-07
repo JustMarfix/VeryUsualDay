@@ -1,0 +1,45 @@
+﻿# Based on https://github.com/PintTheDragon/EasyEvents/blob/master/.github/workflows/main.yml
+
+name: Build for Release
+
+permissions: write-all
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Nuget
+        uses: iRebbok/setup-nuget@master
+
+      - name: Restore Packages
+        run: nuget restore VeryUsualDay.sln
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Get references
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri https://misaka-zerotwo.github.io/SL-References/Master.zip -OutFile ${{ github.workspace }}/References.zip
+          Expand-Archive -Path References.zip -DestinationPath ${{ github.workspace }}\lib
+
+      - name: Build
+        run: msbuild ActionsBuildPlugin.sln -p:Configuration=release
+        env:
+          EXILED_REFERENCES: ${{ github.workspace }}\lib
+
+      - name: Upload artifact and release
+        uses: nanoufo/action-upload-artifacts-and-release-assets@main
+        with:
+          path: ${{ github.workspace }}\bin\Release\VeryUsualDay.dll
+          upload-release-files: true
+          release-upload-url: ${{ github.event.release.upload_url }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
