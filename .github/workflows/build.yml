@@ -33,7 +33,7 @@ jobs:
           Expand-Archive -Path References.zip -DestinationPath ${{ github.workspace }}\lib
 
       - name: Build
-        run: msbuild ActionsBuildPlugin.sln -p:Configuration=release
+        run: msbuild VeryUsualDay.sln -p:Configuration=release
         env:
           EXILED_REFERENCES: ${{ github.workspace }}\lib
 
