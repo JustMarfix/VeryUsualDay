@@ -245,10 +245,17 @@ namespace VeryUsualDay
                     player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
                     Timing.CallDelayed(2f, () =>
                     {
-                        foreach (var item in Instance.Config.JanitorsItems[json[4]])
+                        foreach (var item in Instance.Config.WorkersItems[json[4]])
                         {
                             player.AddItem(item);
                         }
+                        foreach (var pair in Instance.Config.WorkersEffects[json[4]])
+                        {
+                            player.EnableEffect(pair.Key);
+                            player.ChangeEffectIntensity(pair.Key, pair.Value);
+                        }
+                        player.MaxHealth = Instance.Config.SecurityHealth[json[4]];
+                        player.Health = Instance.Config.SecurityHealth[json[4]];
                         player.Teleport(_civilianPersonnelTowerCoords);
                     });
                     break;
@@ -263,6 +270,11 @@ namespace VeryUsualDay
                         foreach (var ammo in Instance.Config.EmfAmmo[json[4]])
                         {
                             player.AddAmmo(ammo, 60);
+                        }
+                        foreach (var pair in Instance.Config.EmfEffects[json[4]])
+                        {
+                            player.EnableEffect(pair.Key);
+                            player.ChangeEffectIntensity(pair.Key, pair.Value);
                         }
                         player.MaxHealth = Instance.Config.EmfHealth[json[4]];
                         player.Health = Instance.Config.EmfHealth[json[4]];

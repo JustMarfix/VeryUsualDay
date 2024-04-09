@@ -40,8 +40,8 @@ namespace VeryUsualDay.Commands
                 Timing.CallDelayed(2f, () =>
                 {
                     scp0352.CustomInfo = "<b><color=#960018>SCP-035-2</color></b>";
-                    scp0352.MaxHealth = 250f;
-                    scp0352.Health = 250f;
+                    scp0352.MaxHealth = 350f;
+                    scp0352.Health = 350f;
                     scp0352.Scale = new Vector3(1f, 1f, 1f);
                     scp0352.IsGodModeEnabled = false;
                     scp0352.Broadcast(10, "Вы теперь подчиняетесь SCP-035.");

@@ -223,7 +223,7 @@ namespace VeryUsualDay
             }
         };
         [Description("Список вещей для Рабочих (Dictionary<string, List<ItemType>>)")]
-        public Dictionary<string, List<ItemType>> JanitorsItems { get; set; } = new Dictionary<string, List<ItemType>>
+        public Dictionary<string, List<ItemType>> WorkersItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
             {
                 "Рабочий",
@@ -249,6 +249,46 @@ namespace VeryUsualDay
                 }
             }
         };
+        
+        [Description("Максимальное здоровье рабочих (Dictionary<string, float>)")]
+        public Dictionary<string, float> WorkersHealth { get; set; } = new Dictionary<string, float>
+        {
+            {
+                "Рабочий",
+                110f
+            },
+            {
+                "Старший рабочий",
+                110f
+            }
+        };
+
+        [Description("Список эффектов для Рабочих (Dictionary<string, Dictionary<EffectType, byte>>)")]
+        public Dictionary<string, Dictionary<EffectType, byte>> WorkersEffects { get; set; } =
+            new Dictionary<string, Dictionary<EffectType, byte>>
+            {
+                {
+                    "Рабочий",
+                    new Dictionary<EffectType, byte>
+                    {
+                        {
+                            EffectType.MovementBoost,
+                            1
+                        }
+                    }
+                },
+                {
+                    "Старший рабочий",
+                    new Dictionary<EffectType, byte>
+                    {
+                        {
+                            EffectType.MovementBoost,
+                            1
+                        }
+                    }
+                }
+            };
+        
         [Description("Список ролей для ЭВС (Dictionary<string, RoleTypeId>)")]
         public Dictionary<string, RoleTypeId> EmfRoles { get; set; } = new Dictionary<string, RoleTypeId>
         {
@@ -367,6 +407,7 @@ namespace VeryUsualDay
                 500f
             }
         };
+        
         [Description("Список патронов для ЭВС (выдаётся 60 шт.) (Dictionary<string, List<AmmoType>>)")]
         public Dictionary<string, List<AmmoType>> EmfAmmo { get; set; } = new Dictionary<string, List<AmmoType>>
         {
@@ -414,6 +455,85 @@ namespace VeryUsualDay
                 }
             }
         };
+
+        [Description("Список эффектов для ЭВС (Dictionary<string, Dictionary<EffectType, byte>>)")]
+        public Dictionary<string, Dictionary<EffectType, byte>> EmfEffects { get; set; } =
+            new Dictionary<string, Dictionary<EffectType, byte>>
+            {
+                {
+                    "Боец",
+                    new Dictionary<EffectType, byte>
+                    {
+                        {
+                            EffectType.BodyshotReduction,
+                            20
+                        },
+                        {
+                            EffectType.DamageReduction,
+                            20
+                        }
+                    }
+                },
+                {
+                    "Джаггернаут",
+                    new Dictionary<EffectType, byte>
+                    {
+                        {
+                            EffectType.Disabled,
+                            1
+                        },
+                        {
+                            EffectType.BodyshotReduction,
+                            10
+                        },
+                        {
+                            EffectType.DamageReduction,
+                            10
+                        }
+                    }
+                },
+                {
+                    "Лейтенант",
+                    new Dictionary<EffectType, byte>()
+                },
+                {
+                    "Экзобоец",
+                    new Dictionary<EffectType, byte>
+                    {
+                        {
+                            EffectType.Vitality,
+                            1
+                        },
+                        {
+                            EffectType.BodyshotReduction,
+                            7
+                        },
+                        {
+                            EffectType.DamageReduction,
+                            7
+                        },
+                        {
+                            EffectType.MovementBoost,
+                            7
+                        }
+                    }
+                },
+                {
+                    "Глава",
+                    new Dictionary<EffectType, byte>
+                    {
+                        {
+                            EffectType.BodyshotReduction,
+                            20
+                        },
+                        {
+                            EffectType.DamageReduction,
+                            20
+                        }
+                    }
+                }
+            };
+        
         [Description("Список вещей для Агентов (Dictionary<string, List<ItemType>>)")]
         public Dictionary<string, List<ItemType>> AgencyItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
@@ -445,7 +565,7 @@ namespace VeryUsualDay
             }
         };
         [Description("Здоровье Агентов (float)")]
-        public float AgencyHealth { get; set; } = 350f;
+        public float AgencyHealth { get; set; } = 285f;
 
         [Description("Список патронов для Агентов (выдаётся 60 шт.) (Dictionary<string, List<AmmoType>>)")]
         public Dictionary<string, List<AmmoType>> AgencyAmmo { get; set; } = new Dictionary<string, List<AmmoType>>

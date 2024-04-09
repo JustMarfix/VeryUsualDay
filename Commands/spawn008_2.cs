@@ -31,6 +31,7 @@ namespace VeryUsualDay.Commands
                     scp0082.MaxHealth = 100f;
                     scp0082.CustomInfo = "Человек";
                     scp0082.DisableEffect(EffectType.Stained);
+                    scp0082.DisableEffect(EffectType.Poisoned);
                     scp0082.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
                     scp0082.Scale = new Vector3(1f, 1f, 1f);
                     scp0082.UnMute();
@@ -43,10 +44,11 @@ namespace VeryUsualDay.Commands
                 Timing.CallDelayed(2f, () =>
                 {
                     scp0082.CustomInfo = "<b><color=#960018>SCP-008-2</color></b>";
-                    scp0082.MaxHealth = 1850f;
-                    scp0082.Health = 1850f;
+                    scp0082.MaxHealth = 2075f;
+                    scp0082.Health = 2075f;
                     scp0082.Scale = new Vector3(1f, 1f, 1f);
                     scp0082.EnableEffect(EffectType.Stained);
+                    scp0082.EnableEffect(EffectType.Poisoned);
                     scp0082.IsGodModeEnabled = false;
                     scp0082.Broadcast(10, "<b>Вы стали <color=#DC143C>SCP-008-2</color>!\n<color=#960018>Атакуйте людей</color> до конца жизни!</b>");
                     scp0082.Mute();

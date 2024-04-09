@@ -44,9 +44,9 @@ namespace VeryUsualDay.Commands
                 Timing.CallDelayed(2f, () =>
                 {
                     scp682.CustomInfo = "<b><color=#960018>SCP-682-MT</color></b>";
-                    scp682.MaxHealth = 17500f;
-                    scp682.Health = 17500f;
-                    scp682.HumeShield = 2000f;
+                    scp682.MaxHealth = 15000f;
+                    scp682.Health = 15000f;
+                    scp682.HumeShield = 5000f;
                     scp682.Scale = new Vector3(1.2f, 1.25f, 1.2f);
                     scp682.IsGodModeEnabled = false;
                     scp682.EnableEffect(EffectType.Invigorated);
