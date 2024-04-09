@@ -11,11 +11,11 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class vudjanitor : ICommand
     {
-        public string Command => "vudjanitor";
+        public string Command => "vudworker";
 
         public string[] Aliases => new string[] { };
 
-        public string Description => "Спавнит стажёра-уборщика на СОД.";
+        public string Description => "Спавнит стажёра-рабочего на СОД.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,7 +26,7 @@ namespace VeryUsualDay.Commands
             }
             if (arguments.Count < 1)
             {
-                response = "Формат команды: vudjanitor <id через пробел>.";
+                response = "Формат команды: vudworker <id через пробел>.";
                 return false;
             }
             foreach (var id in arguments.ToArray().Skip(1).ToList())
@@ -43,7 +43,7 @@ namespace VeryUsualDay.Commands
                         janitor.AddItem(ItemType.Flashlight);
                         janitor.CustomName = $"Рабочий - ##-{VeryUsualDay.Instance.SpawnedJanitorsCounter}";
                         janitor.CustomInfo = "Человек";
-                        janitor.Broadcast(10, "<b>Вы вступили в отдел <color=#FF9966>Уборщиков</color>! Работайте в <color=#ffa8af>столовой комплекса</color> и следите за порядком в <color=#98FB98>коридорах</color>.");
+                        janitor.Broadcast(10, "<b>Вы вступили в отдел <color=#FF9966>Рабочих</color>! Работайте в <color=#ffa8af>столовой комплекса</color> и следите за порядком в <color=#98FB98>коридорах</color>.");
                         VeryUsualDay.Instance.SpawnedJanitorsCounter += 1;
                     });
                 }

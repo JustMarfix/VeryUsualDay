@@ -241,7 +241,7 @@ namespace VeryUsualDay
                         player.Teleport(_civilianPersonnelTowerCoords);
                     });
                     break;
-                case "Уборщики":
+                case "Рабочие":
                     player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
                     Timing.CallDelayed(2f, () =>
                     {

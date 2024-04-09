@@ -222,11 +222,11 @@ namespace VeryUsualDay
                 }
             }
         };
-        [Description("Список вещей для Уборщиков (Dictionary<string, List<ItemType>>)")]
+        [Description("Список вещей для Рабочих (Dictionary<string, List<ItemType>>)")]
         public Dictionary<string, List<ItemType>> JanitorsItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
             {
-                "Уборщик",
+                "Рабочий",
                 new List<ItemType>
                 {
                     ItemType.KeycardJanitor,
@@ -237,7 +237,7 @@ namespace VeryUsualDay
                 }
             },
             {
-                "Старший уборщик",
+                "Старший рабочий",
                 new List<ItemType>
                 {
                     ItemType.KeycardJanitor,
@@ -352,7 +352,7 @@ namespace VeryUsualDay
             },
             {
                 "Джаггернаут",
-                600f
+                650f
             },
             {
                 "Лейтенант",
@@ -360,11 +360,11 @@ namespace VeryUsualDay
             },
             {
                 "Экзобоец",
-                700f
+                525f
             },
             {
                 "Глава",
-                750f
+                500f
             }
         };
         [Description("Список патронов для ЭВС (выдаётся 60 шт.) (Dictionary<string, List<AmmoType>>)")]
@@ -522,7 +522,7 @@ namespace VeryUsualDay
             ItemType.MicroHID
         };
 
-        [Description("Список вещей, которые не могут поднимать Уборщики (List<ItemType>)")]
+        [Description("Список вещей, которые не могут поднимать Рабочие (List<ItemType>)")]
         public List<ItemType> ForbiddenForWorkers { get; set; } = new List<ItemType>
         {
             ItemType.GunCrossvec,
