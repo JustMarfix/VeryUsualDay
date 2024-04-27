@@ -13,7 +13,7 @@ namespace VeryUsualDay.Handlers
             VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Green;
             VeryUsualDay.Instance.BuoCounter = 0;
             VeryUsualDay.Instance.SpawnedDboysCounter = 0;
-            VeryUsualDay.Instance.SpawnedJanitorsCounter = 0;
+            VeryUsualDay.Instance.SpawnedWorkersCounter = 0;
             VeryUsualDay.Instance.SpawnedScientistCounter = 0;
             VeryUsualDay.Instance.SpawnedSecurityCounter = 0;
             VeryUsualDay.Instance.ScpPlayers.Clear();

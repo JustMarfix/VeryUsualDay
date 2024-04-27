@@ -96,7 +96,7 @@
     <Compile Include="Commands\vudclassd.cs" />
     <Compile Include="Commands\vudclear.cs" />
     <Compile Include="Commands\vudguard.cs" />
-    <Compile Include="Commands\vudjanitor.cs" />
+    <Compile Include="Commands\vudworker.cs" />
     <Compile Include="Commands\vudscience.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Handlers\Player.cs" />

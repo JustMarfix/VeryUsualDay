@@ -25,7 +25,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay";
 
-        public override Version Version => new Version(3, 1, 0);
+        public override Version Version => new Version(3, 2, 0);
 
         public bool IsEnabledInRound { get; set; }
         public bool Is008Leaked { get; set; }
@@ -36,7 +36,7 @@ namespace VeryUsualDay
         public List<int> DBoysQueue { get; set; } = new List<int>();
         public int BuoCounter { get; set; } = 1;
         public int SpawnedDboysCounter { get; set; } = 1;
-        public int SpawnedJanitorsCounter { get; set; } = 1;
+        public int SpawnedWorkersCounter { get; set; } = 1;
         public int SpawnedScientistCounter { get; set; } = 1;
         public int SpawnedSecurityCounter { get; set; } = 1;
         private readonly Vector3 _armedPersonnelTowerCoords = new Vector3(-16f, 1014.5f, -32f);

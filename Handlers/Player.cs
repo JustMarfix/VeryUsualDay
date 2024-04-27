@@ -118,9 +118,10 @@ namespace VeryUsualDay.Handlers
                     ev.Player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
                     Timing.CallDelayed(2f, () =>
                     {
-                        ev.Player.MaxHealth = 1850f;
-                        ev.Player.Health = 1850f;
+                        ev.Player.MaxHealth = 2075f;
+                        ev.Player.Health = 2075f;
                         ev.Player.EnableEffect(EffectType.Stained);
+                        ev.Player.EnableEffect(EffectType.Poisoned);
                         ev.Player.CustomInfo = "<b><color=#960018>SCP-008-2</color></b>";
                         ev.Player.Broadcast(10, "<b>Вы стали <color=#DC143C>SCP-008-2</color>!\n<color=#960018>Атакуйте людей</color> до конца жизни!</b>");
                         ev.Player.Mute();
