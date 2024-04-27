@@ -95,9 +95,11 @@
     <Compile Include="Commands\spawn966.cs" />
     <Compile Include="Commands\spawn999.cs" />
     <Compile Include="Commands\Spawnbuo.cs" />
+    <Compile Include="Commands\supplycassie.cs" />
     <Compile Include="Commands\vudclassd.cs" />
     <Compile Include="Commands\vudclear.cs" />
     <Compile Include="Commands\vudguard.cs" />
+    <Compile Include="Commands\vudsupply.cs" />
     <Compile Include="Commands\vudworker.cs" />
     <Compile Include="Commands\vudscience.cs" />
     <Compile Include="Config.cs" />

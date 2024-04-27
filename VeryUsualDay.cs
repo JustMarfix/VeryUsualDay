@@ -39,8 +39,16 @@ namespace VeryUsualDay
         public int SpawnedWorkersCounter { get; set; } = 1;
         public int SpawnedScientistCounter { get; set; } = 1;
         public int SpawnedSecurityCounter { get; set; } = 1;
+        
         private readonly Vector3 _armedPersonnelTowerCoords = new Vector3(-16f, 1014.5f, -32f);
         private readonly Vector3 _civilianPersonnelTowerCoords = new Vector3(44.4f, 1014.5f, -51.6f);
+        public readonly Vector3 SupplyTruckCoords = new Vector3(96.85f, 995f, -41.215f);
+
+        public readonly List<Vector3> EmfSupplyCoords = new List<Vector3>
+        {
+            new Vector3(-10.682f, 1003f, -32.115f),
+            new Vector3(-6.873f, 1003f, -32f)
+        };
         
         public enum Codes
         {
