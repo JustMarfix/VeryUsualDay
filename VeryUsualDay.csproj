@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\allowspawn.cs" />
+    <Compile Include="Commands\breach244.cs" />
     <Compile Include="Commands\checkcode.cs" />
     <Compile Include="Commands\checkcode_player.cs" />
     <Compile Include="Commands\classd.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Commands\patogen008.cs" />
     <Compile Include="Commands\PluginEnable.cs" />
     <Compile Include="Commands\recontain008.cs" />
+    <Compile Include="Commands\recontain244.cs" />
     <Compile Include="Commands\redoors.cs" />
     <Compile Include="Commands\RoleDistribution.cs" />
     <Compile Include="Commands\spawn008_2.cs" />
