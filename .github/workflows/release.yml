@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    name: Build the plugin
     runs-on: windows-latest
     if: ${{ !contains(github.event.head_commit.message, '#no-code') }}
     steps:
@@ -43,13 +44,24 @@ jobs:
           release-upload-url: ${{ github.event.release.upload_url }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+  deploy:
+    name: Deploy plugin to the server
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
       - name: Deploy plugin to the server
         uses: rexlmanu/pterodactyl-upload-action@v2.1
         with:
           panel-host: ${{ secrets.PANEL_HOST }}
           api-key: ${{ secrets.API_KEY }}
           server-id: "e40e442f"
-          source: "bin/Release/VeryUsualDay.dll"
+          source: "VeryUsualDay.dll"
           target: "./.config/EXILED/Plugins/"
           decompress-target: true
