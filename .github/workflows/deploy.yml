@@ -55,7 +55,7 @@ jobs:
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: deploy.yml
-          workflow_conclusion: success
+          workflow_conclusion: in_progress
       - name: Deploy plugin to the server
         uses: rexlmanu/pterodactyl-upload-action@v2.1
         with:
