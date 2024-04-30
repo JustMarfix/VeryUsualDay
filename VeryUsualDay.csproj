@@ -111,7 +111,7 @@
   <ItemGroup>
     <Content Include=".github\workflows\build.yml" />
     <Content Include=".gitignore" />
-    <Content Include=".github\workflows\release.yml" />
+    <Content Include=".github\workflows\release&amp;deploy.yml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
