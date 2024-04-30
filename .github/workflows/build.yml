@@ -1,6 +1,4 @@
-﻿# Based on https://github.com/PintTheDragon/EasyEvents/blob/master/.github/workflows/main.yml
-
-name: Build for commit
+﻿name: Build for commit
 
 on:
   push:

@@ -1,6 +1,4 @@
-﻿# Based on https://github.com/PintTheDragon/EasyEvents/blob/master/.github/workflows/main.yml
-
-name: Build for Release & Deploy
+name: Build for Deploy
 
 permissions: write-all
 
