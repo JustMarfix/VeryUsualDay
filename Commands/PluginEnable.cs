@@ -21,10 +21,10 @@ namespace VeryUsualDay.Commands
                 VeryUsualDay.Instance.IsDboysSpawnAllowed = false;
                 VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Green;
                 VeryUsualDay.Instance.BuoCounter = 0;
-                VeryUsualDay.Instance.SpawnedDboysCounter = 0;
-                VeryUsualDay.Instance.SpawnedWorkersCounter = 0;
-                VeryUsualDay.Instance.SpawnedScientistCounter = 0;
-                VeryUsualDay.Instance.SpawnedSecurityCounter = 0;
+                VeryUsualDay.Instance.SpawnedDboysCounter = 1;
+                VeryUsualDay.Instance.SpawnedWorkersCounter = 1;
+                VeryUsualDay.Instance.SpawnedScientistCounter = 1;
+                VeryUsualDay.Instance.SpawnedSecurityCounter = 1;
                 VeryUsualDay.Instance.ScpPlayers.Clear();
                 VeryUsualDay.Instance.Zombies.Clear();
                 VeryUsualDay.Instance.JoinedDboys.Clear();
