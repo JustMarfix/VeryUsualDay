@@ -49,13 +49,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Download artifact
-        id: download-artifact
-        uses: dawidd6/action-download-artifact@v3
+      - name: Download plugin from release 
+        uses: robinraju/release-downloader@v1.10
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          workflow: deploy.yml
-          workflow_conclusion: in_progress
+          latest: true
+          fileName: 'VeryUsualDay.dll'
       - name: Deploy plugin to the server
         uses: rexlmanu/pterodactyl-upload-action@v2.1
         with:
