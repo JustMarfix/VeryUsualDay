@@ -652,7 +652,32 @@ namespace VeryUsualDay
             ItemType.GunAK,
             ItemType.GunLogicer,
             ItemType.GunShotgun,
-            ItemType.GunA7
+            ItemType.GunA7,
+            ItemType.MicroHID
+        };
+        
+        [Description("Список вещей, которые не могут поднимать сотрудники класса Д (List<ItemType>)")]
+        public List<ItemType> ForbiddenForClassD { get; set; } = new List<ItemType>
+        {
+            ItemType.GunLogicer,
+            ItemType.GunFRMG0,
+            ItemType.MicroHID
+        };
+        
+        [Description("Список вещей, которые не могут поднимать сотрудники СБ (List<ItemType>)")]
+        public List<ItemType> ForbiddenForSecurity { get; set; } = new List<ItemType>
+        {
+            ItemType.GunLogicer,
+            ItemType.GunFRMG0,
+            ItemType.MicroHID
+        };
+        
+        [Description("Список вещей, которые не могут поднимать сотрудники СБ (List<ItemType>)")]
+        public List<ItemType> ForbiddenForAgency { get; set; } = new List<ItemType>
+        {
+            ItemType.GunLogicer,
+            ItemType.GunFRMG0,
+            ItemType.MicroHID
         };
 
         [Description("Инвентарь бойца БУО (List<ItemType>)")]

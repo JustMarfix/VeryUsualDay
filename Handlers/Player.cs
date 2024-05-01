@@ -57,7 +57,10 @@ namespace VeryUsualDay.Handlers
             switch (ev.Player.Role.Type)
             {
                 case RoleTypeId.Scientist when VeryUsualDay.Instance.Config.ForbiddenForScientists.Contains(ev.Pickup.Type):
+                case RoleTypeId.FacilityGuard when VeryUsualDay.Instance.Config.ForbiddenForSecurity.Contains(ev.Pickup.Type):
                 case RoleTypeId.ClassD when ev.Player.CustomName.ToLower().Contains("рабочий") && VeryUsualDay.Instance.Config.ForbiddenForWorkers.Contains(ev.Pickup.Type):
+                case RoleTypeId.ClassD when !ev.Player.CustomName.ToLower().Contains("рабочий") && VeryUsualDay.Instance.Config.ForbiddenForClassD.Contains(ev.Pickup.Type):
+                case RoleTypeId.Tutorial when ev.Player.CustomName.ToLower().Contains("агент") && VeryUsualDay.Instance.Config.ForbiddenForSecurity.Contains(ev.Pickup.Type):
                     ev.IsAllowed = false;
                     break;
             }
