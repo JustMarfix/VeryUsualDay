@@ -112,6 +112,8 @@
     <Content Include=".github\workflows\build.yml" />
     <Content Include=".github\workflows\deploy.yml" />
     <Content Include=".gitignore" />
+    <Content Include="LICENSE" />
+    <Content Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
