@@ -1,5 +1,4 @@
-﻿using System;
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
@@ -26,20 +25,24 @@ namespace VeryUsualDay.Handlers
                         return;
                     }
                 }
+
                 if (ev.Reason == SpawnReason.Died || ev.Reason == SpawnReason.Destroyed)
                 {
-                    var bc = "<b>Вы были перемещены в <color=purple>Обучение</color>, т.к. ивент находится в процессе.</b>";
+                    var bc =
+                        "<b>Вы были перемещены в <color=purple>Обучение</color>, т.к. ивент находится в процессе.</b>";
                     ev.Player.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
                     ev.Player.Broadcast(10, bc);
                 }
                 else
                 {
-                    var bc = "<color=#98FB98><b>Вы</b></color> на закрытом рп ивенте <color=#666699>\"Слишком обычный день\"</color>. Можете ожидать своей роли и появления на территории комплекса. Возможен лимит участвующих.";
+                    var bc =
+                        "<color=#98FB98><b>Вы</b></color> на закрытом рп ивенте <color=#666699>\"Слишком обычный день\"</color>. Можете ожидать своей роли и появления на территории комплекса. Возможен лимит участвующих.";
                     ev.Player.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
                     ev.Player.Broadcast(10, bc);
                 }
             });
         }
+
         public static void OnPickingUpItem(PickingUpItemEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
@@ -49,18 +52,27 @@ namespace VeryUsualDay.Handlers
                 {
                     ev.IsAllowed = false;
                 }
-                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 && VeryUsualDay.Instance.Config.Scp035ForbiddenItems.Contains(ev.Pickup.Type))
+
+                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 &&
+                    VeryUsualDay.Instance.Config.Scp035ForbiddenItems.Contains(ev.Pickup.Type))
                 {
                     ev.IsAllowed = false;
                 }
             }
+
             switch (ev.Player.Role.Type)
             {
-                case RoleTypeId.Scientist when VeryUsualDay.Instance.Config.ForbiddenForScientists.Contains(ev.Pickup.Type):
-                case RoleTypeId.FacilityGuard when VeryUsualDay.Instance.Config.ForbiddenForSecurity.Contains(ev.Pickup.Type):
-                case RoleTypeId.ClassD when ev.Player.CustomName.ToLower().Contains("рабочий") && VeryUsualDay.Instance.Config.ForbiddenForWorkers.Contains(ev.Pickup.Type):
-                case RoleTypeId.ClassD when !ev.Player.CustomName.ToLower().Contains("рабочий") && VeryUsualDay.Instance.Config.ForbiddenForClassD.Contains(ev.Pickup.Type):
-                case RoleTypeId.Tutorial when ev.Player.CustomName.ToLower().Contains("агент") && VeryUsualDay.Instance.Config.ForbiddenForSecurity.Contains(ev.Pickup.Type):
+                case RoleTypeId.Scientist
+                    when VeryUsualDay.Instance.Config.ForbiddenForScientists.Contains(ev.Pickup.Type):
+                case RoleTypeId.FacilityGuard
+                    when VeryUsualDay.Instance.Config.ForbiddenForSecurity.Contains(ev.Pickup.Type):
+                case RoleTypeId.ClassD when ev.Player.CustomName.ToLower().Contains("рабочий") &&
+                                            VeryUsualDay.Instance.Config.ForbiddenForWorkers.Contains(ev.Pickup.Type):
+                case RoleTypeId.ClassD when !ev.Player.CustomName.ToLower().Contains("рабочий") &&
+                                            VeryUsualDay.Instance.Config.ForbiddenForClassD.Contains(ev.Pickup.Type):
+                case RoleTypeId.Tutorial when ev.Player.CustomName.ToLower().Contains("агент") &&
+                                              VeryUsualDay.Instance.Config.ForbiddenForSecurity.Contains(ev.Pickup.Type)
+                    :
                     ev.IsAllowed = false;
                     break;
             }
@@ -70,8 +82,11 @@ namespace VeryUsualDay.Handlers
                 ev.Player.Role.Type != RoleTypeId.ClassD || ev.Player.CustomName.ToLower().Contains("рабочий") ||
                 !ev.Pickup.Type.IsWeapon() || VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id)) return;
             VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Blue;
-            Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#005EBC>Синий Код</color>. Зафиксированы малые нарушения. Персоналу следует принимать меры предосторожности. <size=0> pitch_0.1 .G1 .G2 . pitch_1.0 . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
+            Cassie.Message(
+                "<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#005EBC>Синий Код</color>. Зафиксированы малые нарушения. Персоналу следует принимать меры предосторожности. <size=0> pitch_0.1 .G1 .G2 . pitch_1.0 . . . . . . . . . . . . . .",
+                isNoisy: false, isSubtitles: true);
         }
+
         public static void OnDroppingItem(DroppingItemEventArgs ev)
         {
             if (!VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id)) return;
@@ -79,30 +94,32 @@ namespace VeryUsualDay.Handlers
             {
                 ev.IsAllowed = false;
             }
-            if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 && ev.Item.Type == ItemType.GunRevolver)
+
+            if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 &&
+                ev.Item.Type == ItemType.GunRevolver)
             {
                 ev.IsAllowed = false;
             }
         }
+
         public static void OnHurting(HurtingEventArgs ev)
         {
             try
             {
-                if (!VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player)) return;
-                if (player != VeryUsualDay.Scps.Scp0762) return;
+                if (ev.Player != null && Random.Range(0, 100) < 40) ev.Attacker.Health += 25f;
+                if (ev.Player != null && !VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player) &&
+                    player != VeryUsualDay.Scps.Scp0762) return; // checks if target is SCP except for avel himself
                 if (ev.Attacker.CurrentItem.As<Jailbird>()?.WearState != JailbirdWearState.AlmostBroken) return;
                 ev.Attacker.CurrentItem?.Destroy();
                 var jailbird = ev.Attacker.AddItem(ItemType.Jailbird);
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    ev.Attacker.CurrentItem = jailbird;
-                });
+                Timing.CallDelayed(0.1f, () => { ev.Attacker.CurrentItem = jailbird; });
             }
             catch
             {
-                // ignored
+                // ignored, just stfu about how bad it is
             }
         }
+
         public static void OnDied(DiedEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
@@ -126,48 +143,55 @@ namespace VeryUsualDay.Handlers
                         ev.Player.EnableEffect(EffectType.Stained);
                         ev.Player.EnableEffect(EffectType.Poisoned);
                         ev.Player.CustomInfo = "<b><color=#960018>SCP-008-2</color></b>";
-                        ev.Player.Broadcast(10, "<b>Вы стали <color=#DC143C>SCP-008-2</color>!\n<color=#960018>Атакуйте людей</color> до конца жизни!</b>");
+                        ev.Player.Broadcast(10,
+                            "<b>Вы стали <color=#DC143C>SCP-008-2</color>!\n<color=#960018>Атакуйте людей</color> до конца жизни!</b>");
                         ev.Player.Mute();
                         VeryUsualDay.Instance.Zombies.Add(ev.Player.Id);
                     });
                 });
             }
+
             if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
             {
                 if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp0082) ev.Player.UnMute();
                 VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
             }
+
             if (VeryUsualDay.Instance.DBoysQueue.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.DBoysQueue.Remove(ev.Player.Id);
             }
+
             if (VeryUsualDay.Instance.JoinedDboys.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.JoinedDboys.Remove(ev.Player.Id);
             }
-            if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green || VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald)
+
+            if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green ||
+                VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald)
             {
-                Timing.CallDelayed(5f, () =>
-                {
-                    Ragdoll.GetLast(ev.Player).Destroy();
-                });
+                Timing.CallDelayed(5f, () => { Ragdoll.GetLast(ev.Player).Destroy(); });
             }
         }
+
         public static void OnLeft(LeftEventArgs ev)
         {
             if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
             {
                 VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
             }
+
             if (VeryUsualDay.Instance.Zombies.Contains(ev.Player.Id))
             {
                 ev.Player.UnMute();
                 VeryUsualDay.Instance.Zombies.Remove(ev.Player.Id);
             }
+
             if (VeryUsualDay.Instance.DBoysQueue.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.DBoysQueue.Remove(ev.Player.Id);
             }
+
             if (VeryUsualDay.Instance.JoinedDboys.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.JoinedDboys.Remove(ev.Player.Id);
