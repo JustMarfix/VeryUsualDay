@@ -14,9 +14,10 @@ namespace VeryUsualDay.Handlers
     {
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
+            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             Timing.CallDelayed(5f, () =>
             {
-                if (!VeryUsualDay.Instance.IsEnabledInRound || ev.NewRole != RoleTypeId.Spectator ||
+                if (ev.NewRole != RoleTypeId.Spectator ||
                     ev.Reason == SpawnReason.ForceClass) return;
                 if (VeryUsualDay.Instance.Is008Leaked)
                 {
@@ -89,6 +90,7 @@ namespace VeryUsualDay.Handlers
 
         public static void OnDroppingItem(DroppingItemEventArgs ev)
         {
+            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (!VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id)) return;
             if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp0762)
             {
@@ -104,11 +106,12 @@ namespace VeryUsualDay.Handlers
 
         public static void OnHurting(HurtingEventArgs ev)
         {
+            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             try
             {
-                if (ev.Player != null && Random.Range(0, 100) < 40) ev.Attacker.Health += 25f;
-                if (ev.Player != null && !VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player) &&
-                    player != VeryUsualDay.Scps.Scp0762) return; // checks if target is SCP except for avel himself
+                if (!VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Attacker.Id, out var avel) ||
+                    avel != VeryUsualDay.Scps.Scp0762) return; // checks if attacker is not avel
+                if (ev.Player != null && Random.Range(0, 100) < 40) ev.Attacker.Heal(25f);
                 if (ev.Attacker.CurrentItem.As<Jailbird>()?.WearState != JailbirdWearState.AlmostBroken) return;
                 ev.Attacker.CurrentItem?.Destroy();
                 var jailbird = ev.Attacker.AddItem(ItemType.Jailbird);
@@ -176,6 +179,7 @@ namespace VeryUsualDay.Handlers
 
         public static void OnLeft(LeftEventArgs ev)
         {
+            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
             {
                 VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
@@ -200,6 +204,7 @@ namespace VeryUsualDay.Handlers
 
         public static void OnShooting(ShootingEventArgs ev)
         {
+            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (!VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player)) return;
             if (player == VeryUsualDay.Scps.Scp035 && ev.Firearm.Type == ItemType.GunRevolver)
             {
@@ -209,6 +214,7 @@ namespace VeryUsualDay.Handlers
 
         public static void OnUsingItem(UsingItemEventArgs ev)
         {
+            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (!VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player)) return;
             if ((player != VeryUsualDay.Scps.Scp035 || ev.Usable.Type != ItemType.SCP500) &&
                 ev.Usable.Type != ItemType.SCP207 && ev.Usable.Type != ItemType.AntiSCP207) return;
