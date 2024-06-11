@@ -11,13 +11,13 @@ namespace VeryUsualDay.Commands
     {
         public string Command => "redoors";
         public string[] Aliases => new string[] { };
-        public string Description => "Позволяет рестартнуть систему дверей (СОД).";
+        public string Description => "Позволяет рестартнуть систему дверей (FX).";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
-                response = "Режим СОД не включён!";
+                response = "Режим FX не включён!";
                 return false;
             }
             foreach (var door in Door.List)

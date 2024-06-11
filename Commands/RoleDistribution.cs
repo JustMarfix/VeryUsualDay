@@ -8,13 +8,13 @@ namespace VeryUsualDay.Commands
     {
         public string Command => "roledistr";
         public string[] Aliases => new string[] { };
-        public string Description => "Распределяет роли для людей из БД. Не использовать без СОД.";
+        public string Description => "Распределяет роли для людей из БД. Не использовать без FX.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
-                response = "Режим СОД не включён!";
+                response = "Режим FX не включён!";
                 return false;
             }
             VeryUsualDay.Instance.RoleDistribution();

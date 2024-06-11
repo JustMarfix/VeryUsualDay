@@ -15,13 +15,13 @@ namespace VeryUsualDay.Commands
 
         public string[] Aliases => new string[] { };
 
-        public string Description => "Позволяет заспавнить бойцов БУО. Использование: spawnbuo <id через пробел>. Для СОД.";
+        public string Description => "Позволяет заспавнить бойцов БУО. Использование: spawnbuo <id через пробел>. Для FX.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
-                response = "Режим СОД не включён";
+                response = "Режим FX не включён";
                 return false;
             }
             if (arguments.Count < 2)

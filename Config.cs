@@ -139,7 +139,7 @@ namespace VeryUsualDay
             },
             {
                 "Глава",
-                250f
+                400f
             }
         };
 
@@ -672,7 +672,7 @@ namespace VeryUsualDay
             ItemType.MicroHID
         };
         
-        [Description("Список вещей, которые не могут поднимать сотрудники СБ (List<ItemType>)")]
+        [Description("Список вещей, которые не могут поднимать сотрудники Агентства (List<ItemType>)")]
         public List<ItemType> ForbiddenForAgency { get; set; } = new List<ItemType>
         {
             ItemType.GunLogicer,
@@ -713,7 +713,6 @@ namespace VeryUsualDay
             ItemType.GunCrossvec,
             ItemType.GunE11SR,
             ItemType.GunFRMG0,
-            ItemType.GunFSP9,
             ItemType.GunLogicer,
             ItemType.Painkillers,
             ItemType.Medkit

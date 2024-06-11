@@ -12,6 +12,13 @@ namespace VeryUsualDay.Handlers
 {
     public static class Player
     {
+        public static void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.IsTeslaEnabled) return;
+            ev.IsTriggerable = false;
+            ev.IsAllowed = false;
+        }
+        
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
@@ -19,13 +26,6 @@ namespace VeryUsualDay.Handlers
             {
                 if (ev.NewRole != RoleTypeId.Spectator ||
                     ev.Reason == SpawnReason.ForceClass) return;
-                if (VeryUsualDay.Instance.Is008Leaked)
-                {
-                    if (ev.Player.Role.Type == RoleTypeId.Scp0492)
-                    {
-                        return;
-                    }
-                }
 
                 if (ev.Reason == SpawnReason.Died || ev.Reason == SpawnReason.Destroyed)
                 {
@@ -72,8 +72,7 @@ namespace VeryUsualDay.Handlers
                 case RoleTypeId.ClassD when !ev.Player.CustomName.ToLower().Contains("рабочий") &&
                                             VeryUsualDay.Instance.Config.ForbiddenForClassD.Contains(ev.Pickup.Type):
                 case RoleTypeId.Tutorial when ev.Player.CustomName.ToLower().Contains("агент") &&
-                                              VeryUsualDay.Instance.Config.ForbiddenForSecurity.Contains(ev.Pickup.Type)
-                    :
+                                              VeryUsualDay.Instance.Config.ForbiddenForAgency.Contains(ev.Pickup.Type):
                     ev.IsAllowed = false;
                     break;
             }
@@ -129,37 +128,7 @@ namespace VeryUsualDay.Handlers
             ev.Player.CustomInfo = "Человек";
             ev.Player.MaxHealth = 100f;
             ev.Player.Scale = new Vector3(1f, 1f, 1f);
-            if (VeryUsualDay.Instance.Zombies.Contains(ev.Player.Id))
-            {
-                ev.Player.UnMute();
-                VeryUsualDay.Instance.Zombies.Remove(ev.Player.Id);
-            }
-            else if (!VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id) && VeryUsualDay.Instance.Is008Leaked)
-            {
-                Timing.CallDelayed(2f, () =>
-                {
-                    ev.Player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                    Timing.CallDelayed(2f, () =>
-                    {
-                        ev.Player.MaxHealth = 2075f;
-                        ev.Player.Health = 2075f;
-                        ev.Player.EnableEffect(EffectType.Stained);
-                        ev.Player.EnableEffect(EffectType.Poisoned);
-                        ev.Player.CustomInfo = "<b><color=#960018>SCP-008-2</color></b>";
-                        ev.Player.Broadcast(10,
-                            "<b>Вы стали <color=#DC143C>SCP-008-2</color>!\n<color=#960018>Атакуйте людей</color> до конца жизни!</b>");
-                        ev.Player.Mute();
-                        VeryUsualDay.Instance.Zombies.Add(ev.Player.Id);
-                    });
-                });
-            }
-
-            if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
-            {
-                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp0082) ev.Player.UnMute();
-                VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
-            }
-
+            
             if (VeryUsualDay.Instance.DBoysQueue.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.DBoysQueue.Remove(ev.Player.Id);
@@ -184,13 +153,7 @@ namespace VeryUsualDay.Handlers
             {
                 VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
             }
-
-            if (VeryUsualDay.Instance.Zombies.Contains(ev.Player.Id))
-            {
-                ev.Player.UnMute();
-                VeryUsualDay.Instance.Zombies.Remove(ev.Player.Id);
-            }
-
+            
             if (VeryUsualDay.Instance.DBoysQueue.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.DBoysQueue.Remove(ev.Player.Id);

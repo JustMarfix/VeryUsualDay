@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
 using Newtonsoft.Json;
@@ -23,15 +22,14 @@ namespace VeryUsualDay
         public static VeryUsualDay Instance { get; private set; }
 
         public override string Author => "JustMarfix";
-        public override string Name => "VeryUsualDay";
+        public override string Name => "VeryUsualDay (FX version)";
 
-        public override Version Version => new Version(3, 3, 0);
+        public override Version Version => new Version(4, 0, 0);
 
         public bool IsEnabledInRound { get; set; }
-        public bool Is008Leaked { get; set; }
         public bool IsLunchtimeActive { get; set; }
         public bool IsDboysSpawnAllowed { get; set; }
-        public List<int> Zombies { get; set; } = new List<int>();
+        public bool IsTeslaEnabled { get; set; }
         public List<int> JoinedDboys { get; set; } = new List<int>();
         public List<int> DBoysQueue { get; set; } = new List<int>();
         public int BuoCounter { get; set; } = 1;
@@ -42,7 +40,8 @@ namespace VeryUsualDay
         
         private readonly Vector3 _armedPersonnelTowerCoords = new Vector3(-16f, 1014.5f, -32f);
         private readonly Vector3 _civilianPersonnelTowerCoords = new Vector3(44.4f, 1014.5f, -51.6f);
-        public readonly Vector3 SupplyTruckCoords = new Vector3(96.85f, 995f, -41.215f);
+        public readonly Vector3 SpawnPosition = new Vector3(139.487f, 995.392f, -16.762f);
+        public Vector3 SupplyBoxCoords = new Vector3();
 
         public readonly List<Vector3> EmfSupplyCoords = new List<Vector3>
         {
@@ -68,13 +67,11 @@ namespace VeryUsualDay
 
         public enum Scps
         {
-            Scp0082,
             Scp035,
             Scp0352,
             Scp049,
             Scp0762,
             Scp372,
-            Scp575,
             Scp682,
             Scp966,
             Scp999
@@ -94,7 +91,9 @@ namespace VeryUsualDay
             PlayerHandler.Left += Player.OnLeft;
             PlayerHandler.Shooting += Player.OnShooting;
             PlayerHandler.UsingItem += Player.OnUsingItem;
+            PlayerHandler.TriggeringTesla += Player.OnTriggeringTesla;
             ServerHandler.WaitingForPlayers += Server.OnWaitingForPlayers;
+            ServerHandler.RoundStarted += Server.OnRoundStarted;
             base.OnEnabled();
         }
 
@@ -107,7 +106,9 @@ namespace VeryUsualDay
             PlayerHandler.Died -= Player.OnDied;
             PlayerHandler.Left -= Player.OnLeft;
             PlayerHandler.Shooting -= Player.OnShooting;
+            PlayerHandler.TriggeringTesla -= Player.OnTriggeringTesla;
             ServerHandler.WaitingForPlayers -= Server.OnWaitingForPlayers;
+            ServerHandler.RoundStarted -= Server.OnRoundStarted;
             Instance = null;
             base.OnDisabled();
         }
@@ -188,18 +189,6 @@ namespace VeryUsualDay
             }
         }*/
 
-        public IEnumerator<float> _008_poisoning()
-        {
-            for (;;)
-            {
-                foreach (var target in Exiled.API.Features.Player.Get(player => player.Zone == ZoneType.HeavyContainment && !Instance.Config.DoNotPoisonRoles.Contains(player.Role.Type) && player.Role.Team != Team.SCPs && (player.CustomInfo is null || !player.CustomInfo.ToLower().Contains("scp"))))
-                {
-                    target.EnableEffect(EffectType.Poisoned);
-                }
-                yield return Timing.WaitForSeconds(10f);
-            }
-        }
-
         private static async Task<string> HttpGetUser(string steamid)
         {
             var client = new HttpClient();
@@ -217,7 +206,7 @@ namespace VeryUsualDay
             }
 
             var splitted = json[1].Split(' ');
-            player.CustomInfo = new StringBuilder().Append($"\"{splitted[0]}\" ").Append(string.Join(" ", splitted.Skip(1))).ToString();
+            player.CustomInfo = new StringBuilder().Append($"\"{splitted[0]}\" ").Append(string.Join(" ", splitted.Skip(1))).ToString(); // add quotes to the name and conc. to the main string
             player.CustomName = json[2];
             switch (json[3])
             {

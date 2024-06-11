@@ -10,13 +10,13 @@ namespace VeryUsualDay.Commands
     {
         public string Command => "setcode";
         public string[] Aliases => new [] { "code" };
-        public string Description => "Установить код в комплексе. Используется для СОД.";
+        public string Description => "Установить код в комплексе. Используется для FX.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
-                response = "Режим СОД не включён!";
+                response = "Режим FX не включён!";
                 return false;
             }
             if (arguments.Count != 1)
@@ -51,12 +51,12 @@ namespace VeryUsualDay.Commands
                     return true;
                 case "orange":
                     VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Orange;
-                    Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#EE7600>Оранжевый Код</color>. В комплексе зафиксированы нарушения, превышающие слабый уровень опасности. Всем боевым единицам приступить к ликвидации угрозы или принять меры для восстановления безопасной обстановки. <b><color=#002DB3>ЭВС</color></b> Разрешено войти в подземную часть. <size=0> pitch_0.15 .G6 pitch_0.08 .G1 .G3 . pitch_1.0 . . . . . . . . . . . . . .", isSubtitles: true, isNoisy: false);
+                    Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#EE7600>Оранжевый Код</color>. В комплексе зафиксированы нарушения, превышающие слабый уровень опасности. Всем боевым единицам приступить к ликвидации угрозы или принять меры для восстановления безопасной обстановки. <b><color=#002DB3>ГОР</color></b> Разрешено войти в подземную часть. <size=0> pitch_0.15 .G6 pitch_0.08 .G1 .G3 . pitch_1.0 . . . . . . . . . . . . . .", isSubtitles: true, isNoisy: false);
                     response = "Установлен код \"Оранжевый\"!";
                     return true;
                 case "yellow":
                     VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Yellow;
-                    Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#EFC01A>Жёлтый Код</color>. Возможно включение <b><color=#FD8272>Тесла-Ворот</b></color>. Службе безопасности приступить к ликвидации угрозы или принять меры для восстановления безопасной обстановки. <b><color=#002DB3>ЭВС</color></b> Разрешено войти в подземную часть. <size=0> pitch_0.1 .G3 .G1 . pitch_1.0 . . . . . . . . . . . . . .", isSubtitles: true, isNoisy: false);
+                    Cassie.Message("<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#EFC01A>Жёлтый Код</color>. Возможно включение <b><color=#FD8272>Тесла-Ворот</b></color>. Службе безопасности приступить к ликвидации угрозы или принять меры для восстановления безопасной обстановки. <b><color=#002DB3>ГОР</color></b> Разрешено войти в подземную часть. <size=0> pitch_0.1 .G3 .G1 . pitch_1.0 . . . . . . . . . . . . . .", isSubtitles: true, isNoisy: false);
                     response = "Установлен код \"Жёлтый\"!";
                     return true;
                 case "red":

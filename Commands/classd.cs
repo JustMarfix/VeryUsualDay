@@ -16,7 +16,7 @@ namespace VeryUsualDay.Commands
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
-                response = "Режим СОД не включён!";
+                response = "Режим FX не включён!";
                 return false;
             }
             if (!VeryUsualDay.Instance.IsDboysSpawnAllowed)

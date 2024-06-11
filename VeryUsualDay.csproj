@@ -78,13 +78,11 @@
     <Compile Include="Commands\lock049gate.cs" />
     <Compile Include="Commands\lock173gate.cs" />
     <Compile Include="Commands\Lunch.cs" />
-    <Compile Include="Commands\patogen008.cs" />
+    <Compile Include="Commands\ManageTesla.cs" />
     <Compile Include="Commands\PluginEnable.cs" />
-    <Compile Include="Commands\recontain008.cs" />
     <Compile Include="Commands\recontain244.cs" />
     <Compile Include="Commands\redoors.cs" />
     <Compile Include="Commands\RoleDistribution.cs" />
-    <Compile Include="Commands\spawn008_2.cs" />
     <Compile Include="Commands\spawn035.cs" />
     <Compile Include="Commands\SetCode.cs" />
     <Compile Include="Commands\spawn035_2.cs" />

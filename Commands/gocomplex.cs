@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CommandSystem;
-using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.API.Features.Doors;
 
 namespace VeryUsualDay.Commands
 {
@@ -12,13 +10,13 @@ namespace VeryUsualDay.Commands
     {
         public string Command => "gocomplex";
         public string[] Aliases => new [] { "gocm" };
-        public string Description => "Для СОД. Отправляет людей на поверхность и кидает CASSIE.";
+        public string Description => "Для FX. Отправляет людей на поверхность и кидает CASSIE.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
-                response = "Режим СОД не включён";
+                response = "Режим КМ не включён";
                 return false;
             }
             if (arguments.Count < 1)
@@ -33,7 +31,7 @@ namespace VeryUsualDay.Commands
                     response = $"Человека с ID {id} нету на сервере.";
                     return false;
                 }
-                var pos = Door.Get(DoorType.SurfaceGate).Position;
+                var pos = VeryUsualDay.Instance.SpawnPosition;
                 pos.x -= 2f;
                 pos.y += 1f;
                 player.Teleport(pos);

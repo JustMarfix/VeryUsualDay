@@ -13,14 +13,14 @@ namespace VeryUsualDay.Commands
     {
         public string Command => "vudsupply";
         public string[] Aliases => new string[] { };
-        public string Description => "Поставка припасов на СОДе.";
+        public string Description => "Поставка припасов на FXе.";
         private Vector3 _coords;
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
-                response = "Режим СОД не включён";
+                response = "Режим FX не включён";
                 return false;
             }
             
@@ -37,40 +37,16 @@ namespace VeryUsualDay.Commands
                 case "med":
                     for (var i = 0; i < 15; i++)
                     {
-                        Pickup.CreateAndSpawn(ItemType.Adrenaline, VeryUsualDay.Instance.SupplyTruckCoords,
+                        Pickup.CreateAndSpawn(ItemType.Adrenaline, VeryUsualDay.Instance.SupplyBoxCoords,
                             new Quaternion());
                     }
                     for (var i = 0; i < 20; i++)
                     {
-                        Pickup.CreateAndSpawn(ItemType.Painkillers, VeryUsualDay.Instance.SupplyTruckCoords,
+                        Pickup.CreateAndSpawn(ItemType.Painkillers, VeryUsualDay.Instance.SupplyBoxCoords,
                             new Quaternion());
                     }
                     Cassie.Message(
                         "<b><color=#EE7600>[Заказ прибыл]</color>: медикаменты </color></b> <size=0> pitch_0.4 .G1 . . .G1 .G1 pitch_1.00 . . . . . . . . . . . . . .",
-                        isNoisy: false, isSubtitles: true);
-                    break;
-                case "emf":
-                    _coords = VeryUsualDay.Instance.EmfSupplyCoords.RandomItem();
-                    for (var i = 0; i < 5; i++)
-                    {
-                        Pickup.CreateAndSpawn(ItemType.Radio, _coords, new Quaternion());
-                    }
-                    for (var i = 0; i < 10; i++)
-                    {
-                        Pickup.CreateAndSpawn(ItemType.Medkit, _coords, new Quaternion());
-                    }
-                    for (var i = 0; i < 3; i++)
-                    {
-                        Pickup.CreateAndSpawn(ItemType.GrenadeFlash, _coords, new Quaternion());
-                    }
-                    for (var i = 0; i < 20; i++)
-                    {
-                        Pickup.CreateAndSpawn(ItemType.Ammo9x19, _coords, new Quaternion());
-                        Pickup.CreateAndSpawn(ItemType.Ammo556x45, _coords, new Quaternion());
-                        Pickup.CreateAndSpawn(ItemType.Ammo762x39, _coords, new Quaternion());
-                    }
-                    Cassie.Message(
-                        "<b><color=#002DB3>[ЭВС]</color>: запасы были пополнены. <size=0> pitch_0.4 .G1 . . .G3",
                         isNoisy: false, isSubtitles: true);
                     break;
                 case "scp":
@@ -84,19 +60,19 @@ namespace VeryUsualDay.Commands
                         case "500":
                             for (var i = 0; i < int.Parse(args[2]); i++)
                             {
-                                Pickup.CreateAndSpawn(ItemType.SCP500, VeryUsualDay.Instance.SupplyTruckCoords, new Quaternion());
+                                Pickup.CreateAndSpawn(ItemType.SCP500, VeryUsualDay.Instance.SupplyBoxCoords, new Quaternion());
                             }
                             break;
                         case "1853":
                             for (var i = 0; i < int.Parse(args[2]); i++)
                             {
-                                Pickup.CreateAndSpawn(ItemType.SCP1853, VeryUsualDay.Instance.SupplyTruckCoords, new Quaternion());
+                                Pickup.CreateAndSpawn(ItemType.SCP1853, VeryUsualDay.Instance.SupplyBoxCoords, new Quaternion());
                             }
                             break;
                         case "207":
                             for (var i = 0; i < int.Parse(args[2]); i++)
                             {
-                                Pickup.CreateAndSpawn(ItemType.SCP207, VeryUsualDay.Instance.SupplyTruckCoords, new Quaternion());
+                                Pickup.CreateAndSpawn(ItemType.SCP207, VeryUsualDay.Instance.SupplyBoxCoords, new Quaternion());
                             }
                             break;
                         default:
@@ -112,7 +88,7 @@ namespace VeryUsualDay.Commands
                     }
                     for (var i = 0; i < int.Parse(args[1]); i++)
                     {
-                        Pickup.CreateAndSpawn(ItemType.Medkit, VeryUsualDay.Instance.SupplyTruckCoords, new Quaternion());
+                        Pickup.CreateAndSpawn(ItemType.Medkit, VeryUsualDay.Instance.SupplyBoxCoords, new Quaternion());
                     }
                     Cassie.Message(
                         "<b><color=#EE7600>[Заказ прибыл]</color>: питание </color></b> <size=0> pitch_0.4 .G1 . . .G1 .G1 pitch_1.00 . . . . . . . . . . . . . .",

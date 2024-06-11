@@ -8,7 +8,7 @@ namespace VeryUsualDay.Commands
     {
         public string Command => "code";
         public string[] Aliases => new string[] { };
-        public string Description => "Показывает текущий код СОД.";
+        public string Description => "Показывает текущий код FX.";
         
         private const string Str1 = "Статус обеда: активен";
         private const string Str2 = "Статус обеда: неактивен";
@@ -17,7 +17,7 @@ namespace VeryUsualDay.Commands
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
-                response = "Режим СОД не включён!";
+                response = "Режим FX не включён!";
                 return false;
             }
             response = $"Текущий код - {VeryUsualDay.Instance.CurrentCode.Description()}. {((int)VeryUsualDay.Instance.CurrentCode < 2 ? (VeryUsualDay.Instance.IsLunchtimeActive ? Str1 : Str2) : "")}";

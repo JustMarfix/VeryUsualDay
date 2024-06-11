@@ -9,13 +9,13 @@ namespace VeryUsualDay.Commands
     {
         public string Command => "supplycassie";
         public string[] Aliases => new string[] { };
-        public string Description => "Вызывает CASSIE о доставке SCP. Только для СОД.";
+        public string Description => "Вызывает CASSIE о доставке SCP. Только для FX.";
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
-                response = "Режим СОД не включён";
+                response = "Режим FX не включён";
                 return false;
             }
             Cassie.Message("<b><color=#EE7600>[Заказ прибыл]</color>: аномальные объекты </color></b> <size=0> pitch_0.4 .G1 . . .G1 .G1 pitch_1.00 . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);

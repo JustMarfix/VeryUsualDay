@@ -16,13 +16,13 @@ namespace VeryUsualDay.Commands
 
         public string[] Aliases => new string[] { };
 
-        public string Description => "Работает при СОД. Спавнит SCP-966.";
+        public string Description => "Работает при FX. Спавнит SCP-966.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
-                response = "Режим СОД не включён!";
+                response = "Режим FX не включён!";
                 return false;
             }
             var id = int.Parse(arguments.ToArray()[0]);
