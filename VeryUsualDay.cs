@@ -256,7 +256,7 @@ namespace VeryUsualDay
                         player.Teleport(_civilianPersonnelTowerCoords);
                     });
                     break;
-                case "ЭВС":
+                case "ГОР":
                     player.Role.Set(Instance.Config.EmfRoles[json[4]], RoleSpawnFlags.None);
                     Timing.CallDelayed(2f, () =>
                     {
@@ -278,7 +278,7 @@ namespace VeryUsualDay
                         player.Teleport(_armedPersonnelTowerCoords);
                     });
                     break;
-                case "Агентство":
+                case "ОВБ":
                     player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.None);
                     Timing.CallDelayed(2f, () =>
                     {
