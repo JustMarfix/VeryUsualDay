@@ -39,15 +39,42 @@ namespace VeryUsualDay
                 }
             },
             {
+                "Младший сержант",
+                new List<ItemType>
+                {
+                    ItemType.GunFSP9,
+                    ItemType.ArmorLight,
+                    ItemType.Medkit,
+                    ItemType.Radio,
+                    ItemType.GrenadeFlash,
+                    ItemType.KeycardGuard,
+                    ItemType.GunCOM18
+                }
+            },
+            {
                 "Сержант",
                 new List<ItemType>
                 {
                     ItemType.KeycardMTFPrivate,
-                    ItemType.ArmorLight,
+                    ItemType.ArmorCombat,
                     ItemType.Radio,
                     ItemType.GrenadeFlash,
                     ItemType.Medkit,
-                    ItemType.GunCrossvec
+                    ItemType.GunCrossvec,
+                    ItemType.GunCOM18
+                }
+            },
+            {
+                "Старший сержант",
+                new List<ItemType>
+                {
+                    ItemType.GunCrossvec,
+                    ItemType.ArmorCombat,
+                    ItemType.KeycardMTFPrivate,
+                    ItemType.GunRevolver,
+                    ItemType.Radio,
+                    ItemType.Medkit,
+                    ItemType.Adrenaline
                 }
             },
             {
@@ -61,6 +88,20 @@ namespace VeryUsualDay
                     ItemType.Medkit,
                     ItemType.GunE11SR,
                     ItemType.Adrenaline
+                }
+            },
+            {
+                "Старший лейтенант",
+                new List<ItemType>
+                {
+                    ItemType.GunE11SR,
+                    ItemType.ArmorHeavy,
+                    ItemType.KeycardMTFOperative,
+                    ItemType.Radio,
+                    ItemType.GunCrossvec,
+                    ItemType.Medkit,
+                    ItemType.Adrenaline,
+                    ItemType.Painkillers
                 }
             },
             {
@@ -96,6 +137,13 @@ namespace VeryUsualDay
                 }
             },
             {
+                "Младший сержант",
+                new List<AmmoType>
+                {
+                    AmmoType.Nato9
+                }
+            },
+            {
                 "Сержант",
                 new List<AmmoType>
                 {
@@ -103,10 +151,26 @@ namespace VeryUsualDay
                 }
             },
             {
+                "Старший сержант",
+                new List<AmmoType>
+                {
+                    AmmoType.Nato9,
+                    AmmoType.Ammo44Cal
+                }
+            },
+            {
                 "Лейтенант",
                 new List<AmmoType>
                 {
                     AmmoType.Nato556
+                }
+            },
+            {
+                "Старший лейтенант",
+                new List<AmmoType>
+                {
+                    AmmoType.Nato556,
+                    AmmoType.Nato9
                 }
             },
             {
@@ -130,12 +194,24 @@ namespace VeryUsualDay
                 100f
             },
             {
+                "Младший сержант",
+                100f
+            },
+            {
                 "Сержант",
+                100f
+            },
+            {
+                "Старший сержант",
                 100f
             },
             {
                 "Лейтенант",
                 170f
+            },
+            {
+                "Старший лейтенант",
+                200f
             },
             {
                 "Глава",
@@ -289,7 +365,7 @@ namespace VeryUsualDay
                 }
             };
         
-        [Description("Список ролей для ЭВС (Dictionary<string, RoleTypeId>)")]
+        [Description("Список ролей для ГОР (Dictionary<string, RoleTypeId>)")]
         public Dictionary<string, RoleTypeId> EmfRoles { get; set; } = new Dictionary<string, RoleTypeId>
         {
             {
@@ -313,7 +389,7 @@ namespace VeryUsualDay
                 RoleTypeId.NtfCaptain
             }
         };
-        [Description("Список вещей для ЭВС (Dictionary<string, List<ItemType>>)")]
+        [Description("Список вещей для ГОР (Dictionary<string, List<ItemType>>)")]
         public Dictionary<string, List<ItemType>> EmfItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
             {
@@ -383,7 +459,7 @@ namespace VeryUsualDay
                 }
             }
         };
-        [Description("Максимальное здоровье ЭВС (Dictionary<string, float>)")]
+        [Description("Максимальное здоровье ГОР (Dictionary<string, float>)")]
         public Dictionary<string, float> EmfHealth { get; set; } = new Dictionary<string, float>
         {
             {
@@ -392,23 +468,23 @@ namespace VeryUsualDay
             },
             {
                 "Джаггернаут",
-                650f
+                600f
             },
             {
                 "Лейтенант",
-                500f
+                550f
             },
             {
                 "Экзобоец",
-                525f
+                650f
             },
             {
                 "Глава",
-                500f
+                700f
             }
         };
         
-        [Description("Список патронов для ЭВС (выдаётся 60 шт.) (Dictionary<string, List<AmmoType>>)")]
+        [Description("Список патронов для ГОР (выдаётся 60 шт.) (Dictionary<string, List<AmmoType>>)")]
         public Dictionary<string, List<AmmoType>> EmfAmmo { get; set; } = new Dictionary<string, List<AmmoType>>
         {
             {
@@ -456,7 +532,7 @@ namespace VeryUsualDay
             }
         };
 
-        [Description("Список эффектов для ЭВС (Dictionary<string, Dictionary<EffectType, byte>>)")]
+        [Description("Список эффектов для ГОР (Dictionary<string, Dictionary<EffectType, byte>>)")]
         public Dictionary<string, Dictionary<EffectType, byte>> EmfEffects { get; set; } =
             new Dictionary<string, Dictionary<EffectType, byte>>
             {
@@ -551,12 +627,25 @@ namespace VeryUsualDay
                 }
             },
             {
+                "Агент",
+                new List<ItemType>
+                {
+                    ItemType.ArmorCombat,
+                    ItemType.Radio,
+                    ItemType.KeycardMTFOperative,
+                    ItemType.GunCrossvec,
+                    ItemType.GunCOM18,
+                    ItemType.Medkit,
+                    ItemType.GrenadeFlash
+                }
+            },
+            {
                 "Старший агент",
                 new List<ItemType>
                 {
                     ItemType.ArmorHeavy,
                     ItemType.GunCrossvec,
-                    ItemType.GunRevolver,
+                    ItemType.GunE11SR,
                     ItemType.Radio,
                     ItemType.Medkit,
                     ItemType.Painkillers,
@@ -565,7 +654,7 @@ namespace VeryUsualDay
             }
         };
         [Description("Здоровье Агентов (float)")]
-        public float AgencyHealth { get; set; } = 285f;
+        public float AgencyHealth { get; set; } = 350f;
 
         [Description("Список патронов для Агентов (выдаётся 60 шт.) (Dictionary<string, List<AmmoType>>)")]
         public Dictionary<string, List<AmmoType>> AgencyAmmo { get; set; } = new Dictionary<string, List<AmmoType>>
@@ -579,11 +668,19 @@ namespace VeryUsualDay
                 }
             },
             {
+                "Агент",
+                new List<AmmoType>
+                {
+                    AmmoType.Nato9,
+                    AmmoType.Nato9
+                }
+            },
+            {
                 "Старший агент",
                 new List<AmmoType>
                 {
                     AmmoType.Nato9,
-                    AmmoType.Ammo44Cal
+                    AmmoType.Nato556
                 }
             }
         };
@@ -620,11 +717,11 @@ namespace VeryUsualDay
         {
             {
                 "Менеджер зоны",
-                200f
+                400f
             },
             {
                 "Директор зоны",
-                250f
+                400f
             }
         };
         
