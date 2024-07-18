@@ -11,6 +11,7 @@ namespace VeryUsualDay.Commands
         public string Command => "setcode";
         public string[] Aliases => new [] { "code" };
         public string Description => "Установить код в комплексе. Используется для FX.";
+        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

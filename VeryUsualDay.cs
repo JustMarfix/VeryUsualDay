@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Exiled.API.Features;
@@ -24,7 +25,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX version)";
 
-        public override Version Version => new Version(4, 0, 1);
+        public override Version Version => new Version(4, 1, 0);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -41,6 +42,7 @@ namespace VeryUsualDay
         private readonly Vector3 _armedPersonnelTowerCoords = new Vector3(-16f, 1014.5f, -32f);
         private readonly Vector3 _civilianPersonnelTowerCoords = new Vector3(44.4f, 1014.5f, -51.6f);
         public readonly Vector3 SpawnPosition = new Vector3(139.487f, 995.392f, -16.762f);
+        public static readonly Vector3 PrisonPosition = new Vector3(130.233f, 933.766f, 21.049f);
         public Vector3 SupplyBoxCoords = new Vector3();
 
         public readonly List<Vector3> EmfSupplyCoords = new List<Vector3>
@@ -83,6 +85,10 @@ namespace VeryUsualDay
         public override void OnEnabled()
         {
             Instance = this;
+            if (Instance.Config.AuthToken == "")
+            {
+                Log.Error("AuthToken пуст - функционал тюрьмы и БД будет недоступен.");
+            }
             PlayerHandler.ChangingRole += Player.OnChangingRole;
             PlayerHandler.PickingUpItem += Player.OnPickingUpItem;
             PlayerHandler.DroppingItem += Player.OnDroppingItem;
@@ -191,9 +197,12 @@ namespace VeryUsualDay
 
         private static async Task<string> HttpGetUser(string steamid)
         {
-            var client = new HttpClient();
-            var content = await client.GetStringAsync($"http://justmeow.ru:9000/get_user/{steamid}");
-            return content;
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Instance.Config.AuthToken);
+                var content = await client.GetStringAsync($"http://justmeow.ru:9000/get_user/{steamid}");
+                return content;
+            }
         }
 
         private async void SetUserRole(Exiled.API.Features.Player player)
@@ -330,6 +339,45 @@ namespace VeryUsualDay
                 {
                     SetUserRole(player);
                 }
+            }
+        }
+        
+        public static TimeSpan ConvertToTimeSpan(string timeSpan)
+        {
+            var l = timeSpan.Length - 1;
+            var value = timeSpan.Substring(0, l);
+            var type = timeSpan.Substring(l, 1);
+
+            switch (type)
+            {
+                case "d": return TimeSpan.FromDays(double.Parse(value));
+                case "h": return TimeSpan.FromHours(double.Parse(value));
+                case "m": return TimeSpan.FromMinutes(double.Parse(value));
+                case "s": return TimeSpan.FromSeconds(double.Parse(value));
+                default: return TimeSpan.FromSeconds(double.Parse(value));
+            }
+        }
+
+        public static bool SendToPrison(Exiled.API.Features.Player player, int durationSeconds, string reason)
+        {
+            using (var client = new HttpClient())
+            {
+                var data = new Dictionary<string, string>
+                {
+                    { "steamId", player.UserId },
+                    { "time", durationSeconds.ToString() },
+                    { "reason", reason },
+                    { "authToken", Instance.Config.AuthToken }
+                };
+                var json = JsonConvert.SerializeObject(data);
+                HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Instance.Config.AuthToken);
+                var response = client.PostAsync($"http://justmeow.ru:9000/aban", content).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    player.Teleport(PrisonPosition);
+                }
+                return response.IsSuccessStatusCode;
             }
         }
     }

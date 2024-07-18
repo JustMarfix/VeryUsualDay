@@ -15,6 +15,7 @@ namespace VeryUsualDay.Commands
         public string Command => "spawn035";
         public string[] Aliases => new string[] { };
         public string Description => "Работает при FX. Спавнит SCP-035.";
+        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

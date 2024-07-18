@@ -13,6 +13,7 @@ namespace VeryUsualDay.Commands
         public string Command => "fxmode";
         public string[] Aliases => new string[] {};
         public string Description => "Не использовать, если не проводите FX!";
+        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

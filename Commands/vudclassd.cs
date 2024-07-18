@@ -14,6 +14,7 @@ namespace VeryUsualDay.Commands
         public string Command => "vudclassd";
         public string[] Aliases => new string[] { };
         public string Description => "Спавнит испытуемого на FX.";
+        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

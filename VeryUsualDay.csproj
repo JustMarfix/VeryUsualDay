@@ -65,10 +65,11 @@
       <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EXILED" Version="8.8.1" />
+    <PackageReference Include="EXILEDOFFICIAL" Version="8.9.7" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Aban.cs" />
     <Compile Include="Commands\allowspawn.cs" />
     <Compile Include="Commands\breach244.cs" />
     <Compile Include="Commands\checkcode.cs" />

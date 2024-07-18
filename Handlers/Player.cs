@@ -37,7 +37,7 @@ namespace VeryUsualDay.Handlers
                 else
                 {
                     var bc =
-                        "<color=#98FB98><b>Вы</b></color> на закрытом рп ивенте <color=#666699>\"Слишком обычный день\"</color>. Можете ожидать своей роли и появления на территории комплекса. Возможен лимит участвующих.";
+                        "<color=#98FB98><b>Вы</b></color> на закрытом рп ивенте <color=#666699>\"Foundation-X\"</color>. Можете ожидать своей роли и появления на территории комплекса. Возможен лимит участвующих.";
                     ev.Player.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
                     ev.Player.Broadcast(10, bc);
                 }

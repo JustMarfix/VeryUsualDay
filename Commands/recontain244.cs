@@ -12,6 +12,7 @@ namespace VeryUsualDay.Commands
         public string Command => "recontain244";
         public string[] Aliases => new string[] { };
         public string Description => "Вызывает ВОУС объекта SCP-244-A/B. Только для FX.";
+        public bool SanitizeResponse => false;
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

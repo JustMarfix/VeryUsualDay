@@ -11,6 +11,7 @@ namespace VeryUsualDay.Commands
         public string Command => "lock049gate";
         public string[] Aliases => new string[] { };
         public string Description => "Заблокировать/разблокировать гейт К.С. 049.";
+        public bool SanitizeResponse => false;
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

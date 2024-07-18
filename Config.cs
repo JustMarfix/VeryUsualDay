@@ -14,6 +14,9 @@ namespace VeryUsualDay
         [Description("Debug включён? (bool)")]
         public bool Debug { get; set; } = false;
 
+        [Description("Токен для авторизации на justmeow.ru")]
+        public string AuthToken { get; set; } = "";
+
         [Description("Список вещей для СБ (Dictionary<string, List<ItemType>>)")]
         public Dictionary<string, List<ItemType>> SecurityItems { get; set; } = new Dictionary<string, List<ItemType>>
         {
@@ -764,8 +767,6 @@ namespace VeryUsualDay
         [Description("Список вещей, которые не могут поднимать сотрудники СБ (List<ItemType>)")]
         public List<ItemType> ForbiddenForSecurity { get; set; } = new List<ItemType>
         {
-            ItemType.GunLogicer,
-            ItemType.GunFRMG0,
             ItemType.MicroHID
         };
         

@@ -12,10 +12,9 @@ namespace VeryUsualDay.Commands
     public class vudworker : ICommand
     {
         public string Command => "vudworker";
-
         public string[] Aliases => new string[] { };
-
         public string Description => "Спавнит стажёра-рабочего на FX.";
+        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

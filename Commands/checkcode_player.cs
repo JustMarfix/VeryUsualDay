@@ -9,6 +9,7 @@ namespace VeryUsualDay.Commands
         public string Command => "code";
         public string[] Aliases => new string[] { };
         public string Description => "Показывает текущий код FX.";
+        public bool SanitizeResponse => false;
         
         private const string Str1 = "Статус обеда: активен";
         private const string Str2 = "Статус обеда: неактивен";

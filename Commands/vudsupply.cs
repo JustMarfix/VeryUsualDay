@@ -14,6 +14,7 @@ namespace VeryUsualDay.Commands
         public string Command => "vudsupply";
         public string[] Aliases => new string[] { };
         public string Description => "Поставка припасов на FXе.";
+        public bool SanitizeResponse => false;
         private Vector3 _coords;
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
