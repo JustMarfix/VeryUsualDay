@@ -23,9 +23,9 @@ namespace VeryUsualDay.Handlers
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
-            if (ev.Player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState) return;
             Timing.CallDelayed(5f, () =>
             {
+                if (ev.Player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState) return;
                 if (ev.NewRole != RoleTypeId.Spectator ||
                     ev.Reason == SpawnReason.ForceClass) return;
 
@@ -150,6 +150,12 @@ namespace VeryUsualDay.Handlers
 
         public static void OnLeft(LeftEventArgs ev)
         {
+            if (ev.Player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState)
+            {
+                ev.Player.TryGetSessionVariable("prisonReason", out string reason);
+                ev.Player.TryGetSessionVariable("prisonTime", out int time);
+                VeryUsualDay.SendToPrison(ev.Player, time, reason);
+            }
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
             {
@@ -194,12 +200,16 @@ namespace VeryUsualDay.Handlers
                 var userData = (ITuple)VeryUsualDay.CheckIfPlayerInPrison(ev.Player);
                 if ((bool)userData[0])
                 {
-                    ev.Player.Mute();
-                    ev.Player.EnableEffect(EffectType.SilentWalk, 255);
-                    ev.Player.Teleport(VeryUsualDay.PrisonPosition);
                     ev.Player.SessionVariables.Add("isInPrison", true);
                     ev.Player.SessionVariables.Add("prisonTime", (int)userData[1]);
                     ev.Player.SessionVariables.Add("prisonReason", (string)userData[2]);
+                    ev.Player.Role.Set(RoleTypeId.Tutorial);
+                    Timing.CallDelayed(1f, () =>
+                    {
+                        ev.Player.Mute();
+                        ev.Player.EnableEffect(EffectType.SilentWalk, 255);
+                        ev.Player.Teleport(VeryUsualDay.PrisonPosition);
+                    });
                 }
             }
         }

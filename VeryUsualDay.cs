@@ -183,7 +183,15 @@ namespace VeryUsualDay
                 {
                     if (player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState)
                     {
-                        player.SessionVariables["prisonTime"] = (int)player.SessionVariables["prisonTime"] - 1;
+                        player.TryGetSessionVariable("prisonTime", out Int32 time);
+                        // Log.Info($"Игроку {player.UserId} осталось находиться в тюрьме {time} секунд.");
+                        time -= 1;
+                        player.SessionVariables.Remove("prisonTime");
+                        player.SessionVariables.Add("prisonTime", time);
+                        if (time == 0)
+                        {
+                            SendToPrison(player, 0, "Выпущен из тюрьмы.");
+                        }
                     }
                 }
                 yield return Timing.WaitForSeconds(1f);
@@ -392,12 +400,27 @@ namespace VeryUsualDay
                 var response = client.PostAsync($"http://justmeow.ru:9000/aban", content).Result;
                 if (response.IsSuccessStatusCode && Instance.IsEnabledInRound)
                 {
-                    player.Mute();
-                    player.EnableEffect(EffectType.SilentWalk, 255);
-                    player.Teleport(PrisonPosition);
-                    player.SessionVariables.Add("isInPrison", true);
-                    player.SessionVariables.Add("prisonTime", durationSeconds);
-                    player.SessionVariables.Add("prisonReason", reason);
+                    player.Role.Set(RoleTypeId.Tutorial);
+                    Timing.CallDelayed(0.5f, () =>
+                    {
+                        if (durationSeconds == 0)
+                        {
+                            player.UnMute();
+                            player.DisableEffect(EffectType.SilentWalk);
+                            player.SessionVariables.Remove("isInPrison");
+                            player.SessionVariables.Remove("prisonTime");
+                            player.SessionVariables.Remove("prisonReason");
+                        }
+                        else
+                        {
+                            player.Mute();
+                            player.EnableEffect(EffectType.SilentWalk, 255);
+                            player.Teleport(PrisonPosition);
+                            player.SessionVariables.Add("isInPrison", true);
+                            player.SessionVariables.Add("prisonTime", durationSeconds);
+                            player.SessionVariables.Add("prisonReason", reason);
+                        }
+                    });
                 }
                 return response.IsSuccessStatusCode;
             }

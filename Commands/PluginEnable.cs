@@ -4,6 +4,7 @@ using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using UnityEngine;
 
 namespace VeryUsualDay.Commands
@@ -35,6 +36,25 @@ namespace VeryUsualDay.Commands
                 // Timing.KillCoroutines("_avel");
                 Timing.KillCoroutines("_joining");
                 Timing.KillCoroutines("_prisonTimer");
+                foreach (var player in Player.List)
+                {
+                    if (player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState)
+                    {
+                        player.TryGetSessionVariable("prisonReason", out string reason);
+                        player.TryGetSessionVariable("prisonTime", out Int32 time);
+                        VeryUsualDay.SendToPrison(player, time, reason);
+                        // Log.Info($"Игроку {player.UserId} осталось в тюрьме {time} секунд. СОД закончен.");
+                        Timing.CallDelayed(3f, () =>
+                        {
+                            player.UnMute();
+                            player.DisableEffect(EffectType.SilentWalk);
+                            player.Role.Set(RoleTypeId.Tutorial);
+                            player.SessionVariables.Remove("isInPrison");
+                            player.SessionVariables.Remove("prisonTime");
+                            player.SessionVariables.Remove("prisonReason");
+                        });
+                    }
+                }
                 response = "Режим FX выключен.";
             }
             else
@@ -56,8 +76,9 @@ namespace VeryUsualDay.Commands
                         player.EnableEffect(EffectType.SilentWalk, 255);
                         player.Teleport(VeryUsualDay.PrisonPosition);
                         player.SessionVariables.Add("isInPrison", true);
-                        player.SessionVariables.Add("prisonTime", (int)userData[1]);
+                        player.SessionVariables.Add("prisonTime", (Int32)userData[1]);
                         player.SessionVariables.Add("prisonReason", (string)userData[2]);
+                        // Log.Info($"Игрок {player.UserId} будет находиться в тюрьме {(Int32)userData[1]} секунд.");
                     }
                 }
                 response = "Режим FX включён.";
