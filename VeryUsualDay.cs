@@ -26,7 +26,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(4, 1, 1);
+        public override Version Version => new Version(4, 1, 2);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -43,7 +43,7 @@ namespace VeryUsualDay
         private readonly Vector3 _armedPersonnelTowerCoords = new Vector3(-16f, 1014.5f, -32f);
         private readonly Vector3 _civilianPersonnelTowerCoords = new Vector3(44.4f, 1014.5f, -51.6f);
         public readonly Vector3 SpawnPosition = new Vector3(139.487f, 995.392f, -16.762f);
-        public static readonly Vector3 PrisonPosition = new Vector3(130.233f, 933.766f, 21.049f);
+        public static readonly Vector3 PrisonPosition = new Vector3(130.233f, 993.766f, 21.049f);
         public Vector3 SupplyBoxCoords = new Vector3();
 
         public readonly List<Vector3> EmfSupplyCoords = new List<Vector3>
@@ -172,6 +172,21 @@ namespace VeryUsualDay
                     }
                 }
                 yield return Timing.WaitForSeconds(300f);
+            }
+        }
+        
+        public IEnumerator<float> _prisonTimer()
+        {
+            for (;;)
+            {
+                foreach (var player in Exiled.API.Features.Player.List)
+                {
+                    if (player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState)
+                    {
+                        player.SessionVariables["prisonTime"] = (int)player.SessionVariables["prisonTime"] - 1;
+                    }
+                }
+                yield return Timing.WaitForSeconds(1f);
             }
         }
 

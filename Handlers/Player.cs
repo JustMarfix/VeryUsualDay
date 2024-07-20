@@ -23,8 +23,7 @@ namespace VeryUsualDay.Handlers
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
-            ev.Player.TryGetSessionVariable("isInPrison", out bool prisonState);
-            if (prisonState) return;
+            if (ev.Player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState) return;
             Timing.CallDelayed(5f, () =>
             {
                 if (ev.NewRole != RoleTypeId.Spectator ||

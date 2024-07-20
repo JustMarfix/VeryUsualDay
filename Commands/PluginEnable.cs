@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -44,6 +45,19 @@ namespace VeryUsualDay.Commands
                 {
                     VeryUsualDay.Instance.SupplyBoxCoords = Room.Get(RoomType.EzGateB).Position + new Vector3(-6.193f, 2.243f, -5.901f);
                 });
+                foreach (var player in Player.List)
+                {
+                    var userData = (ITuple)VeryUsualDay.CheckIfPlayerInPrison(player);
+                    if ((bool)userData[0])
+                    {
+                        player.Mute();
+                        player.EnableEffect(EffectType.SilentWalk, 255);
+                        player.Teleport(VeryUsualDay.PrisonPosition);
+                        player.SessionVariables.Add("isInPrison", true);
+                        player.SessionVariables.Add("prisonTime", (int)userData[1]);
+                        player.SessionVariables.Add("prisonReason", (string)userData[2]);
+                    }
+                }
                 response = "Режим FX включён.";
             }
             return true;
