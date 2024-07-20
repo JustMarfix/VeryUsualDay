@@ -1,4 +1,5 @@
-﻿using Exiled.API.Enums;
+﻿using System.Runtime.CompilerServices;
+using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
@@ -22,6 +23,8 @@ namespace VeryUsualDay.Handlers
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
+            ev.Player.TryGetSessionVariable("isInPrison", out bool prisonState);
+            if (prisonState) return;
             Timing.CallDelayed(5f, () =>
             {
                 if (ev.NewRole != RoleTypeId.Spectator ||
@@ -183,6 +186,23 @@ namespace VeryUsualDay.Handlers
                 ev.Usable.Type != ItemType.SCP207 && ev.Usable.Type != ItemType.AntiSCP207) return;
             ev.IsAllowed = false;
             ev.Item?.Destroy();
+        }
+
+        public static void OnVerified(VerifiedEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.IsEnabledInRound)
+            {
+                var userData = (ITuple)VeryUsualDay.CheckIfPlayerInPrison(ev.Player);
+                if ((bool)userData[0])
+                {
+                    ev.Player.Mute();
+                    ev.Player.EnableEffect(EffectType.SilentWalk, 255);
+                    ev.Player.Teleport(VeryUsualDay.PrisonPosition);
+                    ev.Player.SessionVariables.Add("isInPrison", true);
+                    ev.Player.SessionVariables.Add("prisonTime", (int)userData[1]);
+                    ev.Player.SessionVariables.Add("prisonReason", (string)userData[2]);
+                }
+            }
         }
     }
 }

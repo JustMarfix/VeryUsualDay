@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
 using Newtonsoft.Json;
@@ -23,9 +24,9 @@ namespace VeryUsualDay
         public static VeryUsualDay Instance { get; private set; }
 
         public override string Author => "JustMarfix";
-        public override string Name => "VeryUsualDay (FX version)";
+        public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(4, 1, 0);
+        public override Version Version => new Version(4, 1, 1);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -98,6 +99,7 @@ namespace VeryUsualDay
             PlayerHandler.Shooting += Player.OnShooting;
             PlayerHandler.UsingItem += Player.OnUsingItem;
             PlayerHandler.TriggeringTesla += Player.OnTriggeringTesla;
+            PlayerHandler.Verified += Player.OnVerified;
             ServerHandler.WaitingForPlayers += Server.OnWaitingForPlayers;
             ServerHandler.RoundStarted += Server.OnRoundStarted;
             base.OnEnabled();
@@ -113,6 +115,7 @@ namespace VeryUsualDay
             PlayerHandler.Left -= Player.OnLeft;
             PlayerHandler.Shooting -= Player.OnShooting;
             PlayerHandler.TriggeringTesla -= Player.OnTriggeringTesla;
+            PlayerHandler.Verified -= Player.OnVerified;
             ServerHandler.WaitingForPlayers -= Server.OnWaitingForPlayers;
             ServerHandler.RoundStarted -= Server.OnRoundStarted;
             Instance = null;
@@ -366,18 +369,34 @@ namespace VeryUsualDay
                 {
                     { "steamId", player.UserId },
                     { "time", durationSeconds.ToString() },
-                    { "reason", reason },
-                    { "authToken", Instance.Config.AuthToken }
+                    { "reason", reason }
                 };
                 var json = JsonConvert.SerializeObject(data);
                 HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Instance.Config.AuthToken);
                 var response = client.PostAsync($"http://justmeow.ru:9000/aban", content).Result;
-                if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode && Instance.IsEnabledInRound)
                 {
+                    player.Mute();
+                    player.EnableEffect(EffectType.SilentWalk, 255);
                     player.Teleport(PrisonPosition);
+                    player.SessionVariables.Add("isInPrison", true);
+                    player.SessionVariables.Add("prisonTime", durationSeconds);
+                    player.SessionVariables.Add("prisonReason", reason);
                 }
                 return response.IsSuccessStatusCode;
+            }
+        }
+
+        public static (bool, int, string) CheckIfPlayerInPrison(Exiled.API.Features.Player player)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Instance.Config.AuthToken);
+                var response = client.GetAsync($"http://justmeow.ru:9000/aban?steamId={player.UserId}").Result;
+                var content = response.Content.ReadAsStringAsync().Result;
+                var json = JsonConvert.DeserializeObject<List<string>>(content);
+                return (response.IsSuccessStatusCode, int.Parse(json[0]), json[1]);
             }
         }
     }
