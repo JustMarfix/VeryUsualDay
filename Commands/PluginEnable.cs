@@ -34,6 +34,7 @@ namespace VeryUsualDay.Commands
                 VeryUsualDay.Instance.DBoysQueue.Clear();
                 // Timing.KillCoroutines("_avel");
                 Timing.KillCoroutines("_joining");
+                Timing.KillCoroutines("_prisonTimer");
                 response = "Режим FX выключен.";
             }
             else
@@ -41,6 +42,7 @@ namespace VeryUsualDay.Commands
                 VeryUsualDay.Instance.IsEnabledInRound = true;
                 // Timing.RunCoroutine(VeryUsualDay.Instance._avel(), "_avel");
                 Timing.RunCoroutine(VeryUsualDay.Instance._joining(), "_joining");
+                Timing.RunCoroutine(VeryUsualDay.Instance._prisonTimer(), "_prisonTimer");
                 Timing.CallDelayed(5f, () =>
                 {
                     VeryUsualDay.Instance.SupplyBoxCoords = Room.Get(RoomType.EzGateB).Position + new Vector3(-6.193f, 2.243f, -5.901f);
