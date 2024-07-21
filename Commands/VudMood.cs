@@ -11,12 +11,18 @@ namespace VeryUsualDay.Commands
         public string Command => "vudmood";
         public string[] Aliases => new string[] { };
         public string Description => "Для FX. Изменяет состояние игрока. Использование: vudmood <id> <новое состояние>";
+        public bool SanitizeResponse => false;
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound)
             {
                 response = "Режим FX не включён.";
+                return false;
+            }
+            if (arguments.Count < 1)
+            {
+                response = "Использование: vudmood <id> <новое состояние>";
                 return false;
             }
             var args = arguments.ToArray();

@@ -25,9 +25,9 @@ namespace VeryUsualDay.Commands
                 response = "Режим FX не включён";
                 return false;
             }
-            if (arguments.Count < 2)
+            if (arguments.Count < 1)
             {
-                response = "Формат команды: spawnbuo <id через пробел>.";
+                response = "Формат команды: spawnbuo <id через пробел>";
                 return false;
             }
             VeryUsualDay.Instance.BuoCounter += 1;
