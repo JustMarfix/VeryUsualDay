@@ -65,7 +65,7 @@
       <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EXILEDOFFICIAL" Version="8.9.7" />
+    <PackageReference Include="EXILEDOFFICIAL" Version="8.11.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +98,7 @@
     <Compile Include="Commands\vudclassd.cs" />
     <Compile Include="Commands\vudclear.cs" />
     <Compile Include="Commands\vudguard.cs" />
+    <Compile Include="Commands\VudMood.cs" />
     <Compile Include="Commands\vudsupply.cs" />
     <Compile Include="Commands\vudworker.cs" />
     <Compile Include="Commands\vudscience.cs" />
@@ -113,6 +114,7 @@
     <Content Include=".gitignore" />
     <Content Include="LICENSE" />
     <Content Include="README.md" />
+    <Content Include="refs/*" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

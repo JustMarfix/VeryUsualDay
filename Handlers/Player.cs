@@ -23,6 +23,11 @@ namespace VeryUsualDay.Handlers
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
+            ev.Player.SessionVariables.Remove("vudmood");
+            if (ev.NewRole != RoleTypeId.Spectator && (ev.NewRole != RoleTypeId.Tutorial || ev.Player.CustomName.Split(' ')[0] == "Агент"))
+            {
+                ev.Player.SessionVariables.Add("vudmood", "Полностью здоров");
+            }
             Timing.CallDelayed(5f, () =>
             {
                 if (ev.Player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState) return;
@@ -130,6 +135,7 @@ namespace VeryUsualDay.Handlers
             ev.Player.CustomInfo = "Человек";
             ev.Player.MaxHealth = 100f;
             ev.Player.Scale = new Vector3(1f, 1f, 1f);
+            ev.Player.SessionVariables.Remove("vudmood");
             
             if (VeryUsualDay.Instance.DBoysQueue.Contains(ev.Player.Id))
             {
@@ -211,6 +217,58 @@ namespace VeryUsualDay.Handlers
                         ev.Player.Teleport(VeryUsualDay.PrisonPosition);
                     });
                 }
+            }
+        }
+
+        public static void OnHurt(HurtEventArgs ev) 
+        {
+            if (!VeryUsualDay.Instance.IsEnabledInRound ||
+                !ev.Player.TryGetSessionVariable("vudmood", out string mood)) return;
+            if (ev.Player.Health <= ev.Player.MaxHealth * 0.1)
+            {
+                ev.Player.SessionVariables.Remove("vudmood");
+                ev.Player.SessionVariables.Add("vudmood", "Ужасно сильно ранен");
+            }
+            if (ev.Player.Health <= ev.Player.MaxHealth * 0.3)
+            {
+                ev.Player.SessionVariables.Remove("vudmood");
+                ev.Player.SessionVariables.Add("vudmood", "Сильно ранен");
+            }
+            else if (ev.Player.Health <= ev.Player.MaxHealth * 0.5)
+            {
+                ev.Player.SessionVariables.Remove("vudmood");
+                ev.Player.SessionVariables.Add("vudmood", "Ранен");
+            }
+            else
+            {
+                ev.Player.SessionVariables.Remove("vudmood");
+                ev.Player.SessionVariables.Add("vudmood", "Полностью здоров");
+            }
+        }
+
+        public static void OnHealed(HealedEventArgs ev)
+        {
+            if (!VeryUsualDay.Instance.IsEnabledInRound ||
+                !ev.Player.TryGetSessionVariable("vudmood", out string mood)) return;
+            if (ev.Player.Health <= ev.Player.MaxHealth * 0.1)
+            {
+                ev.Player.SessionVariables.Remove("vudmood");
+                ev.Player.SessionVariables.Add("vudmood", "Ужасно сильно ранен");
+            }
+            if (ev.Player.Health <= ev.Player.MaxHealth * 0.3)
+            {
+                ev.Player.SessionVariables.Remove("vudmood");
+                ev.Player.SessionVariables.Add("vudmood", "Сильно ранен");
+            }
+            else if (ev.Player.Health <= ev.Player.MaxHealth * 0.5)
+            {
+                ev.Player.SessionVariables.Remove("vudmood");
+                ev.Player.SessionVariables.Add("vudmood", "Ранен");
+            }
+            else
+            {
+                ev.Player.SessionVariables.Remove("vudmood");
+                ev.Player.SessionVariables.Add("vudmood", "Полностью здоров");
             }
         }
     }
