@@ -225,17 +225,21 @@ namespace VeryUsualDay
                         if (Random.Range(0, 100) < 50)
                         {
                             var score = Random.Range(0, 100);
-                            if (score < 50)
+                            if (score < 25)
                             {
                                 player.PlayGunSound(ItemType.GunCrossvec, (byte)Random.Range(175, 256));
                             }
-                            else if (score < 75)
+                            else if (score < 50)
                             {
                                 player.PlayGunSound(ItemType.GunFSP9, (byte)Random.Range(175, 256));
                             }
-                            else
+                            else if (score < 75)
                             {
                                 player.PlayGunSound(ItemType.GunE11SR, (byte)Random.Range(175, 256));
+                            }
+                            else 
+                            {
+                                player.PlayGunSound(ItemType.GunShotgun, (byte)Random.Range(175, 256));
                             }
                         }
                         else if (Random.Range(0, 100) < 30)
@@ -253,7 +257,7 @@ namespace VeryUsualDay
                         }
                     }
                 }
-                yield return Timing.WaitForSeconds(1.5f);
+                yield return Timing.WaitForSeconds(0.75f);
             }
         }
 
