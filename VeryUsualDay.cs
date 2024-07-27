@@ -212,7 +212,7 @@ namespace VeryUsualDay
                 foreach (var roomType in ChaosRooms)
                 {
                     var room = Room.Get(roomType);
-                    foreach (var door in room.Doors.Where(p => !p.IsElevator && !p.IsGate && !p.IsKeycardDoor).Shuffle())
+                    foreach (var door in room.Doors.Where(p => !p.IsElevator && !p.IsGate && !p.IsKeycardDoor && !p.IsLocked).Shuffle())
                     {
                         Timing.CallDelayed(Random.Range(0f, 1.5f), () =>
                         {

@@ -14,6 +14,7 @@ namespace VeryUsualDay.Commands
         public string[] Aliases => new string[] { };
         public string Description => "Для FX. Включает режим хаоса для конкретной комнаты / для всего комплекса.";
         public bool SanitizeResponse => false;
+        public string[] Zones => new[] { "LCZ", "HCZ", "EZ", "SFC" };
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,7 +25,7 @@ namespace VeryUsualDay.Commands
             }
             if (arguments.Count < 1)
             {
-                response = "Использование: chaosmode <list(l)/set(s)/unset(u)> [комнаты через пробел / all]";
+                response = "Использование: chaosmode <list(l)/set(s)/unset(u)> [комнаты через пробел / all / LCZ/HCZ/EZ/SFC]";
                 return false;
             }
             var args = arguments.ToArray();
@@ -45,7 +46,7 @@ namespace VeryUsualDay.Commands
             {
                 if (arguments.Count < 2)
                 {
-                    response = "Использование: chaosmode set <комнаты через пробел / all>";
+                    response = "Использование: chaosmode set <комнаты через пробел / all / LCZ/HCZ/EZ/SFC>";
                     return false;
                 }
 
@@ -62,12 +63,47 @@ namespace VeryUsualDay.Commands
                             }
                         }
                     }
+                    else if (roomName.In(Zones) && arguments.Count == 2)
+                    {
+                        ZoneType zone;
+                        switch (roomName)
+                        {
+                            case "HCZ":
+                            {
+                                zone = ZoneType.HeavyContainment;
+                                break;
+                            }
+                            case "LCZ":
+                            {
+                                zone = ZoneType.LightContainment;
+                                break;
+                            }
+                            case "EZ":
+                            {
+                                zone = ZoneType.Entrance;
+                                break;
+                            }
+                            default:
+                            {
+                                zone = ZoneType.Surface;
+                                break;
+                            }
+                        }
+                        foreach (var room in Room.List.Where(p => p.Zone == zone))
+                        {
+                            room.Color = Color.red;
+                            if (!room.Type.In(VeryUsualDay.Instance.ChaosRooms.ToArray()))
+                            {
+                                VeryUsualDay.Instance.ChaosRooms.Add(room.Type);
+                            }
+                        }
+                    }
                     else
                     {
                         var rooms = Room.Get(p => p.Type.ToString() == roomName).ToArray();
                         if (!rooms.Any())
                         {
-                            response = "Использование: chaosmode set <комнаты через пробел / all>. Список комнат - chaosmode list.";
+                            response = "Использование: chaosmode set <комнаты через пробел / all / LCZ/HCZ/EZ/SFC>. Список комнат - chaosmode list.";
                             return false;
                         }
                         rooms[0].Color = Color.red;
@@ -86,7 +122,7 @@ namespace VeryUsualDay.Commands
             {
                 if (arguments.Count < 2)
                 {
-                    response = "Использование: chaosmode unset <комнаты через пробел / all>";
+                    response = "Использование: chaosmode unset <комнаты через пробел / all / LCZ/HCZ/EZ/SFC>";
                     return false;
                 }
 
@@ -100,12 +136,44 @@ namespace VeryUsualDay.Commands
                             VeryUsualDay.Instance.ChaosRooms.Clear();
                         }
                     }
+                    else if (roomName.In(Zones) && arguments.Count == 2)
+                    {
+                        ZoneType zone;
+                        switch (roomName)
+                        {
+                            case "HCZ":
+                            {
+                                zone = ZoneType.HeavyContainment;
+                                break;
+                            }
+                            case "LCZ":
+                            {
+                                zone = ZoneType.LightContainment;
+                                break;
+                            }
+                            case "EZ":
+                            {
+                                zone = ZoneType.Entrance;
+                                break;
+                            }
+                            default:
+                            {
+                                zone = ZoneType.Surface;
+                                break;
+                            }
+                        }
+                        foreach (var room in Room.List.Where(p => p.Zone == zone))
+                        {
+                            room.ResetColor();
+                            VeryUsualDay.Instance.ChaosRooms.Remove(room.Type);
+                        }
+                    }
                     else
                     {
                         var rooms = Room.Get(p => p.Name == roomName).ToArray();
                         if (!rooms.Any())
                         {
-                            response = "Использование: chaosmode unset <комнаты через пробел / all>. Список комнат - chaosmode list.";
+                            response = "Использование: chaosmode unset <комнаты через пробел / all / LCZ/HCZ/EZ/SFC>. Список комнат - chaosmode list.";
                             return false;
                         }
                         rooms[0].ResetColor();
@@ -117,7 +185,7 @@ namespace VeryUsualDay.Commands
                 return true;
             }
 
-            response = "Использование: chaosmode <list(l)/set(s)/unset(u)> [комнаты через пробел / all]";
+            response = "Использование: chaosmode <list(l)/set(s)/unset(u)> [комнаты через пробел / all / LCZ/HCZ/EZ/SFC]";
             return false;
         }
     }
