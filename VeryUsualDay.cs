@@ -28,7 +28,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(4, 3, 0);
+        public override Version Version => new Version(4, 3, 1);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -212,26 +212,44 @@ namespace VeryUsualDay
                 foreach (var roomType in ChaosRooms)
                 {
                     var room = Room.Get(roomType);
-                    foreach (var door in room.Doors.Where(p => !p.IsElevator && !p.IsGate && !p.IsCheckpoint).Shuffle())
+                    foreach (var door in room.Doors.Where(p => !p.IsElevator && !p.IsGate && !p.IsKeycardDoor).Shuffle())
                     {
-                        door.IsOpen = !door.IsOpen;
-                        Timing.WaitForSeconds(0.1f);
+                        Timing.CallDelayed(Random.Range(0f, 1.5f), () =>
+                        {
+                            door.IsOpen = !door.IsOpen;
+                        });
                     }
 
                     foreach (var player in room.Players)
                     {
-                        if (Random.Range(0, 100) < 30)
+                        if (Random.Range(0, 100) < 50)
                         {
-                            player.PlayGunSound(ItemType.GunCrossvec, (byte)Random.Range(155, 256));
+                            var score = Random.Range(0, 100);
+                            if (score < 50)
+                            {
+                                player.PlayGunSound(ItemType.GunCrossvec, (byte)Random.Range(175, 256));
+                            }
+                            else if (score < 75)
+                            {
+                                player.PlayGunSound(ItemType.GunFSP9, (byte)Random.Range(175, 256));
+                            }
+                            else
+                            {
+                                player.PlayGunSound(ItemType.GunE11SR, (byte)Random.Range(175, 256));
+                            }
                         }
-                        if (Random.Range(0, 100) < 20)
+                        else if (Random.Range(0, 100) < 30)
                         {
                             player.PlayBeepSound();
                         }
 
-                        if (Random.Range(0, 100) < 10)
+                        else if (Random.Range(0, 100) < 30)
                         {
                             player.PlayShieldBreakSound();
+                        }
+                        else
+                        {
+                            player.EnableEffect(EffectType.Scanned, duration: 10f);
                         }
                     }
                 }

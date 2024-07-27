@@ -31,11 +31,11 @@ namespace VeryUsualDay.Commands
             if (args[0].In("list", "l"))
             {
                 response = "Список комнат:\n";
-                foreach (var door in Room.List)
+                foreach (var room in Room.List)
                 {
-                    if (door.Zone != ZoneType.Unspecified)
+                    if (room.Zone != ZoneType.Unspecified)
                     {
-                        response += "\n" + door.Name;
+                        response += "\n" + room.Type;
                     }
                 }
                 return true;
@@ -53,7 +53,7 @@ namespace VeryUsualDay.Commands
                 {
                     if (roomName == "all" && arguments.Count == 2)
                     {
-                        foreach (var room in Room.List.Where(p => p.Zone != ZoneType.Unspecified))
+                        foreach (var room in Room.List)
                         {
                             room.Color = Color.red;
                             if (!room.Type.In(VeryUsualDay.Instance.ChaosRooms.ToArray()))
@@ -64,7 +64,7 @@ namespace VeryUsualDay.Commands
                     }
                     else
                     {
-                        var rooms = Room.Get(p => p.Name == roomName).ToArray();
+                        var rooms = Room.Get(p => p.Type.ToString() == roomName).ToArray();
                         if (!rooms.Any())
                         {
                             response = "Использование: chaosmode set <комнаты через пробел / all>. Список комнат - chaosmode list.";
@@ -94,7 +94,7 @@ namespace VeryUsualDay.Commands
                 {
                     if (roomName == "all" && arguments.Count == 2)
                     {
-                        foreach (var room in Room.List.Where(p => p.Zone != ZoneType.Unspecified))
+                        foreach (var room in Room.List)
                         {
                             room.ResetColor();
                             VeryUsualDay.Instance.ChaosRooms.Clear();
