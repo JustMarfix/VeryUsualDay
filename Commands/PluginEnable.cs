@@ -33,9 +33,11 @@ namespace VeryUsualDay.Commands
                 VeryUsualDay.Instance.ScpPlayers.Clear();
                 VeryUsualDay.Instance.JoinedDboys.Clear();
                 VeryUsualDay.Instance.DBoysQueue.Clear();
+                VeryUsualDay.Instance.ChaosRooms.Clear();
                 // Timing.KillCoroutines("_avel");
                 Timing.KillCoroutines("_joining");
                 Timing.KillCoroutines("_prisonTimer");
+                Timing.KillCoroutines("_chaos");
                 foreach (var player in Player.List)
                 {
                     if (player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState)
@@ -63,6 +65,14 @@ namespace VeryUsualDay.Commands
                 // Timing.RunCoroutine(VeryUsualDay.Instance._avel(), "_avel");
                 Timing.RunCoroutine(VeryUsualDay.Instance._joining(), "_joining");
                 Timing.RunCoroutine(VeryUsualDay.Instance._prisonTimer(), "_prisonTimer");
+                Timing.RunCoroutine(VeryUsualDay.Instance._chaos(), "_chaos");
+                foreach (var room in Room.List)
+                {
+                    if (room.Zone != ZoneType.Unspecified && room.Color == Color.red)
+                    {
+                        room.ResetColor();
+                    }
+                }
                 Timing.CallDelayed(5f, () =>
                 {
                     VeryUsualDay.Instance.SupplyBoxCoords = Room.Get(RoomType.EzGateB).Position + new Vector3(-6.193f, 2.243f, -5.901f);

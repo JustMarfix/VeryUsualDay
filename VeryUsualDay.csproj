@@ -72,6 +72,7 @@
     <Compile Include="Commands\Aban.cs" />
     <Compile Include="Commands\allowspawn.cs" />
     <Compile Include="Commands\breach244.cs" />
+    <Compile Include="Commands\ChaosMode.cs" />
     <Compile Include="Commands\checkcode.cs" />
     <Compile Include="Commands\checkcode_player.cs" />
     <Compile Include="Commands\classd.cs" />

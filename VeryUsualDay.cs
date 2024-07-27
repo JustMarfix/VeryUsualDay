@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using MEC;
 using Newtonsoft.Json;
@@ -14,6 +15,7 @@ using PlayerRoles;
 using UnityEngine;
 using Player = VeryUsualDay.Handlers.Player;
 using PlayerHandler = Exiled.Events.Handlers.Player;
+using Random = UnityEngine.Random;
 using Server = VeryUsualDay.Handlers.Server;
 using ServerHandler = Exiled.Events.Handlers.Server;
 
@@ -26,7 +28,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(4, 2, 0);
+        public override Version Version => new Version(4, 3, 0);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -34,6 +36,7 @@ namespace VeryUsualDay
         public bool IsTeslaEnabled { get; set; }
         public List<int> JoinedDboys { get; set; } = new List<int>();
         public List<int> DBoysQueue { get; set; } = new List<int>();
+        public List<RoomType> ChaosRooms { get; set; } = new List<RoomType>();
         public int BuoCounter { get; set; } = 1;
         public int SpawnedDboysCounter { get; set; } = 1;
         public int SpawnedWorkersCounter { get; set; } = 1;
@@ -199,6 +202,40 @@ namespace VeryUsualDay
                     }
                 }
                 yield return Timing.WaitForSeconds(1f);
+            }
+        }
+
+        public IEnumerator<float> _chaos()
+        {
+            for (;;)
+            {
+                foreach (var roomType in ChaosRooms)
+                {
+                    var room = Room.Get(roomType);
+                    foreach (var door in room.Doors.Where(p => !p.IsElevator && !p.IsGate && !p.IsCheckpoint).Shuffle())
+                    {
+                        door.IsOpen = !door.IsOpen;
+                        Timing.WaitForSeconds(0.1f);
+                    }
+
+                    foreach (var player in room.Players)
+                    {
+                        if (Random.Range(0, 100) < 30)
+                        {
+                            player.PlayGunSound(ItemType.GunCrossvec, (byte)Random.Range(155, 256));
+                        }
+                        if (Random.Range(0, 100) < 20)
+                        {
+                            player.PlayBeepSound();
+                        }
+
+                        if (Random.Range(0, 100) < 10)
+                        {
+                            player.PlayShieldBreakSound();
+                        }
+                    }
+                }
+                yield return Timing.WaitForSeconds(1.5f);
             }
         }
 
@@ -454,6 +491,21 @@ namespace VeryUsualDay
         public static string Description(this Enum value)
         {
             return GetCustomDescription(value);
+        }
+        
+        public static bool In<T>(this T val, params T[] vals) => vals.Contains(val);
+
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable)
+        {
+            var enumerable1 = enumerable.ToList();
+            var newEnum = Enumerable.Empty<T>();
+            while (enumerable1.Count != 0)
+            {
+                var index = Random.Range(0, enumerable1.Count);
+                newEnum = newEnum.Append(enumerable1[index]);
+                enumerable1.RemoveAt(index);
+            }
+            return newEnum;
         }
     }
 }
