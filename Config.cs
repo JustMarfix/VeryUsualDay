@@ -26,7 +26,8 @@ namespace VeryUsualDay
                 {
                     ItemType.GunCOM15,
                     ItemType.KeycardJanitor,
-                    ItemType.Flashlight
+                    ItemType.Flashlight,
+                    ItemType.Radio
                 }
             },
             {
@@ -230,7 +231,8 @@ namespace VeryUsualDay
                 new List<ItemType>
                 {
                     ItemType.KeycardJanitor,
-                    ItemType.Flashlight
+                    ItemType.Flashlight,
+                    ItemType.Radio
                 }
             },
             {
@@ -251,7 +253,8 @@ namespace VeryUsualDay
                     ItemType.KeycardScientist,
                     ItemType.KeycardZoneManager,
                     ItemType.Painkillers,
-                    ItemType.Adrenaline
+                    ItemType.Adrenaline,
+                    ItemType.Radio
                 }
             },
             {
@@ -274,7 +277,8 @@ namespace VeryUsualDay
                     ItemType.KeycardZoneManager,
                     ItemType.Adrenaline,
                     ItemType.Adrenaline,
-                    ItemType.Painkillers
+                    ItemType.Painkillers,
+                    ItemType.Radio
                 }
             },
             {
@@ -324,7 +328,8 @@ namespace VeryUsualDay
                     ItemType.Flashlight,
                     ItemType.Painkillers,
                     ItemType.Medkit,
-                    ItemType.Adrenaline
+                    ItemType.Adrenaline,
+                    ItemType.Radio
                 }
             }
         };
@@ -444,7 +449,8 @@ namespace VeryUsualDay
                     ItemType.Adrenaline,
                     ItemType.SCP500,
                     ItemType.GunShotgun,
-                    ItemType.GunCOM18
+                    ItemType.GunCOM18,
+                    ItemType.Radio
                 }
             },
             {
@@ -819,7 +825,6 @@ namespace VeryUsualDay
         [Description("Список вещей, у которых есть иммунитет к чистке командой vudclear (List<ItemType>)")]
         public List<ItemType> ClearImmunityItems { get; set; } = new List<ItemType>
         {
-            ItemType.Medkit,
             ItemType.MicroHID,
             ItemType.GunE11SR,
             ItemType.GunCOM15,
