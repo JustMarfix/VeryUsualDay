@@ -28,6 +28,7 @@ namespace VeryUsualDay.Commands
                 return false;
             }
             playerSender.Explode(ProjectileType.FragGrenade, playerSender);
+            VeryUsualDay.Instance.Shakheds.Remove(playerSender.Id);
             response = "Бабах.";
             return true;
         }
