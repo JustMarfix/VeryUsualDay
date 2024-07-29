@@ -85,6 +85,8 @@
     <Compile Include="Commands\recontain244.cs" />
     <Compile Include="Commands\redoors.cs" />
     <Compile Include="Commands\RoleDistribution.cs" />
+    <Compile Include="Commands\Shakhed.cs" />
+    <Compile Include="Commands\ShakhedBoom.cs" />
     <Compile Include="Commands\spawn035.cs" />
     <Compile Include="Commands\SetCode.cs" />
     <Compile Include="Commands\spawn035_2.cs" />

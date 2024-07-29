@@ -141,12 +141,14 @@ namespace VeryUsualDay.Handlers
             {
                 VeryUsualDay.Instance.DBoysQueue.Remove(ev.Player.Id);
             }
-
             if (VeryUsualDay.Instance.JoinedDboys.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.JoinedDboys.Remove(ev.Player.Id);
             }
-
+            if (VeryUsualDay.Instance.Shakheds.Contains(ev.Player.Id))
+            {
+                VeryUsualDay.Instance.Shakheds.Remove(ev.Player.Id);
+            }
             if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green ||
                 VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald)
             {
@@ -167,15 +169,17 @@ namespace VeryUsualDay.Handlers
             {
                 VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
             }
-            
             if (VeryUsualDay.Instance.DBoysQueue.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.DBoysQueue.Remove(ev.Player.Id);
             }
-
             if (VeryUsualDay.Instance.JoinedDboys.Contains(ev.Player.Id))
             {
                 VeryUsualDay.Instance.JoinedDboys.Remove(ev.Player.Id);
+            }
+            if (VeryUsualDay.Instance.Shakheds.Contains(ev.Player.Id))
+            {
+                VeryUsualDay.Instance.Shakheds.Remove(ev.Player.Id);
             }
         }
 
@@ -222,6 +226,10 @@ namespace VeryUsualDay.Handlers
 
         public static void OnHurt(HurtEventArgs ev) 
         {
+            if (VeryUsualDay.Instance.Config.BlowingDamageTypes.Contains(ev.DamageHandler.Type))
+            {
+                ev.Player.Explode(ProjectileType.FragGrenade, ev.Attacker);
+            }
             if (!VeryUsualDay.Instance.IsEnabledInRound ||
                 !ev.Player.TryGetSessionVariable("vudmood", out string mood)) return;
             if (ev.Player.Health <= ev.Player.MaxHealth * 0.1)

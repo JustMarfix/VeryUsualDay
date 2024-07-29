@@ -825,6 +825,9 @@ namespace VeryUsualDay
         [Description("Список вещей, у которых есть иммунитет к чистке командой vudclear (List<ItemType>)")]
         public List<ItemType> ClearImmunityItems { get; set; } = new List<ItemType>
         {
+            ItemType.Medkit,
+            ItemType.Adrenaline,
+            ItemType.Painkillers,
             ItemType.MicroHID,
             ItemType.GunE11SR,
             ItemType.GunCOM15,
@@ -838,6 +841,24 @@ namespace VeryUsualDay
             ItemType.SCP1853,
             ItemType.SCP244a,
             ItemType.SCP244b
+        };
+
+        [Description("Список DamageType, которые взрывают пояс шахида (List<DamageType>)")]
+        public List<DamageType> BlowingDamageTypes { get; set; } = new List<DamageType>
+        {
+            DamageType.Firearm,
+            DamageType.Com15,
+            DamageType.Com18,
+            DamageType.Com45,
+            DamageType.Crossvec,
+            DamageType.Explosion,
+            DamageType.Frmg0,
+            DamageType.Fsp9,
+            DamageType.Logicer,
+            DamageType.Revolver,
+            DamageType.Shotgun,
+            DamageType.AK,
+            DamageType.E11Sr
         };
     }
 }

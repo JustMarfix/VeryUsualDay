@@ -28,7 +28,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(4, 3, 1);
+        public override Version Version => new Version(4, 4, 0);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -36,6 +36,7 @@ namespace VeryUsualDay
         public bool IsTeslaEnabled { get; set; }
         public List<int> JoinedDboys { get; set; } = new List<int>();
         public List<int> DBoysQueue { get; set; } = new List<int>();
+        public List<int> Shakheds { get; set; } = new List<int>();
         public List<RoomType> ChaosRooms { get; set; } = new List<RoomType>();
         public int BuoCounter { get; set; } = 1;
         public int SpawnedDboysCounter { get; set; } = 1;

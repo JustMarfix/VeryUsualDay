@@ -22,6 +22,7 @@ namespace VeryUsualDay.Handlers
             VeryUsualDay.Instance.JoinedDboys.Clear();
             VeryUsualDay.Instance.DBoysQueue.Clear();
             VeryUsualDay.Instance.ChaosRooms.Clear();
+            VeryUsualDay.Instance.Shakheds.Clear();
             // Timing.KillCoroutines("_avel");
             Timing.KillCoroutines("_joining");
             Timing.KillCoroutines("_prisonTimer");
