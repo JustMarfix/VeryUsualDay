@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
@@ -230,7 +229,10 @@ namespace VeryUsualDay.Handlers
             if (VeryUsualDay.Instance.Shakheds.Contains(ev.Player.Id) && VeryUsualDay.Instance.Config.BlowingDamageTypes.Contains(ev.DamageHandler.Type))
             {
                 VeryUsualDay.Instance.Shakheds.Remove(ev.Player.Id);
-                ev.Player.Explode(ProjectileType.FragGrenade);
+                while (!ev.Player.IsDead)
+                {
+                    ev.Player.Explode(ProjectileType.FragGrenade);
+                }
             }
             if (!VeryUsualDay.Instance.IsEnabledInRound ||
                 !ev.Player.TryGetSessionVariable("vudmood", out string mood)) return;
