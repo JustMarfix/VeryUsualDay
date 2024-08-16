@@ -860,5 +860,13 @@ namespace VeryUsualDay
             DamageType.AK,
             DamageType.E11Sr
         };
+
+        public string CustomHelp { get; set; } = @"<color=#FFFFFF>---------------</color><color=#FEA831>FOUNDATION-X</color><color=#FFFFFF>---------------</color>
+  <color=#FEA831>ВСЕ КОМАНДЫ ВВОДЯТСЯ В КОНСОЛЬ НА [`] ИЛИ [~] С ТОЧКОЙ (ПРИМЕР - .help)</color>
+  <color=#FEA831>[help]</color><color=#FFFFFF> - Это сообщение.</color>
+  <color=#FEA831>[classd]</color><color=#FFFFFF> - Встать в очередь на спавн за Испытуемого. Доступно в башне.</color>
+  <color=#FEA831>[checkcode]</color><color=#FFFFFF> - Узнать текущий код.</color>
+  <color=#FEA831>[boom]</color><color=#FFFFFF> - Взорваться. Доступно, если на вас надет пояс шахида.</color>
+  <color=#FFFFFF>---------------</color><color=#FEA831>FOUNDATION-X</color><color=#FFFFFF>---------------</color>";
     }
 }

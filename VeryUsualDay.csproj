@@ -76,6 +76,7 @@
     <Compile Include="Commands\checkcode.cs" />
     <Compile Include="Commands\checkcode_player.cs" />
     <Compile Include="Commands\classd.cs" />
+    <Compile Include="Commands\CustomHelp.cs" />
     <Compile Include="Commands\gocomplex.cs" />
     <Compile Include="Commands\lock049gate.cs" />
     <Compile Include="Commands\lock173gate.cs" />
