@@ -305,6 +305,14 @@ namespace VeryUsualDay
                 }
             }
         };
+
+        public Dictionary<string, float> ScienceHealth { get; set; } = new Dictionary<string, float>
+        {
+            {
+                "Глава",
+                200f
+            }
+        };
         [Description("Список вещей для Рабочих (Dictionary<string, List<ItemType>>)")]
         public Dictionary<string, List<ItemType>> WorkersItems { get; set; } = new Dictionary<string, List<ItemType>>
         {

@@ -28,7 +28,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(4, 4, 0);
+        public override Version Version => new Version(4, 5, 0);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -334,6 +334,12 @@ namespace VeryUsualDay
                         {
                             player.AddItem(item);
                         }
+
+                        if (Instance.Config.ScienceHealth.ContainsKey(json[4]))
+                        {
+                            player.MaxHealth = Instance.Config.ScienceHealth[json[4]];
+                            player.Health = Instance.Config.ScienceHealth[json[4]];
+                        }
                         player.Teleport(_civilianPersonnelTowerCoords);
                     });
                     break;
@@ -350,8 +356,8 @@ namespace VeryUsualDay
                             player.EnableEffect(pair.Key);
                             player.ChangeEffectIntensity(pair.Key, pair.Value);
                         }
-                        player.MaxHealth = Instance.Config.SecurityHealth[json[4]];
-                        player.Health = Instance.Config.SecurityHealth[json[4]];
+                        player.MaxHealth = Instance.Config.WorkersHealth[json[4]];
+                        player.Health = Instance.Config.WorkersHealth[json[4]];
                         player.Teleport(_civilianPersonnelTowerCoords);
                     });
                     break;
