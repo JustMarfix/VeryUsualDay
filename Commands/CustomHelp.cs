@@ -7,7 +7,7 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     public class CustomHelp : ICommand
     {
-        public string Command => "help";
+        public string Command => "hhelp";
         public string[] Aliases => new[] { "hhelp", "help" };
         public string Description => "Описание команд.";
 
