@@ -28,7 +28,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(4, 5, 1);
+        public override Version Version => new Version(4, 6, 0);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -106,6 +106,7 @@ namespace VeryUsualDay
             PlayerHandler.Verified += Player.OnVerified;
             PlayerHandler.Hurt += Player.OnHurt;
             PlayerHandler.Healed += Player.OnHealed;
+            PlayerHandler.Handcuffing += Player.OnHandcuffing;
             ServerHandler.WaitingForPlayers += Server.OnWaitingForPlayers;
             ServerHandler.RoundStarted += Server.OnRoundStarted;
             base.OnEnabled();
@@ -124,6 +125,7 @@ namespace VeryUsualDay
             PlayerHandler.Verified -= Player.OnVerified;
             PlayerHandler.Hurt -= Player.OnHurt;
             PlayerHandler.Healed -= Player.OnHealed;
+            PlayerHandler.Handcuffing -= Player.OnHandcuffing;
             ServerHandler.WaitingForPlayers -= Server.OnWaitingForPlayers;
             ServerHandler.RoundStarted -= Server.OnRoundStarted;
             Instance = null;

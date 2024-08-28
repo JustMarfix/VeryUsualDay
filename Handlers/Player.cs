@@ -19,6 +19,12 @@ namespace VeryUsualDay.Handlers
             ev.IsTriggerable = false;
             ev.IsAllowed = false;
         }
+
+        public static void OnHandcuffing(HandcuffingEventArgs ev)
+        {
+            ev.IsAllowed = false;
+            ev.Target.Handcuff();
+        }
         
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {

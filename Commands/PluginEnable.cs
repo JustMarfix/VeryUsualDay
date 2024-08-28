@@ -39,23 +39,26 @@ namespace VeryUsualDay.Commands
                 Timing.KillCoroutines("_joining");
                 Timing.KillCoroutines("_prisonTimer");
                 Timing.KillCoroutines("_chaos");
-                foreach (var player in Player.List)
+                if (VeryUsualDay.Instance.Config.AuthToken != "")
                 {
-                    if (player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState)
+                    foreach (var player in Player.List)
                     {
-                        player.TryGetSessionVariable("prisonReason", out string reason);
-                        player.TryGetSessionVariable("prisonTime", out Int32 time);
-                        VeryUsualDay.SendToPrison(player, time, reason);
-                        // Log.Info($"Игроку {player.UserId} осталось в тюрьме {time} секунд. СОД закончен.");
-                        Timing.CallDelayed(3f, () =>
+                        if (player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState)
                         {
-                            player.UnMute();
-                            player.DisableEffect(EffectType.SilentWalk);
-                            player.Role.Set(RoleTypeId.Tutorial);
-                            player.SessionVariables.Remove("isInPrison");
-                            player.SessionVariables.Remove("prisonTime");
-                            player.SessionVariables.Remove("prisonReason");
-                        });
+                            player.TryGetSessionVariable("prisonReason", out string reason);
+                            player.TryGetSessionVariable("prisonTime", out Int32 time);
+                            VeryUsualDay.SendToPrison(player, time, reason);
+                            // Log.Info($"Игроку {player.UserId} осталось в тюрьме {time} секунд. СОД закончен.");
+                            Timing.CallDelayed(3f, () =>
+                            {
+                                player.UnMute();
+                                player.DisableEffect(EffectType.SilentWalk);
+                                player.Role.Set(RoleTypeId.Tutorial);
+                                player.SessionVariables.Remove("isInPrison");
+                                player.SessionVariables.Remove("prisonTime");
+                                player.SessionVariables.Remove("prisonReason");
+                            });
+                        }
                     }
                 }
                 response = "Режим FX выключен.";
@@ -78,20 +81,24 @@ namespace VeryUsualDay.Commands
                 {
                     VeryUsualDay.Instance.SupplyBoxCoords = Room.Get(RoomType.EzGateB).Position + new Vector3(-6.193f, 2.243f, -5.901f);
                 });
-                foreach (var player in Player.List)
+                if (VeryUsualDay.Instance.Config.AuthToken != "")
                 {
-                    var userData = (ITuple)VeryUsualDay.CheckIfPlayerInPrison(player);
-                    if ((bool)userData[0])
+                    foreach (var player in Player.List)
                     {
-                        player.Mute();
-                        player.EnableEffect(EffectType.SilentWalk, 255);
-                        player.Teleport(VeryUsualDay.PrisonPosition);
-                        player.SessionVariables.Add("isInPrison", true);
-                        player.SessionVariables.Add("prisonTime", (Int32)userData[1]);
-                        player.SessionVariables.Add("prisonReason", (string)userData[2]);
-                        // Log.Info($"Игрок {player.UserId} будет находиться в тюрьме {(Int32)userData[1]} секунд.");
+                        var userData = (ITuple)VeryUsualDay.CheckIfPlayerInPrison(player);
+                        if ((bool)userData[0])
+                        {
+                            player.Mute();
+                            player.EnableEffect(EffectType.SilentWalk, 255);
+                            player.Teleport(VeryUsualDay.PrisonPosition);
+                            player.SessionVariables.Add("isInPrison", true);
+                            player.SessionVariables.Add("prisonTime", (Int32)userData[1]);
+                            player.SessionVariables.Add("prisonReason", (string)userData[2]);
+                            // Log.Info($"Игрок {player.UserId} будет находиться в тюрьме {(Int32)userData[1]} секунд.");
+                        }
                     }
                 }
+
                 response = "Режим FX включён.";
             }
             return true;
