@@ -793,7 +793,7 @@ namespace VeryUsualDay
         };
 
         [Description("Инвентарь бойца БУО (List<ItemType>)")]
-        public List<ItemType> BuoInventory { get; set; } = new List<ItemType>
+        public List<ItemType> BuoPrivateInventory { get; set; } = new List<ItemType>
         {
             ItemType.KeycardMTFPrivate,
             ItemType.GunShotgun,
@@ -801,6 +801,44 @@ namespace VeryUsualDay
             ItemType.Medkit,
             ItemType.Painkillers,
             ItemType.ArmorCombat,
+            ItemType.Radio
+        };
+        
+        [Description("Инвентарь сержанта БУО (List<ItemType>)")]
+        public List<ItemType> BuoSergeantInventory { get; set; } = new List<ItemType>
+        {
+            ItemType.KeycardMTFOperative,
+            ItemType.GunE11SR,
+            ItemType.GunRevolver,
+            ItemType.Medkit,
+            ItemType.Painkillers,
+            ItemType.ArmorCombat,
+            ItemType.Radio
+        };
+        
+        [Description("Инвентарь джаггернаута БУО (List<ItemType>)")]
+        public List<ItemType> BuoJaggerInventory { get; set; } = new List<ItemType>
+        {
+            ItemType.KeycardMTFOperative,
+            ItemType.GunLogicer,
+            ItemType.GunRevolver,
+            ItemType.Medkit,
+            ItemType.Painkillers,
+            ItemType.ArmorCombat,
+            ItemType.Radio
+        };
+        
+        [Description("Инвентарь ликвидатора БУО (List<ItemType>)")]
+        public List<ItemType> BuoTerminatorInventory { get; set; } = new List<ItemType>
+        {
+            ItemType.KeycardMTFCaptain,
+            ItemType.Painkillers,
+            ItemType.Painkillers,
+            ItemType.Radio,
+            ItemType.GunFRMG0,
+            ItemType.Adrenaline,
+            ItemType.SCP500,
+            ItemType.ArmorHeavy
         };
 
         [Description("Список ролей, на которые не распростроняется инфекиция SCP-008 (List<RoleTypeId>)")]

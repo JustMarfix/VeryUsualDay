@@ -22,6 +22,7 @@ namespace VeryUsualDay.Handlers
 
         public static void OnHandcuffing(HandcuffingEventArgs ev)
         {
+            if (VeryUsualDay.Instance.IsEnabledInRound) return;
             ev.IsAllowed = false;
             ev.Target.Handcuff();
         }
@@ -287,6 +288,15 @@ namespace VeryUsualDay.Handlers
             {
                 ev.Player.SessionVariables.Remove("vudmood");
                 ev.Player.SessionVariables.Add("vudmood", "Полностью здоров");
+            }
+        }
+
+        public static void OnInteractingDoor(InteractingDoorEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.IsEnabledInRound) return;
+            if (ev.Player.Role.Type == RoleTypeId.Scp0492 && ev.Door.IsOpen)
+            {
+                ev.IsAllowed = false;
             }
         }
     }

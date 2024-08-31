@@ -35,19 +35,73 @@ namespace VeryUsualDay.Commands
             foreach (var id in arguments.ToArray())
             {
                 if (!Player.TryGet(int.Parse(id), out var player)) continue;
-                player.Role.Set(RoleTypeId.ChaosMarauder, RoleSpawnFlags.AssignInventory);
-                Timing.CallDelayed(2f, () =>
+                var randomRole = UnityEngine.Random.Range(0f, 1f);
+                if (randomRole <= 0.5f)
                 {
-                    player.MaxHealth = 300f;
-                    player.Health = 300f;
-                    player.ResetInventory(VeryUsualDay.Instance.Config.BuoInventory);
-                    player.AddAmmo(AmmoType.Ammo44Cal, 16);
-                    player.AddAmmo(AmmoType.Ammo12Gauge, 28);
-                    player.CustomName = $"БУО #{VeryUsualDay.Instance.BuoCounter} - ##-{peopleCounter}";
-                    player.CustomInfo = "[Боец БУО]";
-                    player.Broadcast(15, "<color=#708090><b>Вы стали бойцом <color=#138808>Боевого Ударного Отряда<color=#708090>. Спасите <color=#ffd800>сотрудников фонда<color=#708090>, устраните <color=red>угрозу<color=#708090> в комплексе и <color=#120a8f>выполните миссию<color=#708090>!");
-                    peopleCounter += 1;
-                });
+                    player.Role.Set(RoleTypeId.ChaosConscript, RoleSpawnFlags.AssignInventory);
+                    Timing.CallDelayed(2f, () =>
+                    {
+                        player.MaxHealth = 300f;
+                        player.Health = 300f;
+                        player.ResetInventory(VeryUsualDay.Instance.Config.BuoPrivateInventory);
+                        player.AddAmmo(AmmoType.Ammo44Cal, 16);
+                        player.AddAmmo(AmmoType.Ammo12Gauge, 28);
+                        player.CustomName = $"БУО #{VeryUsualDay.Instance.BuoCounter} - ##-{peopleCounter}";
+                        player.CustomInfo = "[Боец БУО]";
+                        player.Broadcast(15, "<color=#708090><b>Вы стали бойцом <color=#138808>Боевого Ударного Отряда<color=#708090>. Спасите <color=#ffd800>сотрудников фонда<color=#708090>, устраните <color=red>угрозу<color=#708090> в комплексе и <color=#120a8f>выполните миссию<color=#708090>!");
+                        peopleCounter += 1;
+                    });
+                }
+                else if (randomRole <= 0.75f)
+                {
+                    player.Role.Set(RoleTypeId.ChaosRifleman, RoleSpawnFlags.AssignInventory);
+                    Timing.CallDelayed(2f, () =>
+                    {
+                        player.MaxHealth = 350f;
+                        player.Health = 350f;
+                        player.ResetInventory(VeryUsualDay.Instance.Config.BuoSergeantInventory);
+                        player.AddAmmo(AmmoType.Ammo44Cal, 16);
+                        player.AddAmmo(AmmoType.Nato556, 100);
+                        player.CustomName = $"БУО #{VeryUsualDay.Instance.BuoCounter} - ##-{peopleCounter}";
+                        player.CustomInfo = "[Сержант БУО]";
+                        player.Broadcast(15, "<color=#708090><b>Вы стали сержантом <color=#138808>Боевого Ударного Отряда<color=#708090>. Спасите <color=#ffd800>сотрудников фонда<color=#708090>, устраните <color=red>угрозу<color=#708090> в комплексе и <color=#120a8f>выполните миссию<color=#708090>!");
+                        peopleCounter += 1;
+                    });
+                }
+                else if (randomRole <= 0.85f)
+                {
+                    player.Role.Set(RoleTypeId.ChaosMarauder, RoleSpawnFlags.AssignInventory);
+                    Timing.CallDelayed(2f, () =>
+                    {
+                        player.MaxHealth = 400f;
+                        player.Health = 400f;
+                        player.ResetInventory(VeryUsualDay.Instance.Config.BuoJaggerInventory);
+                        player.AddAmmo(AmmoType.Ammo44Cal, 16);
+                        player.AddAmmo(AmmoType.Nato762, 200);
+                        player.CustomName = $"БУО #{VeryUsualDay.Instance.BuoCounter} - ##-{peopleCounter}";
+                        player.CustomInfo = "[Джаггернаут БУО]";
+                        player.Broadcast(15, "<color=#708090><b>Вы стали джаггернаутом <color=#138808>Боевого Ударного Отряда<color=#708090>. Спасите <color=#ffd800>сотрудников фонда<color=#708090>, устраните <color=red>угрозу<color=#708090> в комплексе и <color=#120a8f>выполните миссию<color=#708090>!");
+                        peopleCounter += 1;
+                    });
+                }
+                else
+                {
+                    player.Role.Set(RoleTypeId.ChaosRepressor, RoleSpawnFlags.AssignInventory);
+                    Timing.CallDelayed(2f, () =>
+                    {
+                        player.MaxHealth = 450f;
+                        player.Health = 450f;
+                        player.ResetInventory(VeryUsualDay.Instance.Config.BuoTerminatorInventory);
+                        player.AddAmmo(AmmoType.Nato556, 120);
+                        player.CustomName = $"БУО #{VeryUsualDay.Instance.BuoCounter} - ##-{peopleCounter}";
+                        player.CustomInfo = "[Ликвидатор БУО]";
+                        player.EnableEffect(EffectType.BodyshotReduction, 10);
+                        player.EnableEffect(EffectType.DamageReduction, 10);
+                        player.EnableEffect(EffectType.Vitality, 10);
+                        player.Broadcast(15, "<color=#708090><b>Вы стали ликвидатором <color=#138808>Боевого Ударного Отряда<color=#708090>. Спасите <color=#ffd800>сотрудников фонда<color=#708090>, устраните <color=red>угрозу<color=#708090> в комплексе и <color=#120a8f>выполните миссию<color=#708090>!");
+                        peopleCounter += 1;
+                    });
+                }
             }
             response = "Бойцы БУО заспавнены!";
             return true;
