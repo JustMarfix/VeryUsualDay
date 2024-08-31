@@ -36,9 +36,9 @@ jobs:
           EXILED_REFERENCES: ${{ github.workspace }}\lib
 
       - name: Upload Build
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: Plugin DLL
+          name: Plugin
           path: ${{ github.workspace }}\bin\Release\VeryUsualDay.dll
   deploy-testing:
     name: Deploy plugin to the testing server
@@ -50,7 +50,7 @@ jobs:
       - name: Download a single artifact
         uses: actions/download-artifact@v4
         with:
-          name: Plugin DLL
+          name: Plugin
           path: VeryUsualDay.dll
       - name: Deploy plugin to the server
         uses: rexlmanu/pterodactyl-upload-action@v2.1
