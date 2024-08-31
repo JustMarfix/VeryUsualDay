@@ -212,7 +212,7 @@ namespace VeryUsualDay.Handlers
 
         public static void OnVerified(VerifiedEventArgs ev)
         {
-            if (VeryUsualDay.Instance.IsEnabledInRound)
+            if (VeryUsualDay.Instance.IsEnabledInRound && VeryUsualDay.Instance.Config.AuthToken != "")
             {
                 var userData = (ITuple)VeryUsualDay.CheckIfPlayerInPrison(ev.Player);
                 if ((bool)userData[0])
@@ -293,7 +293,7 @@ namespace VeryUsualDay.Handlers
 
         public static void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
-            if (VeryUsualDay.Instance.IsEnabledInRound) return;
+            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (ev.Player.Role.Type == RoleTypeId.Scp0492 && ev.Door.IsOpen)
             {
                 ev.IsAllowed = false;
