@@ -6,7 +6,7 @@ using Exiled.API.Features;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class gocomplex : ICommand
+    public class GoComplex : ICommand
     {
         public string Command => "gocomplex";
         public string[] Aliases => new [] { "gocm" };

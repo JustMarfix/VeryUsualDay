@@ -10,7 +10,7 @@ using UnityEngine;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class spawn035 : ICommand
+    public class Spawn035 : ICommand
     {
         public string Command => "spawn035";
         public string[] Aliases => new string[] { };

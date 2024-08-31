@@ -7,7 +7,7 @@ using InventorySystem.Items.Usables.Scp244;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class recontain244 : ICommand
+    public class Recontain244 : ICommand
     {
         public string Command => "recontain244";
         public string[] Aliases => new string[] { };

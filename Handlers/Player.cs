@@ -242,7 +242,7 @@ namespace VeryUsualDay.Handlers
                 }
             }
             if (!VeryUsualDay.Instance.IsEnabledInRound ||
-                !ev.Player.TryGetSessionVariable("vudmood", out string mood)) return;
+                !ev.Player.TryGetSessionVariable("vudmood", out string _)) return;
             if (ev.Player.Health <= ev.Player.MaxHealth * 0.1)
             {
                 ev.Player.SessionVariables.Remove("vudmood");
@@ -268,7 +268,7 @@ namespace VeryUsualDay.Handlers
         public static void OnHealed(HealedEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound ||
-                !ev.Player.TryGetSessionVariable("vudmood", out string mood)) return;
+                !ev.Player.TryGetSessionVariable("vudmood", out string _)) return;
             if (ev.Player.Health <= ev.Player.MaxHealth * 0.1)
             {
                 ev.Player.SessionVariables.Remove("vudmood");

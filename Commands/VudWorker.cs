@@ -9,7 +9,7 @@ using PlayerRoles;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class vudworker : ICommand
+    public class VudWorker : ICommand
     {
         public string Command => "vudworker";
         public string[] Aliases => new string[] { };

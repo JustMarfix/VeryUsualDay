@@ -7,7 +7,7 @@ using Exiled.API.Features.Doors;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class redoors : ICommand
+    public class ReDoors : ICommand
     {
         public string Command => "redoors";
         public string[] Aliases => new string[] { };

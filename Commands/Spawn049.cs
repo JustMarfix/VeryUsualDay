@@ -10,11 +10,11 @@ using UnityEngine;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class spawn035_2 : ICommand
+    public class Spawn049 : ICommand
     {
-        public string Command => "spawn035-2";
+        public string Command => "spawn049";
         public string[] Aliases => new string[] { };
-        public string Description => "Работает при FX. Спавнит SCP-035-2.";
+        public string Description => "Работает при FX. Спавнит SCP-049.";
         public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -25,30 +25,30 @@ namespace VeryUsualDay.Commands
                 return false;
             }
             var id = int.Parse(arguments.ToArray()[0]);
-            if (Player.TryGet(id, out var scp0352))
+            if (Player.TryGet(id, out var scp049))
             {
                 if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(id))
                 {
-                    scp0352.MaxHealth = 100f;
-                    scp0352.CustomInfo = "Человек";
-                    scp0352.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
-                    scp0352.Scale = new Vector3(1f, 1f, 1f);
+                    scp049.MaxHealth = 100f;
+                    scp049.CustomInfo = "Человек";
+                    scp049.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
+                    scp049.Scale = new Vector3(1f, 1f, 1f);
                     VeryUsualDay.Instance.ScpPlayers.Remove(id);
                     response = "SCP удалён!";
                     return true;
                 }
 
+                scp049.Role.Set(RoleTypeId.Scp049, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.AssignInventory);
                 Timing.CallDelayed(2f, () =>
                 {
-                    scp0352.CustomInfo = "<b><color=#960018>SCP-035-2</color></b>";
-                    scp0352.MaxHealth = 350f;
-                    scp0352.Health = 350f;
-                    scp0352.Scale = new Vector3(1f, 1f, 1f);
-                    scp0352.IsGodModeEnabled = false;
-                    scp0352.Broadcast(10, "Вы теперь подчиняетесь SCP-035.");
-                    VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp0352);
+                    scp049.CustomInfo = "<b><color=#960018>SCP-049</color></b>";
+                    scp049.MaxHealth = 13000f;
+                    scp049.Health = 13000f;
+                    scp049.Scale = new Vector3(1f, 1f, 1f);
+                    scp049.IsGodModeEnabled = false;
+                    VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp049);
                 });
-                response = "SCP-035-2 создан!";
+                response = "SCP-049 создан!";
                 return true;
             }
 

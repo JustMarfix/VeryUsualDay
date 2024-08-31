@@ -6,7 +6,7 @@ using PlayerRoles;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(ClientCommandHandler))]
-    public class classd : ICommand
+    public class ClassD : ICommand
     {
         public string Command => "classd";
         public string[] Aliases => new string[] { };

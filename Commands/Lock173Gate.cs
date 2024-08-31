@@ -6,7 +6,7 @@ using Exiled.API.Features.Doors;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class lock173gate : ICommand
+    public class Lock173Gate : ICommand
     {
         public string Command => "lock173gate";
         public string[] Aliases => new string[] { };

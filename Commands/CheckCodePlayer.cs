@@ -4,7 +4,7 @@ using CommandSystem;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(ClientCommandHandler))]
-    public class checkcode_player : ICommand
+    public class CheckCodePlayer : ICommand
     {
         public string Command => "code";
         public string[] Aliases => new string[] { };

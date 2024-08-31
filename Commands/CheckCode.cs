@@ -4,7 +4,7 @@ using CommandSystem;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class checkcode : ICommand
+    public class CheckCode : ICommand
     {
         public string Command => "checkcode";
         public string[] Aliases => new string[] { };

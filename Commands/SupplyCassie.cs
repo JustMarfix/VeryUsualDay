@@ -5,7 +5,7 @@ using Exiled.API.Features;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class supplycassie : ICommand
+    public class SupplyCassie : ICommand
     {
         public string Command => "supplycassie";
         public string[] Aliases => new string[] { };

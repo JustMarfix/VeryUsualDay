@@ -4,7 +4,7 @@ using CommandSystem;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class allowspawn : ICommand
+    public class AllowSpawn : ICommand
     {
         public string Command => "allowspawn";
         public string[] Aliases => new string[] { };

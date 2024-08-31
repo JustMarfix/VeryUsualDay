@@ -6,7 +6,7 @@ using Exiled.API.Features.Pickups;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class vudclear : ICommand
+    public class VudClear : ICommand
     {
         public string Command => "vudclear";
         public string[] Aliases => new string[] { };

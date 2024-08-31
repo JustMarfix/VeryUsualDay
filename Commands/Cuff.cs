@@ -42,7 +42,7 @@ namespace VeryUsualDay.Commands
                 return false;
             }
             
-            Player cuffed = null;
+            Player cuffed;
             var hub = raycastHit.transform?.GetComponentInParent<ReferenceHub>();
             if (hub == null || !Player.TryGet(hub, out cuffed) || cuffed == playerSender)
             {

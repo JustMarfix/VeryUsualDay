@@ -8,7 +8,7 @@ namespace VeryUsualDay.Commands
     public class ManageTesla : ICommand
     {
         public string Command => "managetesla";
-        public string[] Aliases => new string[] { "mtesla" };
+        public string[] Aliases => new[] { "mtesla" };
         public string Description => "Управление тесла-гейтами. Использование: mtesla on/off";
         public bool SanitizeResponse => false;
         

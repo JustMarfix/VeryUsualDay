@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
