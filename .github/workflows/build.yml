@@ -60,4 +60,4 @@ jobs:
           server-id: "c6fcbf0a"
           source: "VeryUsualDay.dll"
           target: "./.config/EXILED/Plugins/"
-          decompress-target: true
+          decompress-target: false
