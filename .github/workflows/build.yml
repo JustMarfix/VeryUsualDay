@@ -34,9 +34,6 @@ jobs:
         with:
           name: plugin
           path: ${{ github.workspace }}\bin\Release\VeryUsualDay.dll
-      - name: List contents
-        shell: pwsh
-        run: ls -R
   deploy-testing:
     name: Deploy plugin to the testing server
     needs: build
@@ -48,15 +45,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: plugin
-          path: VeryUsualDay.dll
-      - name: List all files
-        run: ls -R
+          path: plugin
       - name: Deploy plugin to the server
         uses: rexlmanu/pterodactyl-upload-action@v2.1
         with:
           panel-host: ${{ secrets.PANEL_HOST }}
           api-key: ${{ secrets.API_KEY }}
           server-id: "c6fcbf0a"
-          source: "VeryUsualDay.dll"
+          source: "plugin/VeryUsualDay.dll"
           target: "./.config/EXILED/Plugins/"
           decompress-target: false
