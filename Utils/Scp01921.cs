@@ -28,7 +28,7 @@ namespace VeryUsualDay.Utils
                 User.Health = hp;
                 User.Scale = new Vector3(0.6f, 0.6f, 0.6f);
                 User.IsGodModeEnabled = false;
-                User.Teleport(Room.Get(RoomType.Lcz173).Position + new Vector3(20.193f, 13.7f, 7.638f));
+                User.Teleport(VeryUsualDay.Instance.VaseCoords);
                 VeryUsualDay.Instance.ScpPlayers.Add(User.Id, VeryUsualDay.Scps.Scp01921);
             });
 

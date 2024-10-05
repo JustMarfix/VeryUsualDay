@@ -28,7 +28,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(5, 0, 0);
+        public override Version Version => new Version(5, 1, 0);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -51,6 +51,7 @@ namespace VeryUsualDay
         public readonly Vector3 SpawnPosition = new Vector3(139.487f, 995.392f, -16.762f);
         public static readonly Vector3 PrisonPosition = new Vector3(130.233f, 993.766f, 21.049f);
         public Vector3 SupplyBoxCoords = new Vector3();
+        public Vector3 VaseCoords = new Vector3();
 
         public readonly List<Vector3> EmfSupplyCoords = new List<Vector3>
         {

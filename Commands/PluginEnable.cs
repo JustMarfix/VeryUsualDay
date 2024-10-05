@@ -83,11 +83,6 @@ namespace VeryUsualDay.Commands
                     }
                 }
                 
-                Timing.CallDelayed(5f, () =>
-                {
-                    VeryUsualDay.Instance.SupplyBoxCoords = Room.Get(RoomType.EzGateB).Position + new Vector3(-6.193f, 2.243f, -5.901f);
-                });
-                
                 if (VeryUsualDay.Instance.Config.AuthToken != "")
                 {
                     foreach (var player in Player.List)
@@ -105,10 +100,28 @@ namespace VeryUsualDay.Commands
                         }
                     }
                 }
-
+                
+                VeryUsualDay.Instance.SupplyBoxCoords = Room.Get(RoomType.EzGateB).Position + new Vector3(-6.193f, 2.243f, -5.901f);
+                
+                if (Room.Get(RoomType.Lcz173).Rotation == new Quaternion(0, 1, 0, 0))
+                {
+                    VeryUsualDay.Instance.VaseCoords = Room.Get(RoomType.Lcz173).Position + new Vector3(-20.193f, 13.6f, -8f);
+                }
+                else if (Room.Get(RoomType.Lcz173).Rotation == new Quaternion(0, 0.70711f, 0, 0.70711f))
+                {
+                    VeryUsualDay.Instance.VaseCoords = Room.Get(RoomType.Lcz173).Position + new Vector3(8f, 13.6f, -20.193f);
+                }
+                else if (Room.Get(RoomType.Lcz173).Rotation == new Quaternion(0, 0, 0, 1))
+                {
+                    VeryUsualDay.Instance.VaseCoords = Room.Get(RoomType.Lcz173).Position + new Vector3(20.193f, 13.6f, 8f);
+                }
+                else if (Room.Get(RoomType.Lcz173).Rotation == new Quaternion(0, 0.70711f, 0, -0.70711f))
+                {
+                    VeryUsualDay.Instance.VaseCoords = Room.Get(RoomType.Lcz173).Position + new Vector3(8f, 13.6f, 20.193f);
+                }
                 var vase = Item.Create(ItemType.SCP244a);
                 vase.Scale = new Vector3(8f, 8f, 8f);
-                vase.CreatePickup(Room.Get(RoomType.Lcz173).Position + new Vector3(20.193f, 13.6f, 7.638f));
+                vase.CreatePickup(VeryUsualDay.Instance.VaseCoords);
                 
                 response = "Режим FX включён.";
             }

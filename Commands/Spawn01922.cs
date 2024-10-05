@@ -7,7 +7,7 @@ using VeryUsualDay.Utils;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class Spawn01922
+    public class Spawn01922 : ICommand
     {
         public string Command => "spawn019-2-2";
         public string[] Aliases => new string[] { };
