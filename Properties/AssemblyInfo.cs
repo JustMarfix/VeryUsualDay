@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("VeryUsualDay")]
-[assembly: AssemblyCopyright("Copyright JustMarfix © 2023")]
+[assembly: AssemblyCopyright("Copyright JustMarfix © 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

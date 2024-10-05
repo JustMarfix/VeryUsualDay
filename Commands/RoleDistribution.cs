@@ -9,7 +9,6 @@ namespace VeryUsualDay.Commands
         public string Command => "roledistr";
         public string[] Aliases => new string[] { };
         public string Description => "Распределяет роли для людей из БД. Не использовать без FX.";
-        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

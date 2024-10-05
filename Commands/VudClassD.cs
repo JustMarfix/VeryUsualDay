@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CommandSystem;
-using Exiled.API.Enums;
 using Exiled.API.Features;
-using MEC;
-using PlayerRoles;
 
 namespace VeryUsualDay.Commands
 {
@@ -14,7 +11,6 @@ namespace VeryUsualDay.Commands
         public string Command => "vudclassd";
         public string[] Aliases => new string[] { };
         public string Description => "Спавнит испытуемого на FX.";
-        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -33,18 +29,7 @@ namespace VeryUsualDay.Commands
             {
                 if (Player.TryGet(id, out var dboy))
                 {
-                    dboy.Role.Set(RoleTypeId.ClassD, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.All);
-                    Timing.CallDelayed(1f, () =>
-                    {
-                        dboy.ClearInventory();
-                        dboy.Handcuff();
-                        dboy.MaxHealth = 115f;
-                        dboy.Health = 115f;
-                        dboy.CustomName = $"Испытуемый - ##-{VeryUsualDay.Instance.SpawnedDboysCounter}";
-                        dboy.CustomInfo = "Человек";
-                        dboy.Broadcast(10, "<b>Вы стали <color=#EE7600>Испытуемым</color>! Можете сотрудничать с <color=#120a8f>фондом</color> или принимать попытки <color=#ff2b2b>побега</color> при первой возможности. </b>");
-                        VeryUsualDay.Instance.SpawnedDboysCounter += 1;
-                    });
+                    var classd = new Utils.ClassD(dboy);
                     cnt += 1;
                 }
                 else

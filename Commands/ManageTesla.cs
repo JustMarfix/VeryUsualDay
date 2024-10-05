@@ -10,7 +10,6 @@ namespace VeryUsualDay.Commands
         public string Command => "managetesla";
         public string[] Aliases => new[] { "mtesla" };
         public string Description => "Управление тесла-гейтами. Использование: mtesla on/off";
-        public bool SanitizeResponse => false;
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

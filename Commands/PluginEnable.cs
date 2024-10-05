@@ -5,7 +5,9 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
 using PlayerRoles;
+using PluginAPI.Core.Items;
 using UnityEngine;
+using Item = Exiled.API.Features.Items.Item;
 
 namespace VeryUsualDay.Commands
 {
@@ -15,7 +17,6 @@ namespace VeryUsualDay.Commands
         public string Command => "fxmode";
         public string[] Aliases => new string[] {};
         public string Description => "Не использовать, если не проводите FX!";
-        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,6 +25,7 @@ namespace VeryUsualDay.Commands
                 VeryUsualDay.Instance.IsEnabledInRound = false;
                 VeryUsualDay.Instance.IsLunchtimeActive = false;
                 VeryUsualDay.Instance.IsDboysSpawnAllowed = false;
+                VeryUsualDay.Instance.Is008Leaked = false;
                 VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Green;
                 VeryUsualDay.Instance.BuoCounter = 0;
                 VeryUsualDay.Instance.SpawnedDboysCounter = 1;
@@ -31,11 +33,13 @@ namespace VeryUsualDay.Commands
                 VeryUsualDay.Instance.SpawnedScientistCounter = 1;
                 VeryUsualDay.Instance.SpawnedSecurityCounter = 1;
                 VeryUsualDay.Instance.ScpPlayers.Clear();
+                VeryUsualDay.Instance.Zombies.Clear();
                 VeryUsualDay.Instance.JoinedDboys.Clear();
                 VeryUsualDay.Instance.DBoysQueue.Clear();
                 VeryUsualDay.Instance.ChaosRooms.Clear();
                 VeryUsualDay.Instance.Shakheds.Clear();
                 // Timing.KillCoroutines("_avel");
+                Timing.KillCoroutines("_008_poisoning");
                 Timing.KillCoroutines("_joining");
                 Timing.KillCoroutines("_prisonTimer");
                 Timing.KillCoroutines("_chaos");
@@ -48,7 +52,6 @@ namespace VeryUsualDay.Commands
                             player.TryGetSessionVariable("prisonReason", out string reason);
                             player.TryGetSessionVariable("prisonTime", out Int32 time);
                             VeryUsualDay.SendToPrison(player, time, reason);
-                            // Log.Info($"Игроку {player.UserId} осталось в тюрьме {time} секунд. СОД закончен.");
                             Timing.CallDelayed(3f, () =>
                             {
                                 player.UnMute();
@@ -67,9 +70,11 @@ namespace VeryUsualDay.Commands
             {
                 VeryUsualDay.Instance.IsEnabledInRound = true;
                 // Timing.RunCoroutine(VeryUsualDay.Instance._avel(), "_avel");
+                Timing.RunCoroutine(VeryUsualDay.Instance._008_poisoning(), "_008_poisoning");
                 Timing.RunCoroutine(VeryUsualDay.Instance._joining(), "_joining");
                 Timing.RunCoroutine(VeryUsualDay.Instance._prisonTimer(), "_prisonTimer");
                 Timing.RunCoroutine(VeryUsualDay.Instance._chaos(), "_chaos");
+                
                 foreach (var room in Room.List)
                 {
                     if (room.Zone != ZoneType.Unspecified && room.Color == Color.red)
@@ -77,10 +82,12 @@ namespace VeryUsualDay.Commands
                         room.ResetColor();
                     }
                 }
+                
                 Timing.CallDelayed(5f, () =>
                 {
                     VeryUsualDay.Instance.SupplyBoxCoords = Room.Get(RoomType.EzGateB).Position + new Vector3(-6.193f, 2.243f, -5.901f);
                 });
+                
                 if (VeryUsualDay.Instance.Config.AuthToken != "")
                 {
                     foreach (var player in Player.List)
@@ -99,6 +106,10 @@ namespace VeryUsualDay.Commands
                     }
                 }
 
+                var vase = Item.Create(ItemType.SCP244a);
+                vase.Scale = new Vector3(8f, 8f, 8f);
+                vase.CreatePickup(Room.Get(RoomType.Lcz173).Position + new Vector3(20.193f, 13.6f, 7.638f));
+                
                 response = "Режим FX включён.";
             }
             return true;

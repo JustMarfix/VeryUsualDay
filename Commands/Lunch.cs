@@ -11,7 +11,6 @@ namespace VeryUsualDay.Commands
         public string Command => "lunch";
         public string[] Aliases => new string[] { };
         public string Description => "Начинает или принудительно заканчивает обед. Сделано для FX.";
-        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

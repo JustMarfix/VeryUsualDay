@@ -16,7 +16,6 @@ namespace VeryUsualDay.Commands
         public string[] Aliases => new string[] { };
 
         public string Description => "Позволяет заспавнить бойцов БУО. Использование: spawnbuo <id через пробел>. Для FX.";
-        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -41,8 +40,8 @@ namespace VeryUsualDay.Commands
                     player.Role.Set(RoleTypeId.ChaosConscript, RoleSpawnFlags.AssignInventory);
                     Timing.CallDelayed(2f, () =>
                     {
-                        player.MaxHealth = 300f;
-                        player.Health = 300f;
+                        player.MaxHealth = 375f;
+                        player.Health = 375f;
                         player.ResetInventory(VeryUsualDay.Instance.Config.BuoPrivateInventory);
                         player.AddAmmo(AmmoType.Ammo44Cal, 16);
                         player.AddAmmo(AmmoType.Ammo12Gauge, 28);
@@ -57,8 +56,8 @@ namespace VeryUsualDay.Commands
                     player.Role.Set(RoleTypeId.ChaosRifleman, RoleSpawnFlags.AssignInventory);
                     Timing.CallDelayed(2f, () =>
                     {
-                        player.MaxHealth = 350f;
-                        player.Health = 350f;
+                        player.MaxHealth = 425f;
+                        player.Health = 425f;
                         player.ResetInventory(VeryUsualDay.Instance.Config.BuoSergeantInventory);
                         player.AddAmmo(AmmoType.Ammo44Cal, 16);
                         player.AddAmmo(AmmoType.Nato556, 100);
@@ -73,8 +72,8 @@ namespace VeryUsualDay.Commands
                     player.Role.Set(RoleTypeId.ChaosMarauder, RoleSpawnFlags.AssignInventory);
                     Timing.CallDelayed(2f, () =>
                     {
-                        player.MaxHealth = 400f;
-                        player.Health = 400f;
+                        player.MaxHealth = 475f;
+                        player.Health = 475f;
                         player.ResetInventory(VeryUsualDay.Instance.Config.BuoJaggerInventory);
                         player.AddAmmo(AmmoType.Ammo44Cal, 16);
                         player.AddAmmo(AmmoType.Nato762, 200);
@@ -89,8 +88,8 @@ namespace VeryUsualDay.Commands
                     player.Role.Set(RoleTypeId.ChaosRepressor, RoleSpawnFlags.AssignInventory);
                     Timing.CallDelayed(2f, () =>
                     {
-                        player.MaxHealth = 450f;
-                        player.Health = 450f;
+                        player.MaxHealth = 525f;
+                        player.Health = 525f;
                         player.ResetInventory(VeryUsualDay.Instance.Config.BuoTerminatorInventory);
                         player.AddAmmo(AmmoType.Nato556, 120);
                         player.CustomName = $"БУО #{VeryUsualDay.Instance.BuoCounter} - ##-{peopleCounter}";

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Linq;
 using CommandSystem;
-using Exiled.API.Enums;
 using Exiled.API.Features;
-using MEC;
-using PlayerRoles;
-using UnityEngine;
+using VeryUsualDay.Utils;
 
 namespace VeryUsualDay.Commands
 {
@@ -17,7 +14,6 @@ namespace VeryUsualDay.Commands
         public string[] Aliases => new string[] { };
 
         public string Description => "Работает при FX. Спавнит SCP-966.";
-        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -31,25 +27,12 @@ namespace VeryUsualDay.Commands
             {
                 if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(id))
                 {
-                    scp966.MaxHealth = 100f;
-                    scp966.CustomInfo = "Человек";
-                    scp966.Role.Set(RoleTypeId.Tutorial, reason: SpawnReason.ForceClass);
-                    scp966.Scale = new Vector3(1f, 1f, 1f);
-                    VeryUsualDay.Instance.ScpPlayers.Remove(id);
+                    var human = new TutorialHuman(scp966);
                     response = "SCP удалён!";
                     return true;
                 }
 
-                scp966.Role.Set(RoleTypeId.Scp0492, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.AssignInventory);
-                Timing.CallDelayed(2f, () =>
-                {
-                    scp966.CustomInfo = "<b><color=#960018>SCP-966</color></b>";
-                    scp966.MaxHealth = 1000f;
-                    scp966.Health = 1000f;
-                    scp966.Scale = new Vector3(0f, 1f, 0f);
-                    scp966.IsGodModeEnabled = false;
-                    VeryUsualDay.Instance.ScpPlayers.Add(id, VeryUsualDay.Scps.Scp966);
-                });
+                var scp = new Scp966(scp966);
                 response = "SCP-966 создан!";
                 return true;
             }

@@ -9,7 +9,6 @@ namespace VeryUsualDay.Commands
         public string Command => "allowspawn";
         public string[] Aliases => new string[] { };
         public string Description => "Включает/выключает самостоятельный спавн ClassD. Доступно только на FX.";
-        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

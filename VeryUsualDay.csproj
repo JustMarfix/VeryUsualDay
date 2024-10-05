@@ -65,7 +65,7 @@
       <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EXILEDOFFICIAL" Version="8.11.0" />
+    <PackageReference Include="EXILED-OFFICIAL" Version="8.12.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
@@ -83,12 +83,17 @@
     <Compile Include="Commands\Lock173Gate.cs" />
     <Compile Include="Commands\Lunch.cs" />
     <Compile Include="Commands\ManageTesla.cs" />
+    <Compile Include="Commands\Patogen008.cs" />
     <Compile Include="Commands\PluginEnable.cs" />
+    <Compile Include="Commands\Recontain008.cs" />
     <Compile Include="Commands\Recontain244.cs" />
     <Compile Include="Commands\ReDoors.cs" />
     <Compile Include="Commands\RoleDistribution.cs" />
+    <Compile Include="Commands\Spawn01921.cs" />
     <Compile Include="Commands\Shakhed.cs" />
     <Compile Include="Commands\ShakhedBoom.cs" />
+    <Compile Include="Commands\Spawn0082.cs" />
+    <Compile Include="Commands\Spawn01922.cs" />
     <Compile Include="Commands\Spawn035.cs" />
     <Compile Include="Commands\SetCode.cs" />
     <Compile Include="Commands\Spawn0352.cs" />
@@ -111,6 +116,24 @@
     <Compile Include="Config.cs" />
     <Compile Include="Handlers\Player.cs" />
     <Compile Include="Handlers\Server.cs" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Utils\ClassD.cs" />
+    <Compile Include="Utils\Guard.cs" />
+    <Compile Include="Utils\MtfMedic.cs" />
+    <Compile Include="Utils\Scientist.cs" />
+    <Compile Include="Utils\Scp0082.cs" />
+    <Compile Include="Utils\Scp01921.cs" />
+    <Compile Include="Utils\Scp01922.cs" />
+    <Compile Include="Utils\Scp035.cs" />
+    <Compile Include="Utils\Scp0352.cs" />
+    <Compile Include="Utils\Scp049.cs" />
+    <Compile Include="Utils\Scp0762.cs" />
+    <Compile Include="Utils\Scp372.cs" />
+    <Compile Include="Utils\Scp682.cs" />
+    <Compile Include="Utils\Scp966.cs" />
+    <Compile Include="Utils\Scp999.cs" />
+    <Compile Include="Utils\TutorialHuman.cs" />
+    <Compile Include="Utils\Worker.cs" />
     <Compile Include="VeryUsualDay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

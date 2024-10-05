@@ -13,7 +13,6 @@ namespace VeryUsualDay.Commands
         public string Command => "chaosmode";
         public string[] Aliases => new string[] { };
         public string Description => "Для FX. Включает режим хаоса для конкретной комнаты / для всего комплекса.";
-        public bool SanitizeResponse => false;
         public string[] Zones => new[] { "LCZ", "HCZ", "EZ", "SFC" };
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

@@ -12,7 +12,6 @@ namespace VeryUsualDay.Commands
         public string Command => "aban";
         public string[] Aliases => new string[] {};
         public string Description => "Admin-ban для ивентов. Срок идёт только во время ивентов. Работает только на Foundation-X.";
-        public bool SanitizeResponse => false;
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

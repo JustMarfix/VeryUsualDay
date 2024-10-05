@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 using CommandSystem;
-using Exiled.API.Enums;
 using Exiled.API.Features;
-using MEC;
-using PlayerRoles;
+using VeryUsualDay.Utils;
 
 namespace VeryUsualDay.Commands
 {
@@ -14,7 +12,6 @@ namespace VeryUsualDay.Commands
         public string Command => "vudscience";
         public string[] Aliases => new string[] { };
         public string Description => "Спавнит стажёра-научника на FX.";
-        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -32,21 +29,7 @@ namespace VeryUsualDay.Commands
             {
                 if (Player.TryGet(id, out var scientist))
                 {
-                    scientist.Role.Set(RoleTypeId.Scientist, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.AssignInventory);
-                    Timing.CallDelayed(2f, () =>
-                    {
-                        scientist.ClearInventory();
-                        scientist.MaxHealth = 100f;
-                        scientist.Health = 100f;
-                        scientist.AddItem(ItemType.KeycardJanitor);
-                        scientist.AddItem(ItemType.Painkillers);
-                        scientist.AddItem(ItemType.Flashlight);
-                        scientist.AddItem(ItemType.Radio);
-                        scientist.CustomName = $"Сотрудник - ##-{VeryUsualDay.Instance.SpawnedScientistCounter}";
-                        scientist.CustomInfo = "Человек";
-                        scientist.Broadcast(10, "<b>Вы вступили в <color=#ffd800>Научный</color> отдел! Исследуйте и сдерживайте <color=red>аномалии</color>, помогайте работе <color=#120a8f>фонда</color>.");
-                        VeryUsualDay.Instance.SpawnedScientistCounter += 1;
-                    });
+                    var player = new Scientist(scientist);
                 }
                 else
                 {

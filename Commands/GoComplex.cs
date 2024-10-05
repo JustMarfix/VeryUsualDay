@@ -11,7 +11,6 @@ namespace VeryUsualDay.Commands
         public string Command => "gocomplex";
         public string[] Aliases => new [] { "gocm" };
         public string Description => "Для FX. Отправляет людей на поверхность и кидает CASSIE.";
-        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

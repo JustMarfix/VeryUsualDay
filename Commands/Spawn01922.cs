@@ -7,11 +7,11 @@ using VeryUsualDay.Utils;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class VudMedic : ICommand
+    public class Spawn01922
     {
-        public string Command => "vudmedic";
+        public string Command => "spawn019-2-2";
         public string[] Aliases => new string[] { };
-        public string Description => "Спавнит Медика Реагирования. Для Foundation-X.";
+        public string Description => "Работает при FX. Спавнит SCP-019-2 (2 вариант).";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -20,24 +20,13 @@ namespace VeryUsualDay.Commands
                 response = "Режим FX не включён!";
                 return false;
             }
-            if (arguments.Count < 1)
-            {
-                response = "Формат команды: vudmedic <id через пробел>.";
-                return false;
-            }
-            
+
             foreach (var id in arguments.ToArray())
             {
-                if (Player.TryGet(id, out var medic))
-                {
-                    var mtf = new MtfMedic(medic);
-                }
-                else
-                {
-                    response = "Не удалось найти игрока с таким ID!";
-                    return false;
-                }
+                if (!Player.TryGet(int.Parse(id), out var player)) continue;
+                var scp = new Scp01922(player);
             }
+
             response = "Игроки заспавнены.";
             return true;
         }

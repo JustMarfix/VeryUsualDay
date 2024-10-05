@@ -28,15 +28,17 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(4, 7, 0);
+        public override Version Version => new Version(5, 0, 0);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
         public bool IsDboysSpawnAllowed { get; set; }
         public bool IsTeslaEnabled { get; set; }
+        public bool Is008Leaked { get; set; }
         public List<int> JoinedDboys { get; set; } = new List<int>();
         public List<int> DBoysQueue { get; set; } = new List<int>();
         public List<int> Shakheds { get; set; } = new List<int>();
+        public List<int> Zombies { get; set; } = new List<int>();
         public List<RoomType> ChaosRooms { get; set; } = new List<RoomType>();
         public int BuoCounter { get; set; } = 1;
         public int SpawnedDboysCounter { get; set; } = 1;
@@ -74,6 +76,9 @@ namespace VeryUsualDay
 
         public enum Scps
         {
+            Scp0082,
+            Scp01921,
+            Scp01922,
             Scp035,
             Scp0352,
             Scp049,
@@ -81,23 +86,19 @@ namespace VeryUsualDay
             Scp372,
             Scp682,
             Scp966,
-            Scp999
+            Scp999,
         }
 
         public Codes CurrentCode { get; set; } = Codes.Green;
         public Dictionary<int, Scps> ScpPlayers { get; set; } = new Dictionary<int, Scps>();
 
-        public override void OnEnabled()
+        private static void _registerEvents()
         {
-            Instance = this;
-            if (Instance.Config.AuthToken == "")
-            {
-                Log.Error("AuthToken пуст - функционал тюрьмы и БД будет недоступен.");
-            }
             PlayerHandler.ChangingRole += Player.OnChangingRole;
             PlayerHandler.PickingUpItem += Player.OnPickingUpItem;
             PlayerHandler.DroppingItem += Player.OnDroppingItem;
             PlayerHandler.Hurting += Player.OnHurting;
+            PlayerHandler.Dying += Player.OnDying;
             PlayerHandler.Died += Player.OnDied;
             PlayerHandler.Left += Player.OnLeft;
             PlayerHandler.Shooting += Player.OnShooting;
@@ -110,10 +111,9 @@ namespace VeryUsualDay
             PlayerHandler.InteractingDoor += Player.OnInteractingDoor;
             ServerHandler.WaitingForPlayers += Server.OnWaitingForPlayers;
             ServerHandler.RoundStarted += Server.OnRoundStarted;
-            base.OnEnabled();
         }
 
-        public override void OnDisabled()
+        private static void _unregisterEvents()
         {
             PlayerHandler.ChangingRole -= Player.OnChangingRole;
             PlayerHandler.PickingUpItem -= Player.OnPickingUpItem;
@@ -130,8 +130,36 @@ namespace VeryUsualDay
             PlayerHandler.InteractingDoor -= Player.OnInteractingDoor;
             ServerHandler.WaitingForPlayers -= Server.OnWaitingForPlayers;
             ServerHandler.RoundStarted -= Server.OnRoundStarted;
+        }
+        
+        public override void OnEnabled()
+        {
+            Instance = this;
+            if (Instance.Config.AuthToken == "")
+            {
+                Log.Error("AuthToken пуст - функционал тюрьмы и БД будет недоступен.");
+            }
+            _registerEvents();
+            base.OnEnabled();
+        }
+
+        public override void OnDisabled()
+        {
             Instance = null;
+            _unregisterEvents();
             base.OnDisabled();
+        }
+        
+        public IEnumerator<float> _008_poisoning()
+        {
+            for (;;)
+            {
+                foreach (var target in Exiled.API.Features.Player.Get(player => player.Zone == ZoneType.HeavyContainment && !Instance.Config.DoNotPoisonRoles.Contains(player.Role.Type) && player.Role.Team != Team.SCPs && (player.CustomInfo is null || !player.CustomInfo.ToLower().Contains("scp"))))
+                {
+                    target.EnableEffect(EffectType.Poisoned);
+                }
+                yield return Timing.WaitForSeconds(10f);
+            }
         }
 
         public IEnumerator<float> _joining()
@@ -510,35 +538,6 @@ namespace VeryUsualDay
                 var json = JsonConvert.DeserializeObject<List<string>>(content);
                 return (response.IsSuccessStatusCode, int.Parse(json[0]), json[1]);
             }
-        }
-    }
-    public static class ReflectionHelpers
-    {
-        private static string GetCustomDescription(object objEnum)
-        {
-            var fi = objEnum.GetType().GetField(objEnum.ToString());
-            var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-            return (attributes.Length > 0) ? attributes[0].Description : objEnum.ToString();
-        }
-
-        public static string Description(this Enum value)
-        {
-            return GetCustomDescription(value);
-        }
-        
-        public static bool In<T>(this T val, params T[] vals) => vals.Contains(val);
-
-        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable)
-        {
-            var enumerable1 = enumerable.ToList();
-            var newEnum = Enumerable.Empty<T>();
-            while (enumerable1.Count != 0)
-            {
-                var index = Random.Range(0, enumerable1.Count);
-                newEnum = newEnum.Append(enumerable1[index]);
-                enumerable1.RemoveAt(index);
-            }
-            return newEnum;
         }
     }
 }

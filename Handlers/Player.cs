@@ -8,6 +8,7 @@ using InventorySystem.Items.Jailbird;
 using MEC;
 using PlayerRoles;
 using UnityEngine;
+using VeryUsualDay.Utils;
 
 namespace VeryUsualDay.Handlers
 {
@@ -31,7 +32,7 @@ namespace VeryUsualDay.Handlers
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             ev.Player.SessionVariables.Remove("vudmood");
-            if (ev.NewRole != RoleTypeId.Spectator && (ev.NewRole != RoleTypeId.Tutorial || ev.Player.CustomName.Split(' ')[0] == "Агент"))
+            if (ev.NewRole != RoleTypeId.Spectator && ev.NewRole.GetSide() != Side.Scp && (ev.NewRole != RoleTypeId.Tutorial || ev.Player.CustomName.Split(' ')[0] == "Агент"))
             {
                 ev.Player.SessionVariables.Add("vudmood", "Полностью здоров");
             }
@@ -40,6 +41,14 @@ namespace VeryUsualDay.Handlers
                 if (ev.Player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState) return;
                 if (ev.NewRole != RoleTypeId.Spectator ||
                     ev.Reason == SpawnReason.ForceClass) return;
+                
+                if (VeryUsualDay.Instance.Is008Leaked)
+                {
+                    if (ev.Player.Role.Type == RoleTypeId.Scp0492)
+                    {
+                        return;
+                    }
+                }
 
                 if (ev.Reason == SpawnReason.Died || ev.Reason == SpawnReason.Destroyed)
                 {
@@ -136,6 +145,15 @@ namespace VeryUsualDay.Handlers
             }
         }
 
+        public static void OnDying(DyingEventArgs ev)
+        {
+            if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green ||
+                VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald)
+            {
+                ev.Player.ClearInventory(destroy: true);
+            }
+        }
+        
         public static void OnDied(DiedEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
@@ -143,6 +161,24 @@ namespace VeryUsualDay.Handlers
             ev.Player.MaxHealth = 100f;
             ev.Player.Scale = new Vector3(1f, 1f, 1f);
             ev.Player.SessionVariables.Remove("vudmood");
+            
+            if (VeryUsualDay.Instance.Zombies.Contains(ev.Player.Id))
+            {
+                ev.Player.UnMute();
+                VeryUsualDay.Instance.Zombies.Remove(ev.Player.Id);
+            }
+            else if (!VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id) && VeryUsualDay.Instance.Is008Leaked)
+            {
+                Timing.CallDelayed(2f, () =>
+                {
+                    var scp = new Scp0082(ev.Player, true);
+                });
+            }
+            if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))
+            {
+                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp0082) ev.Player.UnMute();
+                VeryUsualDay.Instance.ScpPlayers.Remove(ev.Player.Id);
+            }
             
             if (VeryUsualDay.Instance.DBoysQueue.Contains(ev.Player.Id))
             {
@@ -170,6 +206,11 @@ namespace VeryUsualDay.Handlers
                 ev.Player.TryGetSessionVariable("prisonReason", out string reason);
                 ev.Player.TryGetSessionVariable("prisonTime", out int time);
                 VeryUsualDay.SendToPrison(ev.Player, time, reason);
+            }
+            if (VeryUsualDay.Instance.Zombies.Contains(ev.Player.Id))
+            {
+                ev.Player.UnMute();
+                VeryUsualDay.Instance.Zombies.Remove(ev.Player.Id);
             }
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id))

@@ -12,7 +12,6 @@ namespace VeryUsualDay.Commands
         public string Command => "redoors";
         public string[] Aliases => new string[] { };
         public string Description => "Позволяет рестартнуть систему дверей (FX).";
-        public bool SanitizeResponse => false;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
