@@ -70,7 +70,6 @@ namespace VeryUsualDay.Commands
             {
                 VeryUsualDay.Instance.IsEnabledInRound = true;
                 // Timing.RunCoroutine(VeryUsualDay.Instance._avel(), "_avel");
-                Timing.RunCoroutine(VeryUsualDay.Instance._008_poisoning(), "_008_poisoning");
                 Timing.RunCoroutine(VeryUsualDay.Instance._joining(), "_joining");
                 Timing.RunCoroutine(VeryUsualDay.Instance._prisonTimer(), "_prisonTimer");
                 Timing.RunCoroutine(VeryUsualDay.Instance._chaos(), "_chaos");
@@ -118,6 +117,10 @@ namespace VeryUsualDay.Commands
                 else if (Room.Get(RoomType.Lcz173).Rotation == new Quaternion(0, 0.70711f, 0, -0.70711f))
                 {
                     VeryUsualDay.Instance.VaseCoords = Room.Get(RoomType.Lcz173).Position + new Vector3(8f, 13.6f, 20.193f);
+                }
+                else
+                {
+                    VeryUsualDay.Instance.VaseCoords = Room.Get(RoomType.Lcz173).Position + new Vector3(-8f, 13.6f, 20.193f);
                 }
                 var vase = Item.Create(ItemType.SCP244a);
                 vase.Scale = new Vector3(8f, 8f, 8f);

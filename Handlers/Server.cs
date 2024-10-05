@@ -12,6 +12,7 @@ namespace VeryUsualDay.Handlers
             VeryUsualDay.Instance.IsEnabledInRound = false;
             VeryUsualDay.Instance.IsLunchtimeActive = false;
             VeryUsualDay.Instance.IsDboysSpawnAllowed = false;
+            VeryUsualDay.Instance.Is008Leaked = false;
             VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Green;
             VeryUsualDay.Instance.BuoCounter = 0;
             VeryUsualDay.Instance.SpawnedDboysCounter = 1;
