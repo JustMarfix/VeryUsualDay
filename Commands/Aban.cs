@@ -34,8 +34,8 @@ namespace VeryUsualDay.Commands
                     response = "Время введено в неправильном формате.";
                     return false;
                 }
-                var timeToPrison = VeryUsualDay.ConvertToTimeSpan(args[1]);
-                if (VeryUsualDay.SendToPrison(target, Convert.ToInt32(timeToPrison.TotalSeconds), string.Join(" ", args.Skip(2))))
+                var timeToPrison = Helpers.ConvertToTimeSpan(args[1]);
+                if (PrisonController.SendToPrison(target, Convert.ToInt32(timeToPrison.TotalSeconds), string.Join(" ", args.Skip(2))))
                 {
                     response = $"Игрок {target.Nickname} был отправлен в тюрьму.";
                     return true;

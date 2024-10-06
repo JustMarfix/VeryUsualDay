@@ -5,7 +5,6 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
 using PlayerRoles;
-using PluginAPI.Core.Items;
 using UnityEngine;
 using Item = Exiled.API.Features.Items.Item;
 
@@ -51,7 +50,7 @@ namespace VeryUsualDay.Commands
                         {
                             player.TryGetSessionVariable("prisonReason", out string reason);
                             player.TryGetSessionVariable("prisonTime", out Int32 time);
-                            VeryUsualDay.SendToPrison(player, time, reason);
+                            PrisonController.SendToPrison(player, time, reason);
                             Timing.CallDelayed(3f, () =>
                             {
                                 player.UnMute();
@@ -64,6 +63,8 @@ namespace VeryUsualDay.Commands
                         }
                     }
                 }
+                
+                VeryUsualDay.Instance.Vase.Destroy();
                 response = "Режим FX выключен.";
             }
             else
@@ -86,7 +87,7 @@ namespace VeryUsualDay.Commands
                 {
                     foreach (var player in Player.List)
                     {
-                        var userData = (ITuple)VeryUsualDay.CheckIfPlayerInPrison(player);
+                        var userData = (ITuple)PrisonController.CheckIfPlayerInPrison(player);
                         if ((bool)userData[0])
                         {
                             player.Mute();
@@ -116,15 +117,15 @@ namespace VeryUsualDay.Commands
                 }
                 else if (Room.Get(RoomType.Lcz173).Rotation == new Quaternion(0, 0.70711f, 0, -0.70711f))
                 {
-                    VeryUsualDay.Instance.VaseCoords = Room.Get(RoomType.Lcz173).Position + new Vector3(8f, 13.6f, 20.193f);
+                    VeryUsualDay.Instance.VaseCoords = Room.Get(RoomType.Lcz173).Position + new Vector3(-8f, 13.6f, 20.193f);
                 }
                 else
                 {
-                    VeryUsualDay.Instance.VaseCoords = Room.Get(RoomType.Lcz173).Position + new Vector3(-8f, 13.6f, 20.193f);
+                    Log.Error("SCP-019 не появился! Поворот комнаты: " + Room.Get(RoomType.Lcz173).Rotation);
                 }
                 var vase = Item.Create(ItemType.SCP244a);
                 vase.Scale = new Vector3(8f, 8f, 8f);
-                vase.CreatePickup(VeryUsualDay.Instance.VaseCoords);
+                VeryUsualDay.Instance.Vase = vase.CreatePickup(VeryUsualDay.Instance.VaseCoords);
                 
                 response = "Режим FX включён.";
             }

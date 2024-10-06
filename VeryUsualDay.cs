@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Exiled.API.Features.Pickups;
 using MEC;
 using Newtonsoft.Json;
 using PlayerRoles;
@@ -28,7 +29,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(5, 1, 1);
+        public override Version Version => new Version(5, 2, 0);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -52,6 +53,8 @@ namespace VeryUsualDay
         public static readonly Vector3 PrisonPosition = new Vector3(130.233f, 993.766f, 21.049f);
         public Vector3 SupplyBoxCoords = new Vector3();
         public Vector3 VaseCoords = new Vector3();
+
+        public Pickup Vase;
 
         public readonly List<Vector3> EmfSupplyCoords = new List<Vector3>
         {
@@ -231,7 +234,7 @@ namespace VeryUsualDay
                         player.SessionVariables.Add("prisonTime", time);
                         if (time == 0)
                         {
-                            SendToPrison(player, 0, "Выпущен из тюрьмы.");
+                            PrisonController.SendToPrison(player, 0, "Выпущен из тюрьмы.");
                         }
                     }
                 }
@@ -464,80 +467,10 @@ namespace VeryUsualDay
         {
             foreach (var player in Exiled.API.Features.Player.Get(RoleTypeId.Tutorial))
             {
-                if (player.CustomInfo == "Человек" || player.CustomInfo is null)
+                if (player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState && (player.CustomInfo == "Человек" || player.CustomInfo is null))
                 {
                     SetUserRole(player);
                 }
-            }
-        }
-        
-        public static TimeSpan ConvertToTimeSpan(string timeSpan)
-        {
-            var l = timeSpan.Length - 1;
-            var value = timeSpan.Substring(0, l);
-            var type = timeSpan.Substring(l, 1);
-
-            switch (type)
-            {
-                case "d": return TimeSpan.FromDays(double.Parse(value));
-                case "h": return TimeSpan.FromHours(double.Parse(value));
-                case "m": return TimeSpan.FromMinutes(double.Parse(value));
-                case "s": return TimeSpan.FromSeconds(double.Parse(value));
-                default: return TimeSpan.FromSeconds(double.Parse(value));
-            }
-        }
-
-        public static bool SendToPrison(Exiled.API.Features.Player player, int durationSeconds, string reason)
-        {
-            using (var client = new HttpClient())
-            {
-                var data = new Dictionary<string, string>
-                {
-                    { "steamId", player.UserId },
-                    { "time", durationSeconds.ToString() },
-                    { "reason", reason }
-                };
-                var json = JsonConvert.SerializeObject(data);
-                HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Instance.Config.AuthToken);
-                var response = client.PostAsync($"http://justmeow.ru:9000/aban", content).Result;
-                if (response.IsSuccessStatusCode && Instance.IsEnabledInRound)
-                {
-                    player.Role.Set(RoleTypeId.Tutorial);
-                    Timing.CallDelayed(0.5f, () =>
-                    {
-                        if (durationSeconds == 0)
-                        {
-                            player.UnMute();
-                            player.DisableEffect(EffectType.SilentWalk);
-                            player.SessionVariables.Remove("isInPrison");
-                            player.SessionVariables.Remove("prisonTime");
-                            player.SessionVariables.Remove("prisonReason");
-                        }
-                        else
-                        {
-                            player.Mute();
-                            player.EnableEffect(EffectType.SilentWalk, 255);
-                            player.Teleport(PrisonPosition);
-                            player.SessionVariables.Add("isInPrison", true);
-                            player.SessionVariables.Add("prisonTime", durationSeconds);
-                            player.SessionVariables.Add("prisonReason", reason);
-                        }
-                    });
-                }
-                return response.IsSuccessStatusCode;
-            }
-        }
-
-        public static (bool, int, string) CheckIfPlayerInPrison(Exiled.API.Features.Player player)
-        {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Instance.Config.AuthToken);
-                var response = client.GetAsync($"http://justmeow.ru:9000/aban?steamId={player.UserId}").Result;
-                var content = response.Content.ReadAsStringAsync().Result;
-                var json = JsonConvert.DeserializeObject<List<string>>(content);
-                return (response.IsSuccessStatusCode, int.Parse(json[0]), json[1]);
             }
         }
     }

@@ -205,7 +205,7 @@ namespace VeryUsualDay.Handlers
             {
                 ev.Player.TryGetSessionVariable("prisonReason", out string reason);
                 ev.Player.TryGetSessionVariable("prisonTime", out int time);
-                VeryUsualDay.SendToPrison(ev.Player, time, reason);
+                PrisonController.SendToPrison(ev.Player, time, reason);
             }
             if (VeryUsualDay.Instance.Zombies.Contains(ev.Player.Id))
             {
@@ -255,7 +255,7 @@ namespace VeryUsualDay.Handlers
         {
             if (VeryUsualDay.Instance.IsEnabledInRound && VeryUsualDay.Instance.Config.AuthToken != "")
             {
-                var userData = (ITuple)VeryUsualDay.CheckIfPlayerInPrison(ev.Player);
+                var userData = (ITuple)PrisonController.CheckIfPlayerInPrison(ev.Player);
                 if ((bool)userData[0])
                 {
                     ev.Player.SessionVariables.Add("isInPrison", true);

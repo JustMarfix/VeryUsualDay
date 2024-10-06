@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Commands\Aban.cs" />
     <Compile Include="Commands\AllowSpawn.cs" />
+    <Compile Include="Commands\Breach019.cs" />
     <Compile Include="Commands\Breach244.cs" />
     <Compile Include="Commands\ChaosMode.cs" />
     <Compile Include="Commands\CheckCode.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Commands\Patogen008.cs" />
     <Compile Include="Commands\PluginEnable.cs" />
     <Compile Include="Commands\Recontain008.cs" />
+    <Compile Include="Commands\Recontain019.cs" />
     <Compile Include="Commands\Recontain244.cs" />
     <Compile Include="Commands\ReDoors.cs" />
     <Compile Include="Commands\RoleDistribution.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Handlers\Player.cs" />
     <Compile Include="Handlers\Server.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="PrisonController.cs" />
     <Compile Include="Utils\ClassD.cs" />
     <Compile Include="Utils\Guard.cs" />
     <Compile Include="Utils\MtfMedic.cs" />

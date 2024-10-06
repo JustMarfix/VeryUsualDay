@@ -841,7 +841,7 @@ namespace VeryUsualDay
             ItemType.ArmorHeavy
         };
 
-        [Description("Список ролей, на которые не распростроняется инфекиция SCP-008 (List<RoleTypeId>)")]
+        [Description("Список ролей, на которые не распростроняется инфекция SCP-008 (List<RoleTypeId>)")]
         public List<RoleTypeId> DoNotPoisonRoles { get; set; } = new List<RoleTypeId>
         {
             RoleTypeId.ChaosConscript,
@@ -886,7 +886,8 @@ namespace VeryUsualDay
             ItemType.SCP500,
             ItemType.SCP1853,
             ItemType.SCP244a,
-            ItemType.SCP244b
+            ItemType.SCP244b,
+            ItemType.SCP207
         };
 
         [Description("Список DamageType, которые взрывают пояс шахида (List<DamageType>)")]
