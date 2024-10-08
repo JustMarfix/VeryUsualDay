@@ -14,8 +14,11 @@ namespace VeryUsualDay
         [Description("Debug включён? (bool)")]
         public bool Debug { get; set; } = false;
 
-        [Description("Токен для авторизации на justmeow.ru")]
+        [Description("Токен для авторизации на API")]
         public string AuthToken { get; set; } = "";
+
+        [Description("BaseUrl для API")]
+        public string BaseApiUrl { get; set; } = "http://proxy.justmarfix.ru:9000";
 
         [Description("Список вещей для СБ (Dictionary<string, List<ItemType>>)")]
         public Dictionary<string, List<ItemType>> SecurityItems { get; set; } = new Dictionary<string, List<ItemType>>

@@ -24,7 +24,7 @@ namespace VeryUsualDay
                 var json = JsonConvert.SerializeObject(data);
                 HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", VeryUsualDay.Instance.Config.AuthToken);
-                var response = client.PostAsync($"http://justmeow.ru:9000/aban", content).Result;
+                var response = client.PostAsync($"{VeryUsualDay.Instance.Config.BaseApiUrl}/aban", content).Result;
                 if (response.IsSuccessStatusCode && VeryUsualDay.Instance.IsEnabledInRound)
                 {
                     player.Role.Set(RoleTypeId.Tutorial);
@@ -58,7 +58,7 @@ namespace VeryUsualDay
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", VeryUsualDay.Instance.Config.AuthToken);
-                var response = client.GetAsync($"http://justmeow.ru:9000/aban?steamId={player.UserId}").Result;
+                var response = client.GetAsync($"{VeryUsualDay.Instance.Config.BaseApiUrl}/aban?steamId={player.UserId}").Result;
                 var content = response.Content.ReadAsStringAsync().Result;
                 var json = JsonConvert.DeserializeObject<List<string>>(content);
                 return (response.IsSuccessStatusCode, int.Parse(json[0]), json[1]);

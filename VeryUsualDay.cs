@@ -29,7 +29,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(5, 2, 0);
+        public override Version Version => new Version(5, 2, 1);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -326,7 +326,7 @@ namespace VeryUsualDay
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Instance.Config.AuthToken);
-                var content = await client.GetStringAsync($"http://justmeow.ru:9000/get_user/{steamid}");
+                var content = await client.GetStringAsync($"{Instance.Config.BaseApiUrl}/get_user/{steamid}");
                 return content;
             }
         }
