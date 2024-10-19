@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -8,12 +9,12 @@ using PlayerRoles;
 
 namespace VeryUsualDay.Commands
 {
-    [CommandHandler(typeof(ClientCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Recontain008 : ICommand
     {
         public string Command => "recontain008";
         public string[] Aliases => new string[] { };
-        public string Description => "Восстанавливает ОУС SCP-008. Использовать только в К.С. SCP-008.";
+        public string Description => "Восстанавливает ОУС SCP-008 от имени игрока. Исп: recontain008 <ID>";
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -22,7 +23,7 @@ namespace VeryUsualDay.Commands
                 response = "ОУС SCP-008 не нарушены!";
                 return false;
             }
-            var playerSender = Player.Get(sender);
+            var playerSender = Player.Get(arguments.ToArray()[0]);
             if (playerSender.CurrentRoom.Type != RoomType.Hcz106)
             {
                 response = "Вы не находитесь в К.С. SCP-008.";

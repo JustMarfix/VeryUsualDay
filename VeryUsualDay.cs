@@ -29,7 +29,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(5, 2, 1);
+        public override Version Version => new Version(5, 2, 3);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }
@@ -467,7 +467,7 @@ namespace VeryUsualDay
         {
             foreach (var player in Exiled.API.Features.Player.Get(RoleTypeId.Tutorial))
             {
-                if (player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState && (player.CustomInfo == "Человек" || player.CustomInfo is null))
+                if ((!player.TryGetSessionVariable("isInPrison", out bool prisonState) || !prisonState) && (player.CustomInfo == "Человек" || player.CustomInfo is null))
                 {
                     SetUserRole(player);
                 }
