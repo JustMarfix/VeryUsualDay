@@ -109,6 +109,7 @@
     <Compile Include="Commands\SupplyCassie.cs" />
     <Compile Include="Commands\VudClassD.cs" />
     <Compile Include="Commands\VudClear.cs" />
+    <Compile Include="Commands\VudGhost.cs" />
     <Compile Include="Commands\VudGuard.cs" />
     <Compile Include="Commands\VudMedic.cs" />
     <Compile Include="Commands\VudMood.cs" />
