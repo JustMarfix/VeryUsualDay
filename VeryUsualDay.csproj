@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Commands\Aban.cs" />
     <Compile Include="Commands\AllowSpawn.cs" />
+    <Compile Include="Commands\AShield.cs" />
     <Compile Include="Commands\Breach019.cs" />
     <Compile Include="Commands\Breach244.cs" />
     <Compile Include="Commands\ChaosMode.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Commands\Cuff.cs" />
     <Compile Include="Commands\CustomHelp.cs" />
     <Compile Include="Commands\GoComplex.cs" />
+    <Compile Include="Commands\HShield.cs" />
     <Compile Include="Commands\Lock049Gate.cs" />
     <Compile Include="Commands\Lock173Gate.cs" />
     <Compile Include="Commands\Lunch.cs" />
