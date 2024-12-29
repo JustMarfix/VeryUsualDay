@@ -237,7 +237,7 @@ namespace VeryUsualDay.Handlers
             if (!VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player)) return;
             if (player == VeryUsualDay.Scps.Scp035 && ev.Firearm.Type == ItemType.GunRevolver)
             {
-                ev.Firearm.Ammo += 1;
+                ev.Firearm.MagazineAmmo += 1;
             }
         }
 
