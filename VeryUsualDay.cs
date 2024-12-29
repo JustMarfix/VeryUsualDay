@@ -29,7 +29,7 @@ namespace VeryUsualDay
         public override string Author => "JustMarfix";
         public override string Name => "VeryUsualDay (FX Version)";
 
-        public override Version Version => new Version(5, 3, 0);
+        public override Version Version => new Version(5, 3, 1);
 
         public bool IsEnabledInRound { get; set; }
         public bool IsLunchtimeActive { get; set; }

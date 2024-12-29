@@ -147,6 +147,7 @@ namespace VeryUsualDay.Handlers
 
         public static void OnDying(DyingEventArgs ev)
         {
+            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Green ||
                 VeryUsualDay.Instance.CurrentCode == VeryUsualDay.Codes.Emerald)
             {
