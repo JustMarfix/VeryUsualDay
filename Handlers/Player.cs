@@ -1,13 +1,16 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Exiled.API.Features.Core.UserSettings;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.Jailbird;
 using MEC;
 using PlayerRoles;
 using UnityEngine;
+using VeryUsualDay.Abilities.Scp035;
 using VeryUsualDay.Utils;
 
 namespace VeryUsualDay.Handlers
@@ -41,7 +44,30 @@ namespace VeryUsualDay.Handlers
                 if (ev.Player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState) return;
                 if (ev.NewRole != RoleTypeId.Spectator ||
                     ev.Reason == SpawnReason.ForceClass) return;
-                
+
+                if (
+                    VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id) &&
+                    VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 &&
+                    ev.Player.TryGetSessionVariable("haveBody", out bool haveBody) && haveBody)
+                {
+                    ev.Player.SessionVariables["haveBody"] = false;
+                    ev.Player.Role.Set(RoleTypeId.Scp0492, reason: SpawnReason.ForceClass, spawnFlags: RoleSpawnFlags.AssignInventory);
+                    Timing.CallDelayed(1f, () =>
+                    {
+                        ev.Player.MaxHealth = 6000f;
+                        ev.Player.Health = (float)ev.Player.SessionVariables["previousHp"];
+                        ev.Player.Scale = new Vector3(1f, 0.1f, 1f);
+                        ev.Player.EnableEffect(EffectType.DamageReduction);
+                        ev.Player.ChangeEffectIntensity(EffectType.DamageReduction, 40);
+                        ev.Player.EnableEffect(EffectType.Slowness);
+                        ev.Player.ChangeEffectIntensity(EffectType.Slowness, 70);
+                        ev.Player.EnableEffect(EffectType.SilentWalk);
+                        ev.Player.ChangeEffectIntensity(EffectType.SilentWalk, 10);
+                        ev.Player.IsGodModeEnabled = false;
+                        ev.Player.CustomName = "Объект";
+                    });
+                    return;
+                }
                 if (VeryUsualDay.Instance.Is008Leaked)
                 {
                     if (ev.Player.Role.Type == RoleTypeId.Scp0492)
@@ -77,7 +103,7 @@ namespace VeryUsualDay.Handlers
                     ev.IsAllowed = false;
                 }
 
-                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 &&
+                if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035Old &&
                     VeryUsualDay.Instance.Config.Scp035ForbiddenItems.Contains(ev.Pickup.Type))
                 {
                     ev.IsAllowed = false;
@@ -119,7 +145,7 @@ namespace VeryUsualDay.Handlers
                 ev.IsAllowed = false;
             }
 
-            if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 &&
+            if (VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035Old &&
                 ev.Item.Type == ItemType.GunRevolver)
             {
                 ev.IsAllowed = false;
@@ -158,6 +184,7 @@ namespace VeryUsualDay.Handlers
         public static void OnDied(DiedEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
+            if (ev.Player.TryGetSessionVariable("haveBody", out bool haveBody) && haveBody) return;
             ev.Player.CustomInfo = "Человек";
             ev.Player.MaxHealth = 100f;
             ev.Player.Scale = new Vector3(1f, 1f, 1f);
@@ -202,6 +229,10 @@ namespace VeryUsualDay.Handlers
 
         public static void OnLeft(LeftEventArgs ev)
         {
+            if (ev.Player.TryGetSessionVariable("serverSettings", out List<SettingBase> settings))
+            {
+                SettingBase.Unregister(ev.Player, settings);
+            }
             if (ev.Player.TryGetSessionVariable("isInPrison", out bool prisonState) && prisonState)
             {
                 ev.Player.TryGetSessionVariable("prisonReason", out string reason);
@@ -236,7 +267,7 @@ namespace VeryUsualDay.Handlers
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (!VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player)) return;
-            if (player == VeryUsualDay.Scps.Scp035 && ev.Firearm.Type == ItemType.GunRevolver)
+            if (player == VeryUsualDay.Scps.Scp035Old && ev.Firearm.Type == ItemType.GunRevolver)
             {
                 ev.Firearm.MagazineAmmo += 1;
             }
@@ -246,7 +277,7 @@ namespace VeryUsualDay.Handlers
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (!VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Player.Id, out var player)) return;
-            if ((player != VeryUsualDay.Scps.Scp035 || ev.Usable.Type != ItemType.SCP500) &&
+            if ((player != VeryUsualDay.Scps.Scp035Old || ev.Usable.Type != ItemType.SCP500) &&
                 ev.Usable.Type != ItemType.SCP207 && ev.Usable.Type != ItemType.AntiSCP207) return;
             ev.IsAllowed = false;
             ev.Item?.Destroy();
@@ -254,7 +285,8 @@ namespace VeryUsualDay.Handlers
 
         public static void OnVerified(VerifiedEventArgs ev)
         {
-            if (VeryUsualDay.Instance.IsEnabledInRound && VeryUsualDay.Instance.Config.AuthToken != "")
+            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
+            if (VeryUsualDay.Instance.Config.AuthToken != "")
             {
                 var userData = (ITuple)PrisonController.CheckIfPlayerInPrison(ev.Player);
                 if ((bool)userData[0])
@@ -271,10 +303,31 @@ namespace VeryUsualDay.Handlers
                     });
                 }
             }
+
+            var settings = new List<SettingBase>
+            {
+                VeryUsualDay.SettingsHeader,
+                new MemeticsAbility().Setting,
+                new BodyTakeoverAbility().Setting
+            };
+            ev.Player.SessionVariables["serverSettings"] = settings;
+            SettingBase.Register(ev.Player, settings);
         }
 
         public static void OnHurt(HurtEventArgs ev) 
         {
+            if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id) &&
+                VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 &&
+                (!ev.Player.TryGetSessionVariable("haveBody", out bool haveBody) || !haveBody))
+            {
+                if (ev.Player.Health <= 2000f)
+                {
+                    ev.Player.IsGodModeEnabled = true;
+                    Cassie.Message("<b><color=#727472>[ВОУС]</color></b>: Объект-035 ослаб и доступен для транспортировки в камеру содержания <size=0> pitch_0.1 .G2 . pitch_1.0 . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
+                    ev.Player.Broadcast(5, "<b>Вы ослабли и не можете навредить людям!</b>");
+                }
+                return;
+            }
             if (VeryUsualDay.Instance.Shakheds.Contains(ev.Player.Id) && VeryUsualDay.Instance.Config.BlowingDamageTypes.Contains(ev.DamageHandler.Type))
             {
                 VeryUsualDay.Instance.Shakheds.Remove(ev.Player.Id);
@@ -337,6 +390,16 @@ namespace VeryUsualDay.Handlers
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
             if (ev.Player.Role.Type == RoleTypeId.Scp0492 && ev.Door.IsOpen)
+            {
+                ev.IsAllowed = false;
+            }
+        }
+
+        public static void OnChangingItem(ChangingItemEventArgs ev)
+        {
+            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
+            if (ev.Player.TryGetSessionVariable("isUnderMemetics", out bool isUnderMemetics) && isUnderMemetics &&
+                ev.Item.IsFirearm)
             {
                 ev.IsAllowed = false;
             }

@@ -62,10 +62,13 @@
       <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ExMod.Exiled" Version="9.1.1" />
+    <PackageReference Include="ExMod.Exiled" Version="9.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\BaseAbility.cs" />
+    <Compile Include="Abilities\Scp035\BodyTakeoverAbility.cs" />
+    <Compile Include="Abilities\Scp035\MemeticsAbility.cs" />
     <Compile Include="Commands\Aban.cs" />
     <Compile Include="Commands\AllowSpawn.cs" />
     <Compile Include="Commands\AShield.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="Commands\Spawn035.cs" />
     <Compile Include="Commands\SetCode.cs" />
     <Compile Include="Commands\Spawn0352.cs" />
+    <Compile Include="Commands\Spawn035Old.cs" />
     <Compile Include="Commands\Spawn049.cs" />
     <Compile Include="Commands\Spawn0762.cs" />
     <Compile Include="Commands\Spawn372.cs" />
@@ -128,6 +132,7 @@
     <Compile Include="Utils\Scp01921.cs" />
     <Compile Include="Utils\Scp01922.cs" />
     <Compile Include="Utils\Scp035.cs" />
+    <Compile Include="Utils\Scp035Old.cs" />
     <Compile Include="Utils\Scp0352.cs" />
     <Compile Include="Utils\Scp049.cs" />
     <Compile Include="Utils\Scp0762.cs" />

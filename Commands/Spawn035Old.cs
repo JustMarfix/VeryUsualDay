@@ -7,11 +7,11 @@ using VeryUsualDay.Utils;
 namespace VeryUsualDay.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class Spawn035 : ICommand
+    public class Spawn035Old : ICommand
     {
-        public string Command => "spawn035";
+        public string Command => "spawn035old";
         public string[] Aliases => new string[] { };
-        public string Description => "Работает при FX. Спавнит SCP-035 (нового).";
+        public string Description => "Работает при FX. Спавнит SCP-035 (старого).";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -30,7 +30,7 @@ namespace VeryUsualDay.Commands
                     return true;
                 }
 
-                var scp = new Scp035(scp035);
+                var scp = new Scp035Old(scp035);
                 response = "SCP-035 создан!";
                 return true;
             }

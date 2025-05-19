@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Exiled.API.Features;
 using Random = UnityEngine.Random;
 
 namespace VeryUsualDay
@@ -34,6 +35,16 @@ namespace VeryUsualDay
         public static string Description(this Enum value)
         {
             return GetCustomDescription(value);
+        }
+
+        /// <summary>
+        /// Проверяет, является ли игрок SCP, включая кастомные SCP-классы.
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsScp(this Player player)
+        {
+            if (player == null) return false;
+            return VeryUsualDay.Instance.ScpPlayers.ContainsKey(player.Id) || player.IsScp;
         }
         
         public static bool In<T>(this T val, params T[] vals) => vals.Contains(val);

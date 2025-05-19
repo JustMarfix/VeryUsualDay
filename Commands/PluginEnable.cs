@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.API.Features.Core.UserSettings;
 using MEC;
 using PlayerRoles;
 using UnityEngine;
+using VeryUsualDay.Abilities.Scp035;
 using Item = Exiled.API.Features.Items.Item;
 
 namespace VeryUsualDay.Commands
@@ -65,6 +68,14 @@ namespace VeryUsualDay.Commands
                 }
                 
                 VeryUsualDay.Instance.Vase.Destroy();
+
+                foreach (var player in Player.List)
+                {
+                    if (player.TryGetSessionVariable("serverSettings", out List<SettingBase> settings))
+                    {
+                        SettingBase.Unregister(player, settings);
+                    }
+                }
                 response = "Режим FX выключен.";
             }
             else
@@ -126,6 +137,18 @@ namespace VeryUsualDay.Commands
                 var vase = Item.Create(ItemType.SCP244a);
                 vase.Scale = new Vector3(8f, 8f, 8f);
                 VeryUsualDay.Instance.Vase = vase.CreatePickup(VeryUsualDay.Instance.VaseCoords);
+
+                foreach (var player in Player.List)
+                {
+                    var settings = new List<SettingBase>
+                    {
+                        VeryUsualDay.SettingsHeader,
+                        new MemeticsAbility().Setting,
+                        new BodyTakeoverAbility().Setting
+                    };
+                    player.SessionVariables["serverSettings"] = settings;
+                    SettingBase.Register(player, settings);
+                }
                 
                 response = "Режим FX включён.";
             }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Exiled.API.Features.Core.UserSettings;
 using Exiled.API.Features.Pickups;
 using MEC;
 using Newtonsoft.Json;
@@ -47,19 +48,21 @@ namespace VeryUsualDay
         public int SpawnedScientistCounter { get; set; } = 1;
         public int SpawnedSecurityCounter { get; set; } = 1;
         
-        private readonly Vector3 _armedPersonnelTowerCoords = new Vector3(-16f, 1014.5f, -32f);
-        private readonly Vector3 _civilianPersonnelTowerCoords = new Vector3(44.4f, 1014.5f, -51.6f);
-        public readonly Vector3 SpawnPosition = new Vector3(139.487f, 995.392f, -16.762f);
-        public static readonly Vector3 PrisonPosition = new Vector3(130.233f, 993.766f, 21.049f);
+        private readonly Vector3 _armedPersonnelTowerCoords = new Vector3(-16f, 315f, -32f);
+        private readonly Vector3 _civilianPersonnelTowerCoords = new Vector3(44.4f, 315f, -51.6f);
+        public readonly Vector3 SpawnPosition = new Vector3(139.487f, 296.7f, -16.762f);
+        public static readonly Vector3 PrisonPosition = new Vector3(130.233f, 293.766f, 21.049f);
         public Vector3 SupplyBoxCoords = new Vector3();
         public Vector3 VaseCoords = new Vector3();
 
+        public static readonly HeaderSetting SettingsHeader = new HeaderSetting("Foundation-X");
+        
         public Pickup Vase;
 
         public readonly List<Vector3> EmfSupplyCoords = new List<Vector3>
         {
-            new Vector3(-10.682f, 1003f, -32.115f),
-            new Vector3(-6.873f, 1003f, -32f)
+            new Vector3(-10.682f, -96.5f, -32.115f),
+            new Vector3(-6.873f, -96.5f, -32f)
         };
         
         public enum Codes
@@ -84,6 +87,7 @@ namespace VeryUsualDay
             Scp01921,
             Scp01922,
             Scp035,
+            Scp035Old,
             Scp0352,
             Scp049,
             Scp0762,
@@ -113,6 +117,7 @@ namespace VeryUsualDay
             PlayerHandler.Healed += Player.OnHealed;
             PlayerHandler.Handcuffing += Player.OnHandcuffing;
             PlayerHandler.InteractingDoor += Player.OnInteractingDoor;
+            PlayerHandler.ChangingItem += Player.OnChangingItem;
             ServerHandler.WaitingForPlayers += Server.OnWaitingForPlayers;
             ServerHandler.RoundStarted += Server.OnRoundStarted;
         }
@@ -123,15 +128,18 @@ namespace VeryUsualDay
             PlayerHandler.PickingUpItem -= Player.OnPickingUpItem;
             PlayerHandler.DroppingItem -= Player.OnDroppingItem;
             PlayerHandler.Hurting -= Player.OnHurting;
+            PlayerHandler.Dying -= Player.OnDying;
             PlayerHandler.Died -= Player.OnDied;
             PlayerHandler.Left -= Player.OnLeft;
             PlayerHandler.Shooting -= Player.OnShooting;
+            PlayerHandler.UsingItem -= Player.OnUsingItem;
             PlayerHandler.TriggeringTesla -= Player.OnTriggeringTesla;
             PlayerHandler.Verified -= Player.OnVerified;
             PlayerHandler.Hurt -= Player.OnHurt;
             PlayerHandler.Healed -= Player.OnHealed;
             PlayerHandler.Handcuffing -= Player.OnHandcuffing;
             PlayerHandler.InteractingDoor -= Player.OnInteractingDoor;
+            PlayerHandler.ChangingItem -= Player.OnChangingItem;
             ServerHandler.WaitingForPlayers -= Server.OnWaitingForPlayers;
             ServerHandler.RoundStarted -= Server.OnRoundStarted;
         }
