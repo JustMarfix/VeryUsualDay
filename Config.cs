@@ -910,7 +910,7 @@ namespace VeryUsualDay
             DamageType.AK,
             DamageType.E11Sr
         };
-
+        
         public string CustomHelp { get; set; } = @"
   <color=#FFFFFF>---------------</color><color=#FEA831>FOUNDATION-X</color><color=#FFFFFF>---------------</color>
   <color=#FEA831>ВСЕ КОМАНДЫ ВВОДЯТСЯ В КОНСОЛЬ НА [`] ИЛИ [~] С ТОЧКОЙ (ПРИМЕР - .help)</color>

@@ -6,11 +6,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using CommandSystem.Commands.RemoteAdmin.Inventory;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Core.UserSettings;
 using Exiled.API.Features.Pickups;
+using Exiled.CustomItems.API.Features;
 using MEC;
 using Newtonsoft.Json;
 using PlayerRoles;
@@ -55,7 +57,7 @@ namespace VeryUsualDay
         public Vector3 SupplyBoxCoords = new Vector3();
         public Vector3 VaseCoords = new Vector3();
 
-        public static readonly HeaderSetting SettingsHeader = new HeaderSetting("Foundation-X");
+        public static readonly HeaderSetting SettingsHeader = new HeaderSetting(1, "Foundation-X");
         
         public Pickup Vase;
 
