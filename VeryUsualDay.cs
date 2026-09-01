@@ -42,6 +42,7 @@ namespace VeryUsualDay
         public bool Is008Leaked { get; set; }
         public bool IsGateGuardEnabled { get; set; }
         public bool GateBusy { get; set; }
+        public bool Is682EventActive { get; set; }
         public bool IsCleanCountdownActive { get; set; } = false;
         public List<int> JoinedDboys { get; set; } = new List<int>();
         public List<int> DBoysQueue { get; set; } = new List<int>();
@@ -102,6 +103,7 @@ namespace VeryUsualDay
             Scp0762,
             Scp372,
             Scp682,
+            Scp682Event,
             Scp966,
             Scp999,
         }
@@ -604,6 +606,31 @@ namespace VeryUsualDay
                     door.Unlock();
                 }
             }
+        }
+        public void Set682EventMode(bool enabled)
+        {
+            Is682EventActive = enabled;
+
+            foreach (var player in Exiled.API.Features.Player.List)
+            {
+                if (enabled)
+                {
+                    Apply682EventFog(player);
+                }
+                else
+                {
+                    player.DisableEffect(EffectType.FogControl);
+                }
+            }
+        }
+
+        public void Apply682EventFog(Exiled.API.Features.Player player)
+        {
+            if (!Is682EventActive || player == null)
+                return;
+
+            player.EnableEffect(EffectType.FogControl);
+            player.ChangeEffectIntensity(EffectType.FogControl, 10);
         }
     }
 }

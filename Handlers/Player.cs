@@ -37,6 +37,19 @@ namespace VeryUsualDay.Handlers
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
+            if (VeryUsualDay.Instance.Is682EventActive)
+            {
+                Timing.CallDelayed(1f, () =>
+                {
+                    if (VeryUsualDay.Instance == null ||
+                        !VeryUsualDay.Instance.Is682EventActive)
+                    {
+                        return;
+                    }
+
+                    VeryUsualDay.Instance.Apply682EventFog(ev.Player);
+                });
+            }
             ev.Player.SessionVariables.Remove("vudmood");
             if (ev.NewRole != RoleTypeId.Spectator && ev.NewRole.GetSide() != Side.Scp && (ev.NewRole != RoleTypeId.Tutorial || ev.Player.CustomName.Split(' ')[0] == "Агент"))
             {
@@ -292,6 +305,10 @@ namespace VeryUsualDay.Handlers
         public static void OnVerified(VerifiedEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
+            if (VeryUsualDay.Instance.Is682EventActive)
+            {
+                VeryUsualDay.Instance.Apply682EventFog(ev.Player);
+            }
             if (VeryUsualDay.Instance.Config.AuthToken != "")
             {
                 var userData = (ITuple)PrisonController.CheckIfPlayerInPrison(ev.Player);
@@ -320,7 +337,7 @@ namespace VeryUsualDay.Handlers
             SettingBase.Register(ev.Player, settings);
         }
 
-        public static void OnHurt(HurtEventArgs ev) 
+        public static void OnHurt(HurtEventArgs ev)
         {
             if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id) &&
                 VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 &&
@@ -333,7 +350,72 @@ namespace VeryUsualDay.Handlers
                     ev.Player.Broadcast(5, "<b>Вы ослабли и не можете навредить людям!</b>");
                 }
                 return;
+
+
             }
+
+            if (VeryUsualDay.Instance.ScpPlayers.TryGetValue(
+        ev.Player.Id,
+        out var scpType) &&
+    scpType == VeryUsualDay.Scps.Scp682Event &&
+    (!ev.Player.TryGetSessionVariable(
+         "scp682Adapted",
+         out bool adapted) ||
+     !adapted))
+            {
+                Timing.CallDelayed(0f, () =>
+                {
+                    if (VeryUsualDay.Instance == null)
+                        return;
+
+                    if (!VeryUsualDay.Instance.ScpPlayers.TryGetValue(
+                            ev.Player.Id,
+                            out var currentScp) ||
+                        currentScp != VeryUsualDay.Scps.Scp682Event)
+                    {
+                        return;
+                    }
+
+                    if (ev.Player.IsDead)
+                        return;
+
+                    if (ev.Player.Health >
+                        ev.Player.MaxHealth * 0.5f)
+                    {
+                        return;
+                    }
+
+                    if (ev.Player.TryGetSessionVariable(
+                            "scp682Adapted",
+                            out bool alreadyAdapted) &&
+                        alreadyAdapted)
+                    {
+                        return;
+                    }
+
+                    ev.Player.SessionVariables["scp682Adapted"] = true;
+
+                    byte currentReduction =
+                        ev.Player.GetEffectIntensity<DamageReduction>();
+
+                    byte newReduction = (byte)Math.Min(
+                        currentReduction * 2,
+                        byte.MaxValue);
+
+                    ev.Player.ChangeEffectIntensity(
+                        EffectType.DamageReduction,
+                        newReduction);
+
+                    foreach (var player in Exiled.API.Features.Player.List)
+                    {
+                        player.Broadcast(
+                            10,
+                            "SCP-682 адаптировался к пулевому урону. " +
+                            "Используйте электровооружение для подавления аномалии!");
+                    }
+                });
+            }
+
             if (VeryUsualDay.Instance.Shakheds.Contains(ev.Player.Id) && VeryUsualDay.Instance.Config.BlowingDamageTypes.Contains(ev.DamageHandler.Type))
             {
                 VeryUsualDay.Instance.Shakheds.Remove(ev.Player.Id);

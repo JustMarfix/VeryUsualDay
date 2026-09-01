@@ -9,7 +9,7 @@ namespace VeryUsualDay.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Spawn682 : ICommand
     {
-        public string Command => "spawn682";
+        public string Command => "spawn682mt";
         public string[] Aliases => new string[] { };
         public string Description => "Работает при FX. Спавнит SCP-682-MT.";
 

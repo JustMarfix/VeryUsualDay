@@ -101,6 +101,7 @@
     <Compile Include="Commands\Recontain244.cs" />
     <Compile Include="Commands\ReDoors.cs" />
     <Compile Include="Commands\RoleDistribution.cs" />
+    <Compile Include="Commands\Scp682EventMode.cs" />
     <Compile Include="Commands\Spawn01921.cs" />
     <Compile Include="Commands\Shakhed.cs" />
     <Compile Include="Commands\ShakhedBoom.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Commands\Spawn0762.cs" />
     <Compile Include="Commands\Spawn372.cs" />
     <Compile Include="Commands\Spawn682.cs" />
+    <Compile Include="Commands\Spawn682Event.cs" />
     <Compile Include="Commands\Spawn966.cs" />
     <Compile Include="Commands\Spawn999.cs" />
     <Compile Include="Commands\Spawnbuo.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="Utils\Scp0762.cs" />
     <Compile Include="Utils\Scp372.cs" />
     <Compile Include="Utils\Scp682.cs" />
+    <Compile Include="Utils\Scp682Event.cs" />
     <Compile Include="Utils\Scp966.cs" />
     <Compile Include="Utils\Scp999.cs" />
     <Compile Include="Utils\TutorialHuman.cs" />

@@ -24,6 +24,7 @@ namespace VeryUsualDay.Commands
         {
             if (VeryUsualDay.Instance.IsEnabledInRound)
             {
+                VeryUsualDay.Instance.Set682EventMode(false);
                 VeryUsualDay.Instance.IsEnabledInRound = false;
                 VeryUsualDay.Instance.IsLunchtimeActive = false;
                 VeryUsualDay.Instance.IsDboysSpawnAllowed = false;
