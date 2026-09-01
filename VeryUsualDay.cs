@@ -13,6 +13,7 @@ using Exiled.API.Features.Core.UserSettings;
 using Exiled.API.Features.Items.Keycards;
 using Exiled.API.Features.Pickups;
 using Interactables.Interobjects.DoorUtils;
+using Exiled.API.Features.Doors;
 using MEC;
 using Newtonsoft.Json;
 using PlayerRoles;
@@ -39,6 +40,10 @@ namespace VeryUsualDay
         public bool IsDboysSpawnAllowed { get; set; }
         public bool IsTeslaEnabled { get; set; }
         public bool Is008Leaked { get; set; }
+        public bool IsGateGuardEnabled { get; set; }
+        public bool GateBusy { get; set; }
+        public bool Is682EventActive { get; set; }
+        public bool IsCleanCountdownActive { get; set; } = false;
         public List<int> JoinedDboys { get; set; } = new List<int>();
         public List<int> DBoysQueue { get; set; } = new List<int>();
         public List<int> Shakheds { get; set; } = new List<int>();
@@ -57,7 +62,7 @@ namespace VeryUsualDay
         public Vector3 SupplyBoxCoords = new Vector3();
         public Vector3 VaseCoords = new Vector3();
 
-        public static readonly HeaderSetting SettingsHeader = new HeaderSetting(1, "Foundation-X");
+        public static readonly HeaderSetting SettingsHeader = new HeaderSetting(100, "Foundation-X");
         
         public Pickup Vase;
 
@@ -80,7 +85,9 @@ namespace VeryUsualDay
             [Description("Жёлтый")]
             Yellow,
             [Description("Красный")]
-            Red
+            Red,
+            [Description("Очистка")]
+            Clean
         }
 
         public enum Scps
@@ -88,6 +95,7 @@ namespace VeryUsualDay
             Scp0082,
             Scp01921,
             Scp01922,
+            Scp01923,
             Scp035,
             Scp035Old,
             Scp0352,
@@ -95,6 +103,7 @@ namespace VeryUsualDay
             Scp0762,
             Scp372,
             Scp682,
+            Scp682Event,
             Scp966,
             Scp999,
         }
@@ -120,7 +129,9 @@ namespace VeryUsualDay
             PlayerHandler.Handcuffing += Player.OnHandcuffing;
             PlayerHandler.InteractingDoor += Player.OnInteractingDoor;
             PlayerHandler.ChangingItem += Player.OnChangingItem;
-            
+            PlayerHandler.ReceivingEffect += Player.OnReceivingEffect;
+            PlayerHandler.SentValidCommand += Player.OnSentValidCommand;
+
             ServerHandler.WaitingForPlayers += Server.OnWaitingForPlayers;
             ServerHandler.RoundStarted += Server.OnRoundStarted;
 
@@ -145,13 +156,15 @@ namespace VeryUsualDay
             PlayerHandler.Handcuffing -= Player.OnHandcuffing;
             PlayerHandler.InteractingDoor -= Player.OnInteractingDoor;
             PlayerHandler.ChangingItem -= Player.OnChangingItem;
-            
+            PlayerHandler.ReceivingEffect -= Player.OnReceivingEffect;
+            PlayerHandler.SentValidCommand -= Player.OnSentValidCommand;
+
             ServerHandler.WaitingForPlayers -= Server.OnWaitingForPlayers;
             ServerHandler.RoundStarted -= Server.OnRoundStarted;
-            
+
             // Exiled.Events.Handlers.Scp049.Attacking -= Handlers.Scp049.OnAttacking;
         }
-        
+
         public override void OnEnabled()
         {
             Instance = this;
@@ -221,13 +234,13 @@ namespace VeryUsualDay
                         case 0:
                             break;
                         case 1:
-                            Exiled.API.Features.Cassie.Message("<b><color=#FF0090>O5</color> >>> <color=#008080>Комплекс</color></b>: один испытуемый прибыл в блок D. <size=0> . . . . . . . . . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
+                            Exiled.API.Features.Cassie.MessageTranslated(message: ". . . . . . . . . . . . . . . . . . . . . .", translation: "<b><color=#FF0090>O5</color> >>> <color=#008080>Комплекс</color></b>: один испытуемый прибыл в блок D.", isNoisy: false, isSubtitles: true, isHeld: false);
                             break;
                         case 2:
-                            Exiled.API.Features.Cassie.Message("<b><color=#FF0090>O5</color> >>> <color=#008080>Комплекс</color></b>: двое испытуемых прибыло в блок D<size=0> . . . . . . . . . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
+                            Exiled.API.Features.Cassie.MessageTranslated(message: ". . . . . . . . . . . . . . . . . . . . . .", translation: "<b><color=#FF0090>O5</color> >>> <color=#008080>Комплекс</color></b>: двое испытуемых прибыло в блок D.", isNoisy: false, isSubtitles: true, isHeld: false);
                             break;
                         case 3:
-                            Exiled.API.Features.Cassie.Message("<b><color=#FF0090>O5</color> >>> <color=#008080>Комплекс</color></b>: трое испытуемых прибыло в блок D<size=0> . . . . . . . . . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
+                            Exiled.API.Features.Cassie.MessageTranslated(message: ". . . . . . . . . . . . . . . . . . . . . .", translation: "<b><color=#FF0090>O5</color> >>> <color=#008080>Комплекс</color></b>: трое испытуемых прибыло в блок D.", isNoisy: false, isSubtitles: true, isHeld: false);
                             break;
                     }
                 }
@@ -465,6 +478,11 @@ namespace VeryUsualDay
                         {
                             player.AddAmmo(ammo, 60);
                         }
+                        foreach (var pair in Instance.Config.OVBEffects[json[4]])
+                        {
+                            player.EnableEffect(pair.Key);
+                            player.ChangeEffectIntensity(pair.Key, pair.Value);
+                        }
                         player.MaxHealth = Instance.Config.AgencyHealth;
                         player.Health = Instance.Config.AgencyHealth;
                         player.IsGodModeEnabled = false;
@@ -550,7 +568,7 @@ namespace VeryUsualDay
 
             player.EnableEffect(EffectType.SoundtrackMute);
         }
-        
+
         public void RoleDistribution()
         {
             foreach (var player in Exiled.API.Features.Player.Get(RoleTypeId.Tutorial))
@@ -560,6 +578,59 @@ namespace VeryUsualDay
                     SetUserRole(player);
                 }
             }
+        }
+        public void EnableGateGuard()
+        {
+            IsGateGuardEnabled = true;
+            GateBusy = false;
+
+            foreach (var door in Door.List)
+            {
+                if (door.Type != DoorType.GateA)
+                    continue;
+
+                door.Lock(DoorLockType.AdminCommand);
+                door.IsOpen = false;
+            }
+        }
+
+        public void DisableGateGuard()
+        {
+            IsGateGuardEnabled = false;
+            GateBusy = false;
+
+            foreach (var door in Door.List)
+            {
+                if (door.Type == DoorType.GateA)
+                {
+                    door.Unlock();
+                }
+            }
+        }
+        public void Set682EventMode(bool enabled)
+        {
+            Is682EventActive = enabled;
+
+            foreach (var player in Exiled.API.Features.Player.List)
+            {
+                if (enabled)
+                {
+                    Apply682EventFog(player);
+                }
+                else
+                {
+                    player.DisableEffect(EffectType.FogControl);
+                }
+            }
+        }
+
+        public void Apply682EventFog(Exiled.API.Features.Player player)
+        {
+            if (!Is682EventActive || player == null)
+                return;
+
+            player.EnableEffect(EffectType.FogControl);
+            player.ChangeEffectIntensity(EffectType.FogControl, 10);
         }
     }
 }

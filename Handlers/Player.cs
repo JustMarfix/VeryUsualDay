@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using CustomPlayerEffects;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
@@ -12,6 +14,7 @@ using PlayerRoles;
 using UnityEngine;
 using VeryUsualDay.Abilities.Scp035;
 using VeryUsualDay.Utils;
+using Exiled.API.Features.Doors;
 
 namespace VeryUsualDay.Handlers
 {
@@ -34,6 +37,19 @@ namespace VeryUsualDay.Handlers
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
+            if (VeryUsualDay.Instance.Is682EventActive)
+            {
+                Timing.CallDelayed(1f, () =>
+                {
+                    if (VeryUsualDay.Instance == null ||
+                        !VeryUsualDay.Instance.Is682EventActive)
+                    {
+                        return;
+                    }
+
+                    VeryUsualDay.Instance.Apply682EventFog(ev.Player);
+                });
+            }
             ev.Player.SessionVariables.Remove("vudmood");
             if (ev.NewRole != RoleTypeId.Spectator && ev.NewRole.GetSide() != Side.Scp && (ev.NewRole != RoleTypeId.Tutorial || ev.Player.CustomName.Split(' ')[0] == "Агент"))
             {
@@ -65,6 +81,8 @@ namespace VeryUsualDay.Handlers
                         ev.Player.ChangeEffectIntensity(EffectType.SilentWalk, 10);
                         ev.Player.IsGodModeEnabled = false;
                         ev.Player.CustomName = "Объект";
+                        ev.Player.SessionVariables["memeticsDeathCooldown"] =
+    DateTime.UtcNow.AddSeconds(5);
                     });
                     return;
                 }
@@ -131,9 +149,10 @@ namespace VeryUsualDay.Handlers
                 ev.Player.Role.Type != RoleTypeId.ClassD || ev.Player.CustomName.ToLower().Contains("рабочий") ||
                 !ev.Pickup.Type.IsWeapon() || VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id)) return;
             VeryUsualDay.Instance.CurrentCode = VeryUsualDay.Codes.Blue;
-            Exiled.API.Features.Cassie.Message(
-                "<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#005EBC>Синий Код</color>. Зафиксированы малые нарушения. Персоналу следует принимать меры предосторожности. <size=0> pitch_0.1 .G1 .G2 . pitch_1.0 . . . . . . . . . . . . . .",
-                isNoisy: false, isSubtitles: true);
+            Exiled.API.Features.Cassie.MessageTranslated(
+               message: "$PITCH_0.1 .G1 .G2 . $PITCH_1.0 . . . . . . . . . . . . . .",
+               translation: "<b><color=#727472>[Рабочий режим]</color></b>: объявлен <color=#005EBC>Синий Код</color>. Зафиксированы малые нарушения. Персоналу следует принимать меры предосторожности.",
+               isNoisy: false, isSubtitles: true, isHeld: false);
         }
 
         public static void OnDroppingItem(DroppingItemEventArgs ev)
@@ -159,7 +178,7 @@ namespace VeryUsualDay.Handlers
             {
                 if (!VeryUsualDay.Instance.ScpPlayers.TryGetValue(ev.Attacker.Id, out var avel) ||
                     avel != VeryUsualDay.Scps.Scp0762) return; // checks if attacker is not avel
-                if (ev.Player != null && Random.Range(0, 100) < 40) ev.Attacker.Heal(25f);
+                if (ev.Player != null && UnityEngine.Random.Range(0, 100) < 40) ev.Attacker.Heal(25f);
                 if (ev.Attacker.CurrentItem.As<Jailbird>()?.WearState != JailbirdWearState.AlmostBroken) return;
                 ev.Attacker.CurrentItem?.Destroy();
                 var jailbird = ev.Attacker.AddItem(ItemType.Jailbird);
@@ -286,6 +305,10 @@ namespace VeryUsualDay.Handlers
         public static void OnVerified(VerifiedEventArgs ev)
         {
             if (!VeryUsualDay.Instance.IsEnabledInRound) return;
+            if (VeryUsualDay.Instance.Is682EventActive)
+            {
+                VeryUsualDay.Instance.Apply682EventFog(ev.Player);
+            }
             if (VeryUsualDay.Instance.Config.AuthToken != "")
             {
                 var userData = (ITuple)PrisonController.CheckIfPlayerInPrison(ev.Player);
@@ -314,7 +337,7 @@ namespace VeryUsualDay.Handlers
             SettingBase.Register(ev.Player, settings);
         }
 
-        public static void OnHurt(HurtEventArgs ev) 
+        public static void OnHurt(HurtEventArgs ev)
         {
             if (VeryUsualDay.Instance.ScpPlayers.ContainsKey(ev.Player.Id) &&
                 VeryUsualDay.Instance.ScpPlayers[ev.Player.Id] == VeryUsualDay.Scps.Scp035 &&
@@ -323,11 +346,76 @@ namespace VeryUsualDay.Handlers
                 if (ev.Player.Health <= 2000f)
                 {
                     ev.Player.IsGodModeEnabled = true;
-                    Exiled.API.Features.Cassie.Message("<b><color=#727472>[ВОУС]</color></b>: Объект-035 ослаб и доступен для транспортировки в камеру содержания <size=0> pitch_0.1 .G2 . pitch_1.0 . . . . . . . . . . . . . .", isNoisy: false, isSubtitles: true);
+                    Exiled.API.Features.Cassie.MessageTranslated(message: "$PITCH_0.1 .G2 . $PITCH_1.0 . . . . . . . . . . . . . .", translation: "<b><color=#727472>[ВОУС]</color></b>: Объект-035 ослаб и доступен для транспортировки в камеру содержания", isNoisy: false, isSubtitles: true, isHeld: false);
                     ev.Player.Broadcast(5, "<b>Вы ослабли и не можете навредить людям!</b>");
                 }
                 return;
+
+
             }
+
+            if (VeryUsualDay.Instance.ScpPlayers.TryGetValue(
+        ev.Player.Id,
+        out var scpType) &&
+    scpType == VeryUsualDay.Scps.Scp682Event &&
+    (!ev.Player.TryGetSessionVariable(
+         "scp682Adapted",
+         out bool adapted) ||
+     !adapted))
+            {
+                Timing.CallDelayed(0f, () =>
+                {
+                    if (VeryUsualDay.Instance == null)
+                        return;
+
+                    if (!VeryUsualDay.Instance.ScpPlayers.TryGetValue(
+                            ev.Player.Id,
+                            out var currentScp) ||
+                        currentScp != VeryUsualDay.Scps.Scp682Event)
+                    {
+                        return;
+                    }
+
+                    if (ev.Player.IsDead)
+                        return;
+
+                    if (ev.Player.Health >
+                        ev.Player.MaxHealth * 0.5f)
+                    {
+                        return;
+                    }
+
+                    if (ev.Player.TryGetSessionVariable(
+                            "scp682Adapted",
+                            out bool alreadyAdapted) &&
+                        alreadyAdapted)
+                    {
+                        return;
+                    }
+
+                    ev.Player.SessionVariables["scp682Adapted"] = true;
+
+                    byte currentReduction =
+                        ev.Player.GetEffectIntensity<DamageReduction>();
+
+                    byte newReduction = (byte)Math.Min(
+                        currentReduction * 2,
+                        byte.MaxValue);
+
+                    ev.Player.ChangeEffectIntensity(
+                        EffectType.DamageReduction,
+                        newReduction);
+
+                    foreach (var player in Exiled.API.Features.Player.List)
+                    {
+                        player.Broadcast(
+                            10,
+                            "SCP-682 адаптировался к пулевому урону. " +
+                            "Используйте электровооружение для подавления аномалии!");
+                    }
+                });
+            }
+
             if (VeryUsualDay.Instance.Shakheds.Contains(ev.Player.Id) && VeryUsualDay.Instance.Config.BlowingDamageTypes.Contains(ev.DamageHandler.Type))
             {
                 VeryUsualDay.Instance.Shakheds.Remove(ev.Player.Id);
@@ -388,8 +476,59 @@ namespace VeryUsualDay.Handlers
 
         public static void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
-            if (!VeryUsualDay.Instance.IsEnabledInRound) return;
-            if (ev.Player.Role.Type == RoleTypeId.Scp0492 && ev.Door.IsOpen)
+            if (!VeryUsualDay.Instance.IsEnabledInRound)
+                return;
+
+            // GateGuard
+            if (VeryUsualDay.Instance.IsGateGuardEnabled &&
+                ev.Door.Type == DoorType.GateA &&
+                !ev.Door.IsOpen)
+            {
+                if (VeryUsualDay.Instance.GateBusy)
+                {
+                    ev.IsAllowed = false;
+                    return;
+                }
+
+                var item = ev.Player.CurrentItem;
+
+                if (item != null &&
+                    (item.Type == ItemType.KeycardMTFOperative ||
+                     item.Type == ItemType.KeycardMTFCaptain))
+                {
+                    var door = ev.Door;
+
+                    ev.IsAllowed = false;
+
+                    VeryUsualDay.Instance.GateBusy = true;
+
+                    door.IsOpen = true;
+
+                    Timing.CallDelayed(5f, () =>
+                    {
+                        if (VeryUsualDay.Instance == null ||
+                            !VeryUsualDay.Instance.IsGateGuardEnabled)
+                        {
+                            return;
+                        }
+
+                        door.IsOpen = false;
+
+                        Timing.CallDelayed(3.5f, () =>
+                        {
+                            if (VeryUsualDay.Instance == null)
+                                return;
+
+                            VeryUsualDay.Instance.GateBusy = false;
+                        });
+                    });
+
+                    return;
+                }
+            }
+
+            if (ev.Player.Role.Type == RoleTypeId.Scp0492 &&
+                ev.Door.IsOpen)
             {
                 ev.IsAllowed = false;
             }
@@ -403,6 +542,57 @@ namespace VeryUsualDay.Handlers
             {
                 ev.IsAllowed = false;
             }
+        }
+        public static void OnReceivingEffect(ReceivingEffectEventArgs ev)
+        {
+            if (!VeryUsualDay.Instance.IsEnabledInRound)
+                return;
+
+            if (ev.Player.CustomInfo != "<b><color=#960018>SCP-035</color></b>" && ev.Player.CustomInfo != "<b><color=#960018>SCP-682-MT</color></b>")
+                return;
+
+            if (!(ev.Effect is Flashed))
+                return;
+
+            ev.IsAllowed = false;
+        }
+        public static void OnSentValidCommand(SentValidCommandEventArgs ev)
+        {
+            if (!ev.Result)
+                return;
+
+            if (!VeryUsualDay.Instance.IsGateGuardEnabled)
+                return;
+
+            if (ev.Command == null)
+                return;
+
+            if (!string.Equals(
+                    ev.Command.Command,
+                    "setcode",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            string[] queryParts = ev.Query.Split(
+                new[] { ' ' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            if (queryParts.Length == 0)
+                return;
+
+            string codeName = queryParts[queryParts.Length - 1];
+
+            if (!string.Equals(
+                    codeName,
+                    "green",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            VeryUsualDay.Instance.DisableGateGuard();
         }
     }
 }
